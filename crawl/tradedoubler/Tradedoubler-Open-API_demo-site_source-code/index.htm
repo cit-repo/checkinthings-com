@@ -1,0 +1,846 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Tradedoubler Products Open API demo</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link type="text/css" href="css/bootstrap.css" rel="stylesheet">
+	<link type="text/css" href="css/bootstrap-responsive.css" rel="stylesheet">
+	<link type="text/css" href="css/jquery.fancybox.css" rel="stylesheet">
+	<style>
+		body {padding-top: 60px;}
+		td {font-size: 80%;}
+		.logo {display: block; width: 165px; height: 40px; background-image: url("../img/tradedoubler_logo.png"); background-position: 0 31px;}
+		.logo:hover {background-position: 0 0;}
+		.hidden-desktopwide {display: none !important;}
+		.visible-desktopwide {display: inherit !important;}
+		@media (min-width: 980px) and (max-width: 1200px) {
+			.hidden-desktopwide {display: inherit !important;}
+			.visible-desktopwide {display: none !important;}
+		}
+		@media (min-width: 768px) and (max-width: 979px) {
+			.hidden-desktopwide {display: inherit !important;}
+			.visible-desktopwide {display: none !important;}
+		}
+		@media (max-width: 767px) {
+			.hidden-desktopwide {display: inherit !important;}
+			.visible-desktopwide {display: none !important;}
+		}
+	</style>
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+		<script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jsapi.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/jquery.easing-1.3.pack.js"></script>
+	<script type="text/javascript" src="js/jquery.fancybox.pack.js"></script>
+	<script type="text/javascript">
+	google.load('visualization', '1', {packages: ['corechart']});
+	var token="23C3880EC1F33DC69C6E6417B88047EB1CD7DA1B";
+	token="96CC0E0A10851500F10431D64EC5585BFC8597DF";
+
+	function search() {
+		var descMaxLen = 350;
+		var maxHits = 100;
+		var chartSize = [180,60];
+		var cols = [3,4];
+
+		var req="https://api.tradedoubler.com/1.0/products;pretty=true";
+		var loc = "#/q="+escape($("#query").val());
+		var reqStarted = new Date().getTime();
+		var resultDiv = document.getElementById("resultDiv");
+		var noHitsDiv = document.getElementById("noHitsDiv");
+		var catWalkDiv = document.getElementById("catWalkDiv");
+
+		if ($("#cat").val() != "") {
+			req += ";tdCategoryId="+$("#cat").val();
+			loc += ";cat="+$("#cat").val();
+		}
+
+		if (!isNaN(parseFloat($("#priceFrom").val())) && !isNaN(parseFloat($("#priceTo").val())) && isFinite($("#priceFrom").val()) && isFinite($("#priceTo").val()) && parseFloat($("#priceFrom").val()) <= parseFloat($("#priceTo").val())) {
+			req += ";minPrice="+$("#priceFrom").val()+";maxPrice="+$("#priceTo").val();
+			$("#priceFrom").css("color", "black");
+			$("#priceTo").css("color", "black");
+			if ($("#priceFrom").val() != "0.00" || $("#priceTo").val() != "99999") {
+				loc += ";minPrice="+$("#priceFrom").val()+";maxPrice="+$("#priceTo").val();
+			}
+		} else {
+			$("#priceFrom").css("color", "red");
+			$("#priceTo").css("color", "red");
+		}
+
+		req += ";limit="+maxHits+";priceHistory=true;q="+escape($("#query").val())+"?token="+token;
+		
+		//location.href=loc;
+		
+		$("input").attr("disabled","disabled");
+		$("button").attr("disabled","disabled");
+		$("#loadingDiv").fadeIn();
+		$("#errorDiv").hide();
+		$("#noHitsDiv").hide();
+		$("#catWalkFrame").hide();
+		$("#reqStr").html(req);
+		$("#hasSearched").val("true");
+
+		if (resultDiv.hasChildNodes()) {
+			while (resultDiv.childNodes.length >= 1 ) {
+				resultDiv.removeChild(resultDiv.firstChild);       
+			}
+		}
+
+		switch (document.getElementById("setCols").value) {
+			case "2" : cols = [2,6]; break;
+			case "4" : cols = [4,3]; break;
+		}
+
+		for (var dx=1; dx<cols[0]+1; dx++) {
+			var resultDivCol=document.createElement("div");
+			resultDivCol.setAttribute("class", "span"+cols[1]);
+			resultDivCol.setAttribute("id", "holderDiv"+dx);
+			resultDiv.appendChild(resultDivCol);
+		}
+
+		$.ajax({
+			type: "GET",
+			url: req,
+			dataType: "jsonp",
+			jsonpCallback: 'myCb',
+			jsonp: 'jsonp',
+			error: function (data) {
+				$("#errorDiv").fadeIn();
+			},
+			success: function (data) {
+				$("#loadingDiv").hide();
+				$("input").removeAttr("disabled");
+				$("button").removeAttr("disabled");
+				var hits = data.productHeader.totalHits;
+				$("#reqStr").html("<a href='"+req + "' style='color:#999999;'>"+req + "</a> responded with " + hits + " products in " + eval(new Date().getTime()-reqStarted)/1000 + "s");
+
+				if (hits==0) {
+					$("#noHitsDiv").slideDown("slow");
+				} else {
+					var catArr = [];
+					var addToDiv=1;
+					for (var i=0; i<data.products.length; i++) {
+						catArr.push(data.products[i].categories[0].tdCategoryName+'|'+data.products[i].categories[0].id);
+
+						var holderDiv=document.createElement("div");
+						if (i>9) {
+							holderDiv.setAttribute("class", "well hiddenbyscroll"+addToDiv);
+						} else {
+							holderDiv.setAttribute("class", "well");
+						}
+						holderDiv.setAttribute("style", "float:left;display:none;");
+
+							if (data.products[i].categories[0].id) {
+								var catDiv=document.createElement("span");
+								catDiv.setAttribute("style","float:right;cursor:pointer;margin-left:5px; max-width:50%;overflow:hidden;");
+								catDiv.setAttribute("title","Filter on '"+data.products[i].categories[0].tdCategoryName+"'");
+								catDiv.setAttribute("onclick","setCategory("+data.products[i].categories[0].id+",'"+escape(data.products[i].categories[0].tdCategoryName)+"');");
+								catDiv.innerHTML=data.products[i].categories[0].tdCategoryName;
+								holderDiv.appendChild(catDiv);
+							}
+
+							var titleDiv=document.createElement("h4");
+							titleDiv.setAttribute("title","Advertiser ID: "+data.products[i].offers[0].sourceProductId+"\nProduct ID: "+data.products[i].offers[0].id+"\nFeed ID: "+data.products[i].offers[0].feedId);
+							titleDiv.innerHTML=data.products[i].name;
+							if (data.products[i].brand) {
+								titleDiv.innerHTML+=" ";
+								
+								var brandDiv=document.createElement("small");
+								brandDiv.setAttribute("class","small");
+								brandDiv.innerHTML="["+data.products[i].brand+"]";
+								titleDiv.appendChild(brandDiv);
+							}
+							holderDiv.appendChild(titleDiv);
+
+							var imageUrlFixed = data.products[i].productImage.url.replace("wid=2000&hei=2000","wid=500&hei=500");
+
+							var imgAnchor=document.createElement("a");
+							imgAnchor.setAttribute("href",imageUrlFixed);
+							imgAnchor.setAttribute("title",data.products[i].name);
+							imgAnchor.setAttribute("class","fancyimg");
+
+								var imgImg=document.createElement("img");
+								imgImg.setAttribute("src",imageUrlFixed);
+								imgImg.setAttribute("class","thumbnail");
+								imgImg.setAttribute("style","float:left;width:30%; margin-right: 10px;");
+								imgAnchor.appendChild(imgImg);
+					
+							holderDiv.appendChild(imgAnchor);
+
+							if (data.products[i].offers[0].programLogo != '' && data.products[i].offers[0].programLogo != 'null') {
+								var advertiserDiv=document.createElement("img");
+								advertiserDiv.setAttribute("src",data.products[i].offers[0].programLogo);
+								advertiserDiv.setAttribute("style","max-height:60px;max-width:60px;float:right;");
+								advertiserDiv.setAttribute("title",data.products[i].offers[0].programName);
+								holderDiv.appendChild(advertiserDiv);
+							} else {
+								var advertiserDiv=document.createElement("span");
+								advertiserDiv.setAttribute("class","label pull-right");
+								advertiserDiv.innerHTML=data.products[i].offers[0].programName;
+								holderDiv.appendChild(advertiserDiv);
+							}
+
+
+							var desc = data.products[i].description;
+
+							var descDiv=document.createElement("small");
+							descDiv.innerHTML=desc.substr(0,descMaxLen);
+							holderDiv.appendChild(descDiv);
+							
+							if (desc.length>descMaxLen) {
+								var dotsRestDiv=document.createElement("small");
+								dotsRestDiv.setAttribute("id","dots"+i);
+								dotsRestDiv.innerHTML=".. ";
+								holderDiv.appendChild(dotsRestDiv);
+
+								var descRestDiv=document.createElement("small");
+								descRestDiv.setAttribute("style","display:none;");
+								descRestDiv.setAttribute("id","rest"+i);
+								descRestDiv.innerHTML=desc.substr(descMaxLen,desc.length);
+								holderDiv.appendChild(descRestDiv);
+
+								var descReadAnchor=document.createElement("a");
+								descReadAnchor.setAttribute("href","#");
+								descReadAnchor.setAttribute("id","anchor"+i);
+								descReadAnchor.setAttribute("class","label");
+								descReadAnchor.setAttribute("onclick","readMore('"+i+"'); return false;");
+								descReadAnchor.innerHTML = "More";
+								holderDiv.appendChild(descReadAnchor);
+							}
+
+							var fieldsLength = data.products[i].fields.length;
+							
+							if (fieldsLength!=0) {
+								var fieldsTable=document.createElement("table");
+								fieldsTable.setAttribute("class","table table-condensed");
+								fieldsTable.setAttribute("style","table-layout: fixed;");
+
+								for (var f=0; f<fieldsLength; f++) {
+									var fieldsTr=document.createElement("tr");
+									if (f>2) {
+										fieldsTr.setAttribute("style","display: none;");
+										fieldsTr.setAttribute("class","hiddenTr"+i);
+									}									
+										var fieldsTdName=document.createElement("td");
+										fieldsTdName.innerHTML=data.products[i].fields[f].name;
+										fieldsTdName.setAttribute("style","word-wrap:break-word;white-space: normal;");
+										fieldsTr.appendChild(fieldsTdName);
+
+										var fieldsTdValue=document.createElement("td");
+										fieldsTdValue.innerHTML=data.products[i].fields[f].value;
+										fieldsTdValue.setAttribute("style","word-wrap:break-word;white-space: normal;");
+										fieldsTr.appendChild(fieldsTdValue);
+
+									fieldsTable.appendChild(fieldsTr);
+								}
+
+								holderDiv.appendChild(fieldsTable);
+
+								if (fieldsLength > 3) {
+									var moreButton=document.createElement("button");
+									moreButton.setAttribute("class","btn btn-mini");
+									moreButton.setAttribute("style","float:left");
+									moreButton.setAttribute("onclick","showMore("+i+");");
+									moreButton.setAttribute("id","moreButton"+i);
+									moreButton.innerHTML="More specs";
+									holderDiv.appendChild(moreButton);
+								}
+							
+							}
+
+							var priceArr = [];
+							var priceDateArr = [];
+							var lastPrice = 0;
+
+							for (iy=0; iy < data.products[i].offers[0].priceHistory.length; iy++) {
+								data.products[i].offers[0].priceHistory[iy].price.value
+								if (data.products[i].offers[0].priceHistory[iy].price.value != lastPrice) {
+									priceArr.push(data.products[i].offers[0].priceHistory[iy].price.value);
+									priceDateArr.push(toDate(data.products[i].offers[0].priceHistory[iy].date));
+								}
+								lastPrice = data.products[i].offers[0].priceHistory[iy].price.value;
+							}
+
+							if (priceArr.length > 1) {
+								var priceGraphHolder=document.createElement("div");
+								priceGraphHolder.setAttribute("style","float:left;clear:left;margin-top:5px;");
+								priceGraphHolder.setAttribute("onclick","log('showGraph"+i+"');");
+
+									var priceGraphTitle=document.createElement("span");
+									priceGraphTitle.setAttribute("style","font-size:80%;bottom:0px;");
+									priceGraphTitle.innerHTML="Price development";
+									priceGraphHolder.appendChild(priceGraphTitle);
+
+									var priceGraphDiv=document.createElement("div");
+									priceGraphDiv.setAttribute("style","width:"+chartSize[0]+"px;height:"+chartSize[1]+"px;");
+									priceGraphHolder.appendChild(priceGraphDiv);
+
+								holderDiv.appendChild(priceGraphHolder);
+							}
+
+							var priceDiv=document.createElement("div");
+							priceDiv.setAttribute("style","position:relative;bottom:0px;float:right;text-align:right;");
+
+								var priceButton=document.createElement("button");
+								priceButton.setAttribute("class","btn btn-danger");
+								priceButton.setAttribute("onclick","window.open('"+data.products[i].offers[0].productUrl+"');");
+								priceButton.setAttribute("title","Updated: " + data.products[i].offers[0].modified);
+								priceButton.innerHTML=currFix(data.products[i].offers[0].priceHistory[0].price.value,data.products[i].offers[0].priceHistory[0].price.currency);
+								priceDiv.appendChild(priceButton);
+
+								if (data.products[i].offers[0].shippingCost && data.products[i].offers[0].shippingCost != "null") {
+									var shipSpan=document.createElement("div");
+									shipSpan.setAttribute("style","font-size: 70%;color:grey;");
+									shipSpan.innerHTML="Shipping: "+shipFix(data.products[i].offers[0].shippingCost,data.products[i].offers[0].priceHistory[0].price.currency);
+									priceDiv.appendChild(shipSpan);									
+								}
+
+							holderDiv.appendChild(priceDiv);
+
+						document.getElementById("holderDiv"+addToDiv).appendChild(holderDiv);
+						if (i<9) {
+							$(holderDiv).delay(250*i).fadeIn();
+						}
+
+						addToDiv++;
+						if (addToDiv==cols[0]+1) {
+							addToDiv=1;
+						}
+						
+						if (priceArr.length > 1) {
+							var graphOptions = {
+								curveType: "function",
+								width: chartSize[0], height: chartSize[1],
+								legend: {position: "none"},
+								chartArea:{left:0,top:0,width:"95%",height:"100%"},
+								animation:{duration:5000,easing:'in'},
+								hAxis: {textPosition: "none", baselineColor: "none", gridlines: {color: "none"}},
+								vAxis: {textPosition: "none", baselineColor: "none", gridlines: {color: "none"}},
+								tooltip: {textStyle: {fontSize: 9}},
+								backgroundColor: "none"};
+
+							var graphData = new google.visualization.DataTable();
+							graphData.addColumn('datetime', 'Date');
+							graphData.addColumn('number', 'Price');
+							for (k=0; k < data.products[i].offers[0].priceHistory.length; k++) {
+								graphData.addRow([toDate(data.products[i].offers[0].priceHistory[k].date), eval(data.products[i].offers[0].priceHistory[k].price.value)]);
+							}
+							new google.visualization.LineChart(priceGraphDiv).draw(graphData, graphOptions);
+						}
+					}
+					addClickHandlers();
+					var catArrA = [], catArrB = [], catArrRest = [], prev;
+					catArr.sort();
+
+					for (var c = 0; c < catArr.length; c++ ) {
+						if (catArr[c] !== prev) {
+							catArrA.push(catArr[c]);
+							catArrB.push(1);
+						} else {
+							catArrB[catArrB.length-1]++;
+						}
+						prev = catArr[c];
+					}
+
+					var foundone = true;
+					while (foundone) {
+						foundone = false;
+						for(i = 0; i < catArrB.length-1; i++) {
+							if (catArrB[i] < catArrB[i + 1]) {
+								tempobj = catArrA[i + 1];
+								tempfloat = catArrB[i + 1];
+								catArrA[i + 1] = catArrA[i];
+								catArrB[i + 1] = catArrB[i];
+								catArrA[i] = tempobj;
+								catArrB[i] = tempfloat;
+								foundone = true;
+							}
+						}
+					}
+
+					if (catArrA.length > 4) {
+						for(i = 0; i < catArrA.length; i++) {
+							if (i > 2) {
+								catArrRest.push(catArrA[i]);
+							}
+						}
+						catArrA[3]="Other";
+						catArrA.length=4;
+						catArrB.length=4;
+					}
+
+//					log("catArr\n"+catArr+"\n\ncatArrA\n"+catArrA+"\n\ncatArrB\n"+catArrB+"\n\ncatArrRest\n"+catArrRest);
+
+					var multiplier = 100/catArr.length;
+					var widPer = 0;
+					var widTot = 0;
+					for (var ca = 0; ca < catArrA.length; ca++) {
+						widPer = catArrB[ca]*multiplier;
+
+						if (ca==catArrA.length-1) {widPer = 100-widTot;}
+						if (catArrA[ca].split("|")[0] != "Other") {
+							document.getElementById("catWalk"+ca).setAttribute("onclick","setCategory("+catArrA[ca].split("|")[1]+",'"+catArrA[ca].split("|")[0]+"')");
+							document.getElementById("catWalk"+ca).setAttribute("title",catArrB[ca]+" products ("+Math.round(widPer*100)/100+"%) in the category "+catArrA[ca].split("|")[0]+".");
+							document.getElementById("catWalk"+ca).setAttribute("style","width:"+widPer+"%;cursor:pointer;");
+						} else {
+							document.getElementById("catWalk"+ca).setAttribute("title",catArrB[ca]+" products ("+Math.round(widPer*100)/100+"%) in other categories.");
+							document.getElementById("catWalk"+ca).setAttribute("style","width:"+widPer+"%;");
+						}
+						document.getElementById("catWalk"+ca).innerHTML = catArrA[ca].split("|")[0];
+
+						widTot += widPer;
+
+						switch (ca) {
+							case 0 : $("span:contains('"+catArrA[ca].split("|")[0]+"')").addClass("label label-success"); break;
+							case 1 : $("span:contains('"+catArrA[ca].split("|")[0]+"')").addClass("label label-important"); break;
+							case 2 : $("span:contains('"+catArrA[ca].split("|")[0]+"')").addClass("label label-info"); break;
+							case 3 : $("span:contains('"+catArrA[ca].split("|")[0]+"')").addClass("label label-warning"); break;
+						}
+					}
+
+					for (var cr = 0; cr < catArrRest.length; cr++) {
+						$("span:contains('"+catArrRest[cr].split("|")[0]+"')").addClass("label label-warning");
+					}
+
+					$('#catWalkFrame').fadeIn("slow");
+					$('[rel=tooltip]').tooltip('destroy');
+					$('[rel=tooltip]').tooltip();
+				}
+			}
+		});
+	}
+
+	function toDate(str) {
+		return new Date(str);
+	}
+
+	function showMore(id) {
+		if (document.getElementById("moreButton"+id).innerHTML == "More specs") {
+			$("#moreButton"+id).html("Less specs");
+			$(".hiddenTr"+id).fadeIn();
+		} else {
+			$("#moreButton"+id).html("More specs");
+			$(".hiddenTr"+id).fadeOut();		
+		}
+	}
+
+	function readMore(id) {
+		if ($("#rest"+id).is(":hidden")) {
+			$("#rest"+id).fadeIn();
+			$("#dots"+id).hide();
+			$("#anchor"+id).html("Less");
+		} else {
+			$("#dots"+id).show();
+			$("#anchor"+id).html("More");
+			$("#anchor"+id).fadeOut();
+			$("#rest"+id).fadeOut('slow', function() {
+				$("#anchor"+id).fadeIn();
+			});
+		}
+	}
+
+	function currFix(price,curr) {
+		var sRegExp = new RegExp('(-?[0-9]+)([0-9]{3})'),sValue=price+'';
+		while(sRegExp.test(sValue))
+			sValue = sValue.replace(sRegExp, '$1 $2');
+		price = sValue;
+		
+		if (price.indexOf(".") != -1) {
+			price = "<span style='font-size:140%;font-weight:900;'>"+price.substr(0,price.indexOf(".")) + "</span><sup> " + price.substr(price.indexOf(".")+1,price.length) + "</sup>";	
+		} else {
+			price = "<span style='font-size:140%;font-weight:900;'>"+price+"</span> <sup>00</sup>";	
+		}
+		
+		var rtn = curr + " " + price;
+		switch (curr){
+			case "GBP" : rtn = "£ " + price; break;
+			case "EUR" : rtn = "€ " + price; break;
+			case "USD" : rtn = "$ " + price; break;
+			case "SEK" : rtn = price + " kr"; break;
+		}
+		return rtn;
+	}
+
+	function shipFix(price,curr) {
+		var rtn = price;
+		if (!isNaN(parseFloat(price)) && isFinite(price)) {
+			var sRegExp = new RegExp('(-?[0-9]+)([0-9]{3})'),sValue=price+'';
+			while(sRegExp.test(sValue))
+				sValue = sValue.replace(sRegExp, '$1 $2');
+			price = sValue;
+			
+			rtn = curr + " " + price;
+			switch (curr){
+				case "GBP" : rtn = "£ " + price; break;
+				case "EUR" : rtn = "€ " + price; break;
+				case "USD" : rtn = "$ " + price; break;
+				case "SEK" : rtn = price + " kr"; break;
+			}
+		}
+		return rtn;
+	}
+
+	function addClickHandlers() {
+		$(".fancyimg").fancybox({
+			wrapCSS    : 'fancybox-custom',
+			closeClick : true,
+			type : 'image',
+			helpers : {
+				title : {
+					type : 'over'
+				},
+				overlay : {
+					css : {
+						'background' : 'rgba(238,238,238,0.85)'
+					}
+				}
+			}
+		});
+	}
+
+	function manCols(setArr) {
+		document.getElementById("setCols").value = setArr;
+		if (document.getElementById("hasSearched").value == "true") {
+			search();
+		}
+	}
+
+	function getVarHash(name) {
+		var str = location.href;
+		var start=str.indexOf("#/"+name+"=")+1;
+		if (start<1) start=str.indexOf(";"+name+"=");
+		if (start<0) return '';
+		start += name.length+2;
+		var end=str.indexOf(";",start)-1;
+		if (end<0) end=str.length;
+		var result='';
+		for(var i=start;i<=end;i++) {
+			var c=str.charAt(i);
+			result=result+(c=='+'?' ':c);
+		}
+		return unescape(result);
+	}
+
+	function reset() {
+		var resultDiv = document.getElementById("resultDiv");
+		if (resultDiv.hasChildNodes()) {
+			while (resultDiv.childNodes.length >= 1 ) {
+				resultDiv.removeChild(resultDiv.firstChild);       
+			}
+		}
+		$("button").removeAttr("disabled");
+		$("#errorDiv").hide();
+		$("#loadingDiv").hide();
+		$("#noHitsDiv").hide();
+		$("#catWalkFrame").hide();
+		$("#reqStr").html("");
+		$("#query").select();
+		$('#catWalkHolder').css({position:'static'});
+		$("#hasSearched").val("false");
+		$("#priceFrom").val("0.00");
+		$("#priceTo").val("99999");
+		allCategories();
+	}
+
+	var catBar = [40,190];
+
+	function fixLayout(w,init) {
+		var doSearch = false;
+		if ($(window).width() < 980) {
+			catBar = [0,400];
+			if (document.getElementById("setCols").value=="3" || document.getElementById("setCols").value=="4") {
+				$("#setCols").val("2");
+				$("#col2").addClass("active");
+				$("#col3").removeClass("active");
+
+				if (location.href.indexOf("#") > -1) {
+					doSearch=true;
+				}
+			}
+		} else {
+			catBar = [40,190];
+			if (document.getElementById("setCols").value=="4") {
+				$("#setCols").val("3");
+				$("#col2").removeClass("active");
+				$("#col3").addClass("active");
+				if (location.href.indexOf("#") > -1) {
+					doSearch=true;
+				}
+			} else if (init) {
+				doSearch=true;
+			}
+		}
+		if (init && document.getElementById("query").value=="") {
+			doSearch=false;
+		}
+		if (doSearch) {
+			search();
+		}
+	}
+
+	function log(str) {
+		try {
+			console.log(str);
+		} catch (err) {
+			//alert(str);
+		}
+	}
+
+	function buildCategories() {
+		var mainUl = document.getElementById("mainUl");
+		var req = "http://api.tradedoubler.com/1.0/productCategories;pretty=true?token="+token;
+
+		$.ajax({
+			type: "GET",
+			url: req,
+			dataType: "jsonp",
+			jsonpCallback: 'myCb',
+			jsonp: 'jsonp',
+			error: function (data) {
+				$("#errorDiv").html('Could not build category tree.').fadeIn();
+			},
+			success: function (data) {
+				var toAdd = '<button class="btn btn-mini dropdown-toggle" data-toggle="dropdown" id="catButton">All categories <span class="caret"></span></button>';
+				toAdd += '<ul class="dropdown-menu">';
+				toAdd += '<li><a tabindex="-1" href="#" onclick="allCategories(); return false;">All categories</a></li>';
+				for (var j=0; j<data.categoryTrees[0].subCategories.length; j++) {
+					toAdd += '<li'+(data.categoryTrees[0].subCategories[j].subCategories?' class="dropdown-submenu"':'')+'><a href="#" onclick="setCategory('+data.categoryTrees[0].subCategories[j].id+',\''+escape(data.categoryTrees[0].subCategories[j].name)+'\');">'+data.categoryTrees[0].subCategories[j].name+'</a>'+(!data.categoryTrees[0].subCategories[j].subCategories?'</li>':'');
+					if (data.categoryTrees[0].subCategories[j].subCategories) {
+						toAdd += '<ul class="dropdown-menu">';
+						for (var k=0; k<data.categoryTrees[0].subCategories[j].subCategories.length; k++) {
+							toAdd += '<li'+(data.categoryTrees[0].subCategories[j].subCategories[k].subCategories?' class="dropdown-submenu"':'')+'><a href="#" onclick="setCategory('+data.categoryTrees[0].subCategories[j].subCategories[k].id+',\''+escape(data.categoryTrees[0].subCategories[j].subCategories[k].name)+'\');">'+data.categoryTrees[0].subCategories[j].subCategories[k].name+'</a>'+(!data.categoryTrees[0].subCategories[j].subCategories[k].subCategories?'</li>':'');
+							if (data.categoryTrees[0].subCategories[j].subCategories[k].subCategories) {
+								toAdd += '<ul class="dropdown-menu">';
+								for (var l=0; l<data.categoryTrees[0].subCategories[j].subCategories[k].subCategories.length; l++) {
+									toAdd += '<li><a href="#" onclick="setCategory('+data.categoryTrees[0].subCategories[j].subCategories[k].subCategories[l].id+',\''+escape(data.categoryTrees[0].subCategories[j].subCategories[k].subCategories[l].name)+'\');">'+data.categoryTrees[0].subCategories[j].subCategories[k].subCategories[l].name+'</a></li>';
+								}
+								toAdd += '</ul>';
+							}
+						}
+						toAdd += '</ul>';
+					} else {
+						toAdd += '</li>';
+					}
+				}
+				toAdd += '</ul>';
+				$('#categoryButton').html(toAdd);
+			}
+		});
+	}
+
+	function setCategory(id,name) {
+		$("#cat").val(id);
+		$("#catButton").html(unescape(name)+' <span class="caret">');
+
+		if (document.getElementById("hasSearched").value == "true") {
+			search();
+		}
+	}
+
+	function allCategories() {
+		$("#cat").val("");
+		$("#catButton").html('All categories <span class="caret">');
+
+		if (document.getElementById("hasSearched").value == "true") {
+			search();
+		}
+	}
+
+	function showMoreProducts() {
+		log("show 3 more products");
+		$(".hiddenbyscroll1").slice(0, 1).fadeIn();
+		$(".hiddenbyscroll1").slice(0, 1).removeClass("hiddenbyscroll1");
+		$(".hiddenbyscroll2").slice(0, 1).fadeIn();
+		$(".hiddenbyscroll2").slice(0, 1).removeClass("hiddenbyscroll2");
+		$(".hiddenbyscroll3").slice(0, 1).fadeIn();
+		$(".hiddenbyscroll3").slice(0, 1).removeClass("hiddenbyscroll3");
+	}
+
+	$(document).ready(function() {
+		buildCategories();
+		/*var curUrl = location.href;
+		if (curUrl.indexOf("#/") != -1) {
+			$("#query").val(unescape(getVarHash("q")));
+			if (unescape(getVarHash("cat")) != "") {
+				$("#cat").val(unescape(getVarHash("cat")));
+				setCategory(unescape(getVarHash("cat")));
+			}
+			if (!isNaN(parseFloat(unescape(getVarHash("minPrice")))) && !isNaN(parseFloat(unescape(getVarHash("maxPrice")))) && isFinite(unescape(getVarHash("minPrice"))) && isFinite(unescape(getVarHash("maxPrice"))) && parseFloat(unescape(getVarHash("minPrice"))) <= parseFloat(unescape(getVarHash("maxPrice")))) {
+				$("#priceFrom").val(unescape(getVarHash("minPrice")));
+				$("#priceTo").val(unescape(getVarHash("maxPrice")));
+			}
+		}*/
+		document.getElementById('query').focus();
+
+		fixLayout($(window).width(),true);
+		$(window).bind("resize", fixLayout);
+
+/*		//funkar dåligt så tog bort det.
+		window.addEventListener('popstate', function(event) {
+			var priceFrom = unescape(getVarHash("minPrice"));
+			var priceTo = unescape(getVarHash("maxPrice"));
+			if (priceFrom=='') {
+				priceFrom='0.00';
+			}
+			if (priceTo=='') {
+				priceTo='99999';
+			}
+			if (unescape(getVarHash("q")) != $("#query").val() || unescape(getVarHash("cat")) != $("#cat").val() || priceFrom != $("#priceFrom").val() || priceTo != $("#priceTo").val()) {
+				$("#query").val(unescape(getVarHash("q")));
+				$("#cat").val(unescape(getVarHash("cat")));
+				if (unescape(getVarHash("minPrice")) != "") {
+					$("#priceFrom").val(unescape(getVarHash("minPrice")));
+				}
+				if (unescape(getVarHash("maxPrice")) != "") {
+					$("#priceTo").val(unescape(getVarHash("maxPrice")));
+				}
+				if (unescape(getVarHash("cat")) == "") {
+					$("#catButton").html("All categories <span class=\"caret\">");
+				} else {
+					$("#catButton").html(unescape(getVarHash("cat")) + " <span class=\"caret\">");
+				}
+				search();
+			}
+		});*/
+
+		var fixed = false;
+		$(document).scroll(function() {
+			var winMaxY = $("body").scrollTop();
+			var scrollMaxY = $("body").height();
+			if($(this).scrollTop() >= catBar[1]) {
+				if(!fixed) {
+					fixed = true;
+					$('#catWalkHolder').css({position:'fixed',top:catBar[0]});
+					$('[rel=tooltip]').tooltip('destroy');
+					$('[rel=tooltip]').tooltip({"placement":"bottom"});
+				}
+			} else {
+				if(fixed) {
+					fixed = false;
+					$('#catWalkHolder').css({position:'static'});
+					$('[rel=tooltip]').tooltip('destroy');
+					$('[rel=tooltip]').tooltip();
+				}
+			}
+			if ($(window).scrollTop() == $(document).height() - $(window).height()){
+				showMoreProducts();
+			}
+		});
+	});
+	</script>
+</head>
+<body>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</a>
+				<div class="nav-collapse collapse">
+					<ul class="nav">
+						<li class="active"><a href="../"><i class="icon-home"></i> Home</a></li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-gift"></i> Source code <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="Tradedoubler-Open-API_demo-site_source-code.zip">Play with source code (.zip 160kB)</a></li>
+								<li class="divider"></li>
+								<li><a href="http://jquery.com/" target="_blank">jQuery</a></li>
+								<li><a href="http://twitter.github.com/bootstrap/" target="_blank">Bootstrap</a></li>
+								<li><a href="https://developers.google.com/chart/interactive/docs/reference" target="_blank">Google Visualization API</a></li>
+								<li><a href="http://fancybox.net/" target="_blank">Fancybox</a></li>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-shopping-cart"></i> Products Open API <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="../products/advertiser/">Documentation for advertisers</a></li>
+								<li><a href="../products/publisher/">Documentation for publishers</a></li>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-tag"></i> Vouchers Open API <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="../vouchers/advertiser/">Documentation for advertisers</a></li>
+								<li><a href="../vouchers/publisher/">Documentation for publishers</a></li>
+							</ul>
+						</li>
+					</ul>
+					<a href="http://www.tradedoubler.com" class="logo pull-right"> </a>
+				</div><!--/.nav-collapse -->
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<a href="#" onclick="reset();"><img src="img/tradedoubler_icon.png" style="width:84px;height:100px;float:left;margin:20px;border:0;"/></a>
+		<h1>Products Open API demo</h1>
+		<p>This is a demo site showing an example of what is easily accomplished with Tradedoubler's Products Open <abbr title="Application programming interface">API</abbr>.</p>
+		<form class="form-inline" onsubmit="search(); return false;">
+			<div class="input-prepend input-append">
+				<span class="add-on" onclick="document.getElementById('query').focus();"><i class="icon-search "></i></span>
+				<input class="input-xlarge" id="query" placeholder="Search query" type="text">
+				<input type="submit" class="btn btn-primary" type="button" id="searchButton" value="Search!" data-loading-text="Search!"></input>
+			</div>
+			<div class="btn-group" style="margin-left: 20px;" data-toggle="buttons-radio">
+				<button type="button" id="col2" class="btn btn-mini visible-desktop" onclick="manCols('2');"><i class="icon-align-left"></i></button>
+				<button type="button" id="col3" class="btn btn-mini active visible-desktop"onclick="manCols('3');"><i class="icon-align-center"></i></button>
+			</div>
+			<div style="display:inline-block;margin-left:10px;line-height:32px;">
+				<div class="btn-group" id="categoryButton">
+					<!--<button class="btn btn-mini dropdown-toggle" data-toggle="dropdown" id="catButton">All categories <span class="caret"></span></button>
+					<ul class="dropdown-menu" id="mainUl">
+						<li><a tabindex="-1" href="#" onclick="allCategories(); return false;">All categories</a></li>
+					</ul>-->
+				</div>
+				<small>Price range</small>
+				<input style="padding:1px 6px;font-size:11px;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;width:32px;" onfocus="this.select();" id="priceFrom" type="text" value="0.00">
+				<small>to</small>
+				<input style="padding:1px 6px;font-size:11px;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;width:32px;" onfocus="this.select();" id="priceTo" type="text" value="99999">
+			</div>
+			<input type="hidden" id="setCols" value="3" />
+			<input type="hidden" id="cat" value="" />
+			<input type="hidden" id="hasSearched" value="false" />
+		</form>
+		<p class="muted" style="font-size:70%;" id="reqStr"></p>
+		<div id="catWalkFrame" style="height:40px;display:none;">
+			<div id="catWalkHolder" class="container" style="z-index:100;">
+				<div class="progress" id="catWalkDiv" style="">
+					<div class="bar bar-success" rel="tooltip" id="catWalk0"></div>
+					<div class="bar bar-danger" rel="tooltip" id="catWalk1"></div>
+					<div class="bar" id="catWalk2" rel="tooltip" ></div>
+					<div class="bar bar-warning" rel="tooltip" id="catWalk3"></div>
+				</div>
+			</div>
+		</div>
+		<!--[if IE]>
+			<img src="img/loading.gif" id="loadingDiv" style="display:none;margin-left:200px;" />
+		<![endif]-->
+		<div id="loadingDiv" style="display:none;" class="progress progress-striped active">
+			<div class="bar" style="width: 100%;"></div>
+		</div>
+		<div id="noHitsDiv" class="alert alert-info" style="display:none;">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<h4 class="alert-info">Your search did not match any products :(</h4>
+			<p>Please make sure that your spelling is correct and perhaps typ different or more generic keywords.</p>
+			<p>
+				<button class="btn btn-info" onclick="reset();$('#query').val('Ball');search(); return false;">Search for &quot;Ball&quot;</button> <button class="btn" onclick="location.href='http://9gag.com/fast';">Do something else</button>
+			</p>
+		</div>
+		<div id="errorDiv" class="alert alert-error" style="display:none;">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<h4 class="alert-heading">Something went terribly wrong :o</h4>
+			<p>Perhaps you lost your internet connection or the Products Open <abbr title="Application programming interface">API</abbr> is down at the moment.</p>
+			<p>
+				<button class="btn btn-danger" onclick="search(); return false;" data-dismiss="alert">Try again</button> <button class="btn" onclick="location.href='http://9gag.com/fast';">Do something else</button>
+			</p>
+		</div>
+		<div class="row-fluid" id="resultDiv" />
+	</div>
+</body>
+</html>

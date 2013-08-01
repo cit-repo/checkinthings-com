@@ -1,0 +1,58 @@
+<?php
+    $this->title = "Product";
+    $this->headTitle($this->title);
+?>
+<table width="100%" align="center">
+    <tr><td height="10" colspan="2"></td></tr>
+    <tr>
+        <td width="50%" align="left" bgcolor="#ffffff"><a href="<?php echo $this->url(array('controller'=>'product','action'=>'create'));?>">Create</a></td>
+        <td width="50%" align="center" bgcolor="#eeeeee"><a href="/product/feed/code/tradedoubler">Tradedoubler</a></td>
+    </tr>
+    <tr>
+        <td width="50%" align="left" bgcolor="#ffffff"></td>
+        <td width="50%" align="center" bgcolor="#eeeeee"><a href="/product/feed/code/amazon">Amazon</a></td>
+    </tr>
+    <tr>
+        <td width="50%" align="left" bgcolor="#ffffff"></td>
+        <td width="50%" align="center" bgcolor="#eeeeee"><a href="/product/feed/code/svpply">Svpply</a></td>
+    </tr>
+    <tr><td height="10" colspan="2"></td></tr>
+</table>
+
+<table>
+    <tr>
+        <th>ProductId</th>
+        <th>Feed</th>
+        <th>Channel</th>
+        <th>MainCategory</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>ImageUrl</th>
+        <th>&nbsp;</th>
+    </tr>
+    <?php
+        if ($this->products)
+        foreach($this->products as $product) {
+
+            $file = $this->config['alfa']['host']."/img/product/".$product['product_id'].".jpg";
+            $file_headers = @get_headers($file);
+
+            if (strstr($_SERVER['HTTP_HOST'], "localhost") && strstr($file_headers[0], "200")) {
+                $product->image_url = $file;
+            }
+    ?>
+        <tr>
+            <td><?php echo $this->escape($product->product_id);?></td>
+            <td><?php echo $this->escape($product->feed);?></td>
+            <td><?php echo $this->escape($product->channel);?></td>
+            <td><?php echo $this->escape($product->main_category);?></td>
+            <td><?php echo $this->escape(substr($product->name,0,100));?></td>
+            <td><?php echo $this->escape(substr($product->description,0,100));?></td>
+            <td><img width="100" height="75" src="<?php echo $this->escape($product->image_url);?>"></td>
+            <td>
+                <a href="<?php echo $this->url(array('controller'=>'product','action'=>'update', 'id'=>$product->product_id));?>">Edit</a>
+                <a href="<?php echo $this->url(array('controller'=>'product','action'=>'delete', 'id'=>$product->product_id));?>">Delete</a>
+            </td>
+        </tr>
+    <?php } ?>
+</table>

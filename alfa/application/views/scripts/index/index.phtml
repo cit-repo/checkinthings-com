@@ -1,0 +1,61 @@
+<?php
+
+    $response = json_decode($this->response, true);
+
+    require_once('header.phtml');
+?>
+
+<div class="container">
+    <div class="row">
+        <div class="span9">
+            <div class="hero-unit">
+                <table>
+                    <tr>
+                        <td>
+                            <h1 class="">Special<br>Offer</h1>
+                            <p class="">Here is the best offer of the month!<br>Do not loose it!</p>
+                            <p><a href="/product/detail/id/<?php echo $this->specialOffer?>" class="btn btn-primary btn-large">Learn more »</a></p>
+                        </td>
+                        <td>
+                            <p><a href="/product/detail/id/<?php echo $this->specialOffer?>"><img border="0" width="300" height="200" src="/img/product/<?php echo $this->specialOffer?>.jpg"></a></p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <ul class="thumbnails">
+                <?php
+                $arHits = array();
+
+                if ($response['hits']['hits'])
+                    foreach ($response['hits']['hits'] as $hit) {
+                        foreach ($hit as $key => $value) {
+
+                            if (isset($hit['_source']['product_id']) && !in_array($hit['_source']['product_id'], $arHits)) {
+                                $arHits[] = $hit['_source']['product_id'];
+
+                                ?>
+                                <li class="span3">
+                                    <div class="thumbnail">
+                                        <a href="/product/detail/id/<?php echo $hit['_source']['product_id']?>"><img border="0" width="300" height="200" src="<?php echo $hit['_source']['image_url']?>"></a>
+                                        <div class="caption">
+                                            <h4><a href="/product/detail/id/<?php echo $hit['_source']['product_id']?>">(<?php echo $hit['_source']['product_id']?>)</a> <?php echo $hit['_source']['main_category']?></h4> <?php echo substr($hit['_source']['name'], 0, 64)?>
+                                            <p><strike><?php echo $hit['_source']['currency']?> <?php echo $hit['_source']['price']*(1.2)?></strike>&nbsp;<?php echo $hit['_source']['currency']?> <?php echo $hit['_source']['price']?></p>
+                                            <a class="btn btn-want" href="#wantit">Want it</a>
+                                            <a class="btn btn-have" href="#haveit">Have it</a>
+                                            <a class="btn btn-buy" href="#buyit">Buy it</a>
+                                        </div>
+                                    </div>
+                                </li>
+                            <?php
+                            }
+                        }
+                    }
+                ?>
+            </ul>
+
+        </div>
+    </div>
+</div>
+
+<hr />

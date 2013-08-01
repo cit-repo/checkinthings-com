@@ -1,0 +1,87 @@
+<?php
+    /*
+        [merchant_category_name] => BEAUTY
+        [product_id] => 137
+        [program_name] => GroupOn
+        [t_d_category_i_d] => 1
+        [program_logo_path] => http://hst.tradedoubler.com/file/189599/Groupon_flash_logo1.png
+        [t_d_category_name] => Categorías
+        [product_url] => http://pdt.tradedoubler.com/click?a(1540587)p(189599)prod(1097283403)ttid(5)url(http%3A%2F%2Fwww.groupon.es%2Fdeals%2Fzaragoza%2Ftratamiento-adelgazante%2F10973023%3FCID%3DES_AFF_166_10_1_1)
+        [currency] => EUR
+        [_rev] => 3-69ea427c1dad05c6a3bdde69f51c34ce
+        [price] => 179.00
+        [t_d_product_id] => 1097283403
+        [_id] => d34cbe0bd69584384fc7bb6fc31f53dc
+        [image_url] => http://static.es.groupon-content.net/87/45/1348750094587.jpg
+        [description] => Tratamiento de choque adelgazante: Para 1 persona por 179 € en vez de 1.260 € Para 2 personas por 329 € en vez de 2.520 € Cada tratamiento de choque consta de 19 sesiones de presoterapia ,  19 sesiones de plataforma vibratoria ,  3 sesiones de cavitación y  2 aplicaciones de criolipólisis
+        [name] => Tratamiento de choque adelgazante para una persona por 179 € o para dos por 329 €
+        [advertiser_product_url] => http://www.groupon.es/deals/zaragoza/tratamiento-adelgazante/10973023?CID=ES_AFF_166_10_1_1
+        [feed] => tradedoubler
+        [last_updated] => 2013-07-12 17:48:00
+        [uuid] => d34cbe0bd69584384fc7bb6fc31f53dc
+        [program_id] => 189599
+    */
+
+    $response = json_decode($this->response, true);
+
+    require_once('header.phtml');
+?>
+
+<div id="product_detail">
+    <table>
+        <tr valign='top'>
+            <td>
+                <?php
+                    echo "<table>";
+
+                    $arHits = array();
+
+                    foreach ($response['hits']['hits'] as $hit) {
+                        foreach ($hit as $key => $value) {
+
+                            if (isset($hit['_source']['product_id']) && !in_array($hit['_source']['product_id'], $arHits)) {
+                                $arHits[] = $hit['_source']['product_id'];
+                                foreach ($hit['_source'] as $key => $value) {
+                                    if ($key != 'image_url'){
+                                        echo "<tr valign='top'>";
+                                        echo "<td><b>".$key."</b></td>";
+                                        echo "<td>".$value."</td>";
+                                        echo "</tr>";
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    echo "</table>";
+                ?>
+            </td>
+            <td>
+                <?php
+                echo "<table>";
+
+                $arHits = array();
+
+                foreach ($response['hits']['hits'] as $hit) {
+                    foreach ($hit as $key => $value) {
+
+                        if (isset($hit['_source']['product_id']) && !in_array($hit['_source']['product_id'], $arHits)) {
+                            $arHits[] = $hit['_source']['product_id'];
+
+                            foreach ($hit['_source'] as $key => $value) {
+                                if ($key == 'image_url'){
+                                    echo "<tr valign='top'>";
+                                    echo "<td colspan='2' align='right' height='170'>"."<img width='300' height='300' src=\"".$hit['_source']['image_url']."\">"."</td>";
+                                    echo "</tr>";
+                                }
+                            }
+                        }
+                    }
+                }
+
+                echo "</table>";
+                ?>
+            </td>
+        </tr>
+    </table>
+</div>
