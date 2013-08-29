@@ -23,19 +23,6 @@
     <!-- Css -->
     <link rel="stylesheet" href="/css/style.css" />
 
-    <!-- Js -->
-    <script src="/js/jquery-1.10.0.min.js"></script>
-    <script src="/js/jquery.bgstretch/js/jquery.bgstretch.js"></script>
-    <script src="/js/bootstrap/js/bootstrap.js"></script>
-    <script src="/js/holder.js"></script>
-    <script src="/js/script.js"></script>
-
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $.Bgstretch({image: '/img/background.png'});
-        });
-    </script>
-
 </head>
 <body>
 <div id="main_content">
@@ -62,6 +49,19 @@
         ?></h1>
     <?php echo $this->layout()->content; ?>
 </div>
+
+<!-- Js -->
+<script src="/js/jquery-1.10.0.min.js"></script>
+<script src="/js/jquery.bgstretch/js/jquery.bgstretch.js"></script>
+<script src="/js/bootstrap/js/bootstrap.js"></script>
+<script src="/js/holder.js"></script>
+<script src="/js/script.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $.Bgstretch({image: '/img/background.png'});
+    });
+</script>
 
 </body>
 </html>
