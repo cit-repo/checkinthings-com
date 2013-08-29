@@ -40,7 +40,7 @@ class IndexController extends Zend_Controller_Action
         $this->view->request = json_encode($arData);
         $this->view->response = $response;
 
-        $this->view->specialOffer = rand(1,1323);
+        $this->view->specialOfferId = rand(1,1323);
 
         $this->searchForm();
 

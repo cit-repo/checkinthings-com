@@ -3,6 +3,14 @@
     $response = json_decode($this->response, true);
 
     require_once('header.phtml');
+
+    $specialOfferImg = "/img/product/".$this->specialOfferId.".jpg";
+
+    if (is_file($specialOfferImg)) {
+        $specialOfferSrc = $specialOfferImg;
+    } else {
+        $specialOfferSrc = "/img/foo.png";
+    }
 ?>
 
 <div class="container">
@@ -17,7 +25,7 @@
                             <p><a href="/product/detail/id/<?php echo $this->specialOffer?>" class="btn btn-primary btn-large">Learn more »</a></p>
                         </td>
                         <td>
-                            <p><a href="/product/detail/id/<?php echo $this->specialOffer?>"><img border="0" width="300" height="200" src="/img/product/<?php echo $this->specialOffer?>.jpg"></a></p>
+                            <p><a href="/product/detail/id/<?php echo $this->specialOffer?>"><img border="0" width="300" height="200" src="<?=$specialOfferSrc?>"></a></p>
                         </td>
                     </tr>
                 </table>

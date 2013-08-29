@@ -169,3 +169,6 @@ form #submitbutton {
 .div-left p, .div-right p, .div-middle p {
     margin: 1px 1px;
 }
+.fancybox-custom .fancybox-skin {
+    box-shadow: 0 0 50px #222;
+}

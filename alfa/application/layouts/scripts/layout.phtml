@@ -5,7 +5,7 @@
 
     echo $this->doctype();
 
-    echo $this->headLink()->prependStylesheet($this->baseUrl().'/css/site.css');
+    echo $this->headLink()->prependStylesheet($this->baseUrl().'/css/style.css');
 ?>
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -19,6 +19,15 @@
 
     <!-- Includes FontAwesome -->
     <link rel="stylesheet" href="/css/font-awesome/css/font-awesome.css" />
+
+    <!-- Add fancyBox main JS and CSS files -->
+    <link rel="stylesheet" type="text/css" href="/css/fancybox/jquery.fancybox.css?v=2.1.5" media="screen" />
+
+    <!-- Add Button helper (this is optional) -->
+    <link rel="stylesheet" type="text/css" href="/css/fancybox/helpers/jquery.fancybox-buttons.css?v=1.0.5" />
+
+    <!-- Add Thumbnail helper (this is optional) -->
+    <link rel="stylesheet" type="text/css" href="/css/fancybox/helpers/jquery.fancybox-thumbs.css?v=1.0.7" />
 
     <!-- Css -->
     <link rel="stylesheet" href="/css/style.css" />
@@ -50,18 +59,35 @@
     <?php echo $this->layout()->content; ?>
 </div>
 
+<div id="login" style="width:400px;display: none;">
+    <?php include ("login.phtml"); ?>
+</div>
+
+<div id="register" style="width:400px;display: none;">
+    <?php include ("register.phtml"); ?>
+</div>
+
 <!-- Js -->
 <script src="/js/jquery-1.10.0.min.js"></script>
+<script src="/js/jquery.mousewheel-3.0.6.pack.js"></script>
+<script src="/js/fancybox.js"></script>
+
+<!-- Add fancyBox main JS files -->
+<script type="text/javascript" src="/js/fancybox/jquery.fancybox.js?v=2.1.5"></script>
+
+<!-- Add Button helper (this is optional) -->
+<script type="text/javascript" src="/js/fancybox/helpers/jquery.fancybox-buttons.js?v=1.0.5"></script>
+
+<!-- Add Thumbnail helper (this is optional) -->
+<script type="text/javascript" src="/js/fancybox/helpers/jquery.fancybox-thumbs.js?v=1.0.7"></script>
+
+<!-- Add Media helper (this is optional) -->
+<script type="text/javascript" src="/js/fancybox/helpers/jquery.fancybox-media.js?v=1.0.6"></script>
+
 <script src="/js/jquery.bgstretch/js/jquery.bgstretch.js"></script>
 <script src="/js/bootstrap/js/bootstrap.js"></script>
 <script src="/js/holder.js"></script>
-<script src="/js/script.js"></script>
-
-<script type="text/javascript">
-    $(document).ready(function() {
-        $.Bgstretch({image: '/img/background.png'});
-    });
-</script>
+<script src="/js/background.js"></script>
 
 </body>
 </html>
