@@ -47,7 +47,7 @@ class ProductController extends Zend_Controller_Action
                 'from' => 0, 'size' => '100');
         }
 
-        $response = $this->searchOnApi($arData);
+        $response = $this->productOnApi($arData);
 
         $this->view->content = $_SERVER['HTTP_HOST'];
         $this->view->request = json_encode($arData);
@@ -68,7 +68,7 @@ class ProductController extends Zend_Controller_Action
                 'from' => 0, 'size' => '100');
         }
 
-        $response = $this->searchOnApi($arData);
+        $response = $this->productOnApi($arData);
 
         $this->view->content = $_SERVER['HTTP_HOST'];
         $this->view->request = json_encode($arData);
@@ -88,19 +88,19 @@ class ProductController extends Zend_Controller_Action
 
         $arData = array( 'must' => array ( 'product_id' => $productId) );
 
-        $response = $this->searchOnApi($arData);
+        $response = $this->productOnApi($arData);
 
         $this->view->content = $_SERVER['HTTP_HOST'];
         $this->view->request = json_encode($arData);
         $this->view->response = $response;
     }
 
-    public function searchOnApi($ar_data)
+    public function productOnApi($ar_data, $event=false)
     {
         // action body
         require_once(APPLICATION_PATH.'/../library/Simple/Pest.php');
 
-        $url = "/v1/search";
+        $url = "/v1/product";
 
         $pest = new Pest($this->appIni['api']['host']);
         $pest->post($url, json_encode($ar_data));

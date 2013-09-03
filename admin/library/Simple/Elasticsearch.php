@@ -56,7 +56,7 @@
          * SEARCH
          *
          */
-        public function search($must, $must_not=false, $should=false, $from=0, $size=50, $sort=false)
+        public function search($must, $must_not=false, $should=false, $from=0, $size=50, $sort=false, $index=false)
         {
             $arMust = array();
             if ($must)
@@ -86,7 +86,12 @@
 
             // echo $request;
 
-            return $this->send("GET", "/_search", $request);
+            if (!$index) {
+                return $this->send("GET", "/_search", $request);
+            } else {
+                return $this->send("GET", "/$index/_search", $request);
+            }
+
         }
 
         /**

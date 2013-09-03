@@ -48,7 +48,7 @@ class SearchController extends Zend_Controller_Action
 
     }
 
-    public function searchOnApi($ar_data)
+    public function searchOnApi($ar_data, $event=false)
     {
         // action body
         require_once(APPLICATION_PATH.'/../library/Simple/Pest.php');
@@ -61,24 +61,4 @@ class SearchController extends Zend_Controller_Action
         return $pest->lastBody();
     }
 
-    public function recursiveDump($tree, &$arStrings, $search = "name", $nl="\n")
-    {
-
-        foreach ($tree as $key => $value) {
-            if (is_array($value)) {
-                echo $nl;
-                recursiveDump($value, $arStrings, $search);
-            } else if (is_object($value)) {
-                echo $nl;
-                recursiveDump($value, $arStrings, $search);
-            } else {
-                if ($key == $search) {
-                    $arStrings[] = $value;
-                }
-                echo " ".$key." - ".$value." ";
-            }
-        }
-
-        echo $nl;
-    }
 }

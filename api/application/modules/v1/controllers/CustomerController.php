@@ -1,6 +1,6 @@
 <?php
 
-class SearchController extends Zend_Rest_Controller
+class CustomerController extends Zend_Rest_Controller
 {
 
     public function init()
@@ -32,6 +32,10 @@ class SearchController extends Zend_Rest_Controller
     public function postAction()
     {
         require_once(APPLICATION_PATH.'/../library/Simple/Elasticsearch.php');
+
+        $entity = "customer";
+
+        $this->appIni['elasticsearch']['index'] = $this->appIni['elasticsearch']['index'].$entity;
 
         $elasticsearch = new SimpleElasticsearch($this->appIni['elasticsearch']);
 
@@ -70,7 +74,7 @@ class SearchController extends Zend_Rest_Controller
             $sort = $arPost['sort'];
         }
 
-        $res = $elasticsearch->search($arMust, $arMustNot, $arShould, $from, $size, $sort);
+        $res = $elasticsearch->search($arMust, $arMustNot, $arShould, $from, $size, $sort, $this->appIni['elasticsearch']['index']);
 
         $this->getResponse()->setBody($res);
 
@@ -79,17 +83,46 @@ class SearchController extends Zend_Rest_Controller
 
     public function getAction()
     {
+        require_once(APPLICATION_PATH.'/../library/Simple/Couchdb.php');
+
         $id = $this->_getParam('id');
 
-        $this->getResponse()->setBody(sprintf('Search #%s get', $id));
+        $entity = "customer";
+
+        $this->appIni['couchdb']['database'] = $this->appIni['couchdb']['database'].$entity;
+
+        $couchdb = new SimpleCouchdb($this->appIni['couchdb']);
+
+        $res = $couchdb->readDocument($id);
+
+        header('Content-type: application/json; charset=utf-8');
+
+        $res = str_replace("\u20ac", "€", $res);
+        $res = str_replace("\u00a0", "", $res);
+
+        $res = str_replace("\u00e1", "á", $res);
+        $res = str_replace("\u00e9", "é", $res);
+        $res = str_replace("\u00ed", "í", $res);
+        $res = str_replace("\u00f3", "ó", $res);
+        $res = str_replace("\u00fa", "ú", $res);
+
+        $this->getResponse()->setBody($res);
         $this->getResponse()->setHttpResponseCode(200);
     }
 
     public function putAction()
     {
-        $id = $this->_getParam('id');
+        require_once(APPLICATION_PATH.'/../library/Simple/Couchdb.php');
 
-        $this->getResponse()->setBody(sprintf('Search #%s put', $id));
+        $couchdb = new SimpleCouchdb($this->appIni['couchdb']);
+
+        $rawBody = $this->getRequest()->getRawBody();
+
+        $arPost = json_decode($rawBody, true);
+
+        $res = $couchdb->createDocument($arPost);
+
+        $this->getResponse()->setBody($res);
         $this->getResponse()->setHttpResponseCode(200);
     }
 
@@ -97,7 +130,7 @@ class SearchController extends Zend_Rest_Controller
     {
         $id = $this->_getParam('id');
 
-        $this->getResponse()->setBody(sprintf('Search #%s delete', $id));
+        $this->getResponse()->setBody(sprintf('Customer #%s delete', $id));
         $this->getResponse()->setHttpResponseCode(200);
     }
 

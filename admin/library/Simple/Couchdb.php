@@ -92,7 +92,11 @@
 
             $request = '{'.implode(", ", $arParams).'}';
 
-            return $this->send("PUT", "/$this->database/$uuid", $request);
+            $url = "/$this->database/$uuid";
+
+            // echo $url;
+
+            return $this->send("PUT", $url, $request);
         }
 
         /**
@@ -101,6 +105,10 @@
          */
         public function readDocument($uuid)
         {
+            $url = "/$this->database/$uuid";
+
+            // echo $url;
+
             return $this->send("GET", "/$this->database/$uuid");
         }
 

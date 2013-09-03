@@ -1,1 +1,19 @@
-Register
+<b>Register</b><br>
+<br>
+<form name="loginForm" method="post" action="/customer">
+    <input type="hidden" name="event" value="register">
+    <table>
+        <tr>
+            <td>firstname: </td><td colspan="2"><input type="text" name="firstname"></td>
+        </tr>
+        <tr>
+            <td>lastname: </td><td colspan="2"><input type="text" name="lastname"></td>
+        </tr>
+        <tr>
+            <td>email: </td><td colspan="2"><input type="text" name="email"></td>
+        </tr>
+        <tr>
+            <td>password: </td><td><input type="password" name="password"></td><td><input type="submit" value="Send"></td>
+        </tr>
+    </table>
+</form>

@@ -31,7 +31,53 @@ class ProductController extends Zend_Rest_Controller
 
     public function postAction()
     {
-        $this->getResponse()->setBody('Resource created');
+        require_once(APPLICATION_PATH.'/../library/Simple/Elasticsearch.php');
+
+        $entity = "product";
+
+        $this->appIni['elasticsearch']['index'] = $this->appIni['elasticsearch']['index'].$entity;
+
+        $elasticsearch = new SimpleElasticsearch($this->appIni['elasticsearch']);
+
+        $rawBody = $this->getRequest()->getRawBody();
+
+        $arPost = json_decode($rawBody, true);
+
+        $arMust = array();
+        $arMustNot = array();
+        $arShould = array();
+        $from = 0;
+        $size = 100;
+        $sort = true;
+
+        if (isset($arPost['must'])) {
+            $arMust = $arPost['must'];
+        }
+
+        if (isset($arPost['must_not'])) {
+            $arMustNot = $arPost['must_not'];
+        }
+
+        if (isset($arPost['should'])) {
+            $arShould = $arPost['should'];
+        }
+
+        if (isset($arPost['from'])) {
+            $from = $arPost['from'];
+        }
+
+        if (isset($arPost['size'])) {
+            $size = $arPost['size'];
+        }
+
+        if (isset($arPost['sort'])) {
+            $sort = $arPost['sort'];
+        }
+
+        $res = $elasticsearch->search($arMust, $arMustNot, $arShould, $from, $size, $sort, $this->appIni['elasticsearch']['index']);
+
+        $this->getResponse()->setBody($res);
+
         $this->getResponse()->setHttpResponseCode(200);
     }
 
@@ -68,7 +114,7 @@ class ProductController extends Zend_Rest_Controller
     {
         $id = $this->_getParam('id');
 
-        $this->getResponse()->setBody(sprintf('Resource #%s updated', $id));
+        $this->getResponse()->setBody(sprintf('Product #%s put', $id));
         $this->getResponse()->setHttpResponseCode(200);
     }
 
@@ -76,7 +122,7 @@ class ProductController extends Zend_Rest_Controller
     {
         $id = $this->_getParam('id');
 
-        $this->getResponse()->setBody(sprintf('Resource #%s deleted', $id));
+        $this->getResponse()->setBody(sprintf('Product #%s delete', $id));
         $this->getResponse()->setHttpResponseCode(200);
     }
 

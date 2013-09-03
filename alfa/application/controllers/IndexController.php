@@ -30,11 +30,13 @@ class IndexController extends Zend_Controller_Action
         );
 
         if (!isset($arData['must'])) {
-            $arData = array( 'must' => array ( 'main_category' => $categories[rand(0, sizeof($categories))] ),
-                             'from' => 0, 'size' => '6');
+            $arData = array ( 'must' => array ( 'main_category' => $categories[rand(0, sizeof($categories))] ),
+                              'from' => 0,
+                              'size' => '6'
+                            );
         }
 
-        $response = $this->searchOnApi($arData);
+        $response = $this->productOnApi($arData);
 
         $this->view->content = $_SERVER['HTTP_HOST'];
         $this->view->request = json_encode($arData);
@@ -78,12 +80,12 @@ class IndexController extends Zend_Controller_Action
 
     }
 
-    public function searchOnApi($ar_data)
+    public function productOnApi($ar_data)
     {
         // action body
         require_once(APPLICATION_PATH.'/../library/Simple/Pest.php');
 
-        $url = "/v1/search";
+        $url = "/v1/product";
 
         $pest = new Pest($this->appIni['api']['host']);
         $pest->post($url, json_encode($ar_data));
