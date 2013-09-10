@@ -172,3 +172,11 @@ form #submitbutton {
 .fancybox-custom .fancybox-skin {
     box-shadow: 0 0 50px #222;
 }
+
+.success-message {
+    color: #51a351;
+}
+
+.error-message {
+    color: #e00808;
+}

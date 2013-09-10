@@ -9,6 +9,9 @@ class CustomerController extends Zend_Controller_Action
         $obControl = Zend_Controller_Front::getInstance();
         $this->appIni = $obControl->getParam("bootstrap")->getOptions();
         // $this->_helper->viewRenderer->setNoRender(true);
+
+        $this->sess = new Zend_Session_Namespace('session');
+
     }
 
     public function indexAction()
@@ -19,26 +22,91 @@ class CustomerController extends Zend_Controller_Action
 
         $this->view->title = "Customer";
 
-        $arRequest = $this->getRequest()->getRawBody();
+        $arRequest = $this->view->request= $this->getRequest()->getRawBody();
 
-        $rawData = $this->getRawDataFromArRequest($arRequest);
+        $rawData = $this->getRawDataFromRawBody($arRequest);
 
-        $this->view->request = $rawData;
+        if (isset($_POST['event']) && $_POST['event'] == 'login') {
+            $this->login($rawData);
 
-        if ($_POST['event'] == 'login') {
-            $this->view->login = $this->customerOnApi($rawData, "login");
-        } else if ($_POST['event'] == 'register') {
-            $this->view->register = $this->customerOnApi($rawData, "register");
+        } else if (isset($_POST['event']) && $_POST['event'] == 'register') {
+            $this->register($rawData);
+        }
+
+        $this->view->sess = $this->sess;
+    }
+
+    public function login($raw_data)
+    {
+        $raw_data['email'] = explode("@", $raw_data['email']);
+        $raw_data['email'] = $raw_data['email'][0];
+
+        $this->view->login = $this->requestApi("customer", "login", $raw_data);
+
+        $arLogin = json_decode($this->view->login, true);
+
+        if (isset($arLogin['hits']['hits'][0]['_id'])) {
+            $this->sess->customer_uuid = $arLogin['hits']['hits'][0]['_id'];
+            $this->sess->customer_firstname = $arLogin['hits']['hits'][0]['_source']['firstname'];
+            $this->sess->customer_lastname = $arLogin['hits']['hits'][0]['_source']['lastname'];
+            $this->sess->customer_email = $arLogin['hits']['hits'][0]['_source']['email'];
+
+            $this->view->sess = $this->sess;
+
+            $this->view->success = "Hello ".$this->sess->customer_firstname.", good to have you back.";
+        } else {
+            $this->view->error = "Sorry, but we did not manage to recognize you.";
+
         }
 
     }
 
-    private function getRawDataFromArRequest ($ar_request) {
+    public function register($raw_data)
+    {
+        $origin = $raw_data;
+
+        $origin['email'] = explode("@", $origin['email']);
+        $origin['email'] = $origin['email'][0];
+
+        unset($origin['firstname']);
+        unset($origin['lastname']);
+        unset($origin['password']);
+
+        $this->view->check = $this->requestApi("customer", "check", $origin);
+
+        $arCheck = json_decode($this->view->check, true);
+
+        if (isset($arCheck['hits']['hits'][0]['_id'])) {
+            $this->view->error = "Sorry, but this email is already registered.";
+
+        } else {
+            $this->view->register = $this->requestApi("customer", "register", $raw_data);
+
+            $this->view->success = "Welcome ".$raw_data['firstname'].", thanks for joining our world.";
+
+            $this->login($raw_data);
+        }
+    }
+
+    public function logoutAction()
+    {
+        $breadcrumb[] = array("Home" => "/");
+        $breadcrumb[] = array("Customer" => "/customer");
+
+        $this->view->breadcrumb = $breadcrumb;
+
+        $this->view->title = "Logout";
+
+        $this->sess->unsetAll();
+    }
+
+    private function getRawDataFromRawBody($ar_request)
+    {
+        $arData = array();
+
         if ($ar_request != '') {
 
             $ar_request = explode("&", $ar_request);
-
-            $arData = array();
 
             foreach ($ar_request as $arInfo) {
                 $arInfo = explode("=", $arInfo);
@@ -59,25 +127,27 @@ class CustomerController extends Zend_Controller_Action
         return $arData;
     }
 
-    public function customerOnApi($ar_data, $event=false)
+    public function requestApi($controller, $event, $ar_data)
     {
         require_once(APPLICATION_PATH.'/../library/Simple/Pest.php');
 
-        $url = "/v1/customer";
+        $url = "/v1/$controller";
 
         $pest = new Pest($this->appIni['api']['host']);
 
         if ($event == "login") {
-            $pest->post($url, json_encode($ar_data));
+            $pest->post($url, json_encode(array("must" => $ar_data)));
 
-            // $ar_data = array();
-            $ar_data['_id'] = 'b8b15cab474387f6aa07ed2cc3000971';
-
-            $pest->get($url."/".$ar_data['_id']);
+        } else if ($event == "check") {
+            $pest->post($url, json_encode(array("must" => $ar_data)));
 
         } else if ($event == "register") {
             $pest->put($url, json_encode($ar_data));
+
         }
+
+        $pest->log_request($this->appIni['includePaths']['logs']."/api.log", date('Y-m-d H:i:s')." - ".$url.": REQUEST - ".json_encode($pest->last_request));
+        $pest->log_request($this->appIni['includePaths']['logs']."/api.log", date('Y-m-d H:i:s')." - ".$url.": RESPONSE - ".json_encode($pest->lastBody()));
 
         return $pest->lastBody();
     }

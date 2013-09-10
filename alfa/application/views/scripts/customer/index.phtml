@@ -4,11 +4,43 @@
 
     require_once('header.phtml');
 
-    print_r($this->request);
-    print_r($this->login);
-    print_r($this->register);
+    // print_r($this->request);
+    // print_r($this->login);
+    // print_r($this->check);
+    // print_r($this->register);
 ?>
 
 <div class="container">
+    <div class="message">
+    <?php
+        if ($this->success) {
+            echo "<span class=\"success-message\">".$this->success."</span>";
+        } else if ($this->error) {
+            echo "<span class=\"error-message\">".$this->error."</span>";
+        }
+    ?>
+    </div>
+    <div class="body">
+        <table>
+            <tr>
+                <td height="15" colspan="10"></td>
+            </tr>
+            <?php
+                if ($this->sess->customer_email) {
+            ?>
+                    <tr>
+                        <td>Firstname:</td><td><?=$this->sess->customer_firstname?></td>
+                    </tr>
+                    <tr>
+                        <td>Lastname:</td><td><?=$this->sess->customer_lastname?></td>
+                    </tr>
+                    <tr>
+                        <td>Email:</td><td><?=$this->sess->customer_email?></td>
+                    </tr>
+            <?php
+                }
+            ?>
 
+        </table>
+    </div>
 </div>

@@ -120,7 +120,7 @@ class CustomerController extends Zend_Rest_Controller
 
         $arPost = json_decode($rawBody, true);
 
-        $res = $couchdb->createDocument($arPost);
+        $res = $couchdb->createDocument($arPost, "customer");
 
         $this->getResponse()->setBody($res);
         $this->getResponse()->setHttpResponseCode(200);

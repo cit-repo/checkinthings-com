@@ -9,6 +9,9 @@ class ProductController extends Zend_Controller_Action
         $obControl = Zend_Controller_Front::getInstance();
         $this->appIni = $obControl->getParam("bootstrap")->getOptions();
         // $this->_helper->viewRenderer->setNoRender(true);
+
+        $this->sess = new Zend_Session_Namespace('session');
+        $this->view->sess = $this->sess;
     }
 
     public function indexAction()
@@ -21,7 +24,7 @@ class ProductController extends Zend_Controller_Action
 
         $arData = array( 'must' => array ( 'uuid' => '*'), 'from' => 0, 'size' => 10000, 'sort' => false);
 
-        $response = $this->searchOnApi($arData);
+        $response = $this->productOnApi($arData);
 
         $this->view->content = $_SERVER['HTTP_HOST'];
         $this->view->request = json_encode($arData);
@@ -104,6 +107,9 @@ class ProductController extends Zend_Controller_Action
 
         $pest = new Pest($this->appIni['api']['host']);
         $pest->post($url, json_encode($ar_data));
+
+        $pest->log_request($this->appIni['includePaths']['logs']."/api.log", date('Y-m-d H:i:s')." - ".$url.": REQUEST - ".json_encode($pest->last_request));
+        $pest->log_request($this->appIni['includePaths']['logs']."/api.log", date('Y-m-d H:i:s')." - ".$url.": RESPONSE - ".json_encode($pest->lastBody()));
 
         return $pest->lastBody();
     }

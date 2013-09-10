@@ -9,6 +9,9 @@ class IndexController extends Zend_Controller_Action
         $obControl = Zend_Controller_Front::getInstance();
         $this->appIni = $obControl->getParam("bootstrap")->getOptions();
         // $this->_helper->viewRenderer->setNoRender(true);
+
+        $this->sess = new Zend_Session_Namespace('session');
+        $this->view->sess = $this->sess;
     }
 
     public function indexAction()
@@ -29,12 +32,11 @@ class IndexController extends Zend_Controller_Action
             'other'
         );
 
-        if (!isset($arData['must'])) {
-            $arData = array ( 'must' => array ( 'main_category' => $categories[rand(0, sizeof($categories))] ),
-                              'from' => 0,
-                              'size' => '6'
-                            );
-        }
+        $arData = array (
+                          'must' => array ( 'main_category' => $categories[rand(0, sizeof($categories)-1)] ),
+                          'from' => 0,
+                          'size' => '6'
+                        );
 
         $response = $this->productOnApi($arData);
 
@@ -43,6 +45,12 @@ class IndexController extends Zend_Controller_Action
         $this->view->response = $response;
 
         $this->view->specialOfferId = rand(1,1323);
+
+        $this->view->specialOfferProduct = $this->productOnApi(array("must" => array("product_id" => $this->view->specialOfferId)));
+
+        $product = json_decode($this->view->specialOfferProduct, true);
+
+        $this->view->specialOfferImage = $product['hits']['hits'][0]['_source']['image_url'];
 
         $this->searchForm();
 
@@ -75,12 +83,7 @@ class IndexController extends Zend_Controller_Action
         }
     }
 
-    public function loginAction()
-    {
-
-    }
-
-    public function productOnApi($ar_data)
+    public function productOnApi($ar_data, $event=false)
     {
         // action body
         require_once(APPLICATION_PATH.'/../library/Simple/Pest.php');
@@ -89,6 +92,9 @@ class IndexController extends Zend_Controller_Action
 
         $pest = new Pest($this->appIni['api']['host']);
         $pest->post($url, json_encode($ar_data));
+
+        $pest->log_request($this->appIni['includePaths']['logs']."/api.log", date('Y-m-d H:i:s')." - ".$url.": REQUEST - ".json_encode($pest->last_request));
+        $pest->log_request($this->appIni['includePaths']['logs']."/api.log", date('Y-m-d H:i:s')." - ".$url.": RESPONSE - ".json_encode($pest->lastBody()));
 
         return $pest->lastBody();
     }

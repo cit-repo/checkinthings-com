@@ -6,10 +6,8 @@
 
     $specialOfferImg = "/img/product/".$this->specialOfferId.".jpg";
 
-    if (is_file($specialOfferImg)) {
-        $specialOfferSrc = $specialOfferImg;
-    } else {
-        $specialOfferSrc = "/img/foo.png";
+    if (!is_file($specialOfferImg)) {
+        $specialOfferSrc = $this->specialOfferImage;
     }
 ?>
 
@@ -22,10 +20,10 @@
                         <td>
                             <h1 class="">Special<br>Offer</h1>
                             <p class="">Here is the best offer of the month!<br>Do not loose it!</p>
-                            <p><a href="/product/detail/id/<?php echo $this->specialOffer?>" class="btn btn-primary btn-large">Learn more »</a></p>
+                            <p><a href="/product/detail/id/<?php echo $this->specialOfferId?>" class="btn btn-primary btn-large">Learn more »</a></p>
                         </td>
                         <td>
-                            <p><a href="/product/detail/id/<?php echo $this->specialOffer?>"><img border="0" width="300" height="200" src="<?=$specialOfferSrc?>"></a></p>
+                            <p><a href="/product/detail/id/<?php echo $this->specialOfferId?>"><img border="0" width="300" height="200" src="<?=$specialOfferSrc?>"></a></p>
                         </td>
                     </tr>
                 </table>

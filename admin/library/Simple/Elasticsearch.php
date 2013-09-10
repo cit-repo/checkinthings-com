@@ -60,21 +60,21 @@
         {
             $arMust = array();
             if ($must)
-            foreach ($must as $key => $value) {
-                if (isset($value) && $value != '') $arMust[] = '{"query_string":{"default_field":"'.$key.'","query":"'.$value.'"}}';
-            }
+                foreach ($must as $key => $value) {
+                    if (isset($value) && $value != '') $arMust[] = '{"query_string":{"default_field":"'.$key.'","query":"'.$value.'"}}';
+                }
 
             $arMustNot = array();
             if ($must_not)
-            foreach ($must as $key => $value) {
-                if (isset($value) && $value != '') $arMustNot[] = '{"query_string":{"default_field":"'.$key.'","query":"'.$value.'"}}';
-            }
+                foreach ($must as $key => $value) {
+                    if (isset($value) && $value != '') $arMustNot[] = '{"query_string":{"default_field":"'.$key.'","query":"'.$value.'"}}';
+                }
 
             $arShould = array();
             if ($should)
-            foreach ($must as $key => $value) {
-                if (isset($value) && $value != '') $arShould[] = '{"query_string":{"default_field":"'.$key.'","query":"'.$value.'"}}';
-            }
+                foreach ($must as $key => $value) {
+                    if (isset($value) && $value != '') $arShould[] = '{"query_string":{"default_field":"'.$key.'","query":"'.$value.'"}}';
+                }
 
             if ($sort)  {
                 $sort = '{"_script":{"script":"Math.random()","type":"number","params":{},"order":"asc"}}';
@@ -87,9 +87,11 @@
             // echo $request;
 
             if (!$index) {
-                return $this->send("GET", "/_search", $request);
+                $url = "/_search";
+                return $this->send("GET", $url, $request);
             } else {
-                return $this->send("GET", "/$index/_search", $request);
+                $url = "/$index/_search";
+                return $this->send("GET", $url, $request);
             }
 
         }

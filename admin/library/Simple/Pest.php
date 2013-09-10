@@ -513,6 +513,26 @@ class Pest
         }
         return strlen($str);
     }
+
+    public function log_request($filename, $somecontent)
+    {
+        if (!$handle = fopen($filename, "a")) {
+            // print "Kann die Datei $filename nicht öffnen";
+            exit;
+        }
+
+        $somecontent = str_replace("\\","",$somecontent);
+
+        // Schreibe $somecontent in die geöffnete Datei.
+        if (!fwrite($handle, $somecontent."\n\n")) {
+            // print "Kann in die Datei $filename nicht schreiben";
+            exit;
+        }
+
+        // print "Fertig, in Datei $filename wurde $somecontent geschrieben";
+
+        fclose($handle);
+    }
 }
 
 class Pest_Exception extends Exception

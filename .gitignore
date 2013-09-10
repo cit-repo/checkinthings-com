@@ -18,3 +18,5 @@ admin/application/configs/application.ini
 api/application/configs/application.ini
 
 alfa/public/img/product/*
+
+alfa/logs/*

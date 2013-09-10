@@ -78,7 +78,7 @@
          * CREATE Document
          *
          */
-        public function createDocument($params)
+        public function createDocument($params, $entity=false)
         {
             $uuid = $this->getUUID();
 
@@ -92,7 +92,7 @@
 
             $request = '{'.implode(", ", $arParams).'}';
 
-            $url = "/$this->database/$uuid";
+            $url = "/".$this->database.$entity."/$uuid";
 
             // echo $url;
 
