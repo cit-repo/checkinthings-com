@@ -102,7 +102,7 @@ class CustomerController extends Zend_Controller_Action
 
         $this->view->title = "Logout";
 
-        $this->view->success = "Goodbye ".$this->sess->customer_firstname.", hope see you soon again.";
+        $this->view->success = "Goodbye ".$this->sess->customer_firstname.", we hope to see you soon again.";
 
         $this->sess->unsetAll();
     }
