@@ -71,7 +71,7 @@
                             foreach ($hit['_source'] as $key => $value) {
                                 if ($key == 'image_url'){
                                     echo "<tr valign='top'>";
-                                    echo "<td colspan='2' align='right' height='170'>"."<img width='300' height='300' src=\"".$hit['_source']['image_url']."\">"."</td>";
+                                    echo "<td colspan='2' align='right' height='150'>"."<a class=\"fancybox\" href=\"#image\"><img width='150' height='150' border='0' src=\"".$hit['_source']['image_url']."\"></a>"."</td>";
                                     echo "</tr>";
                                 }
                             }
@@ -84,4 +84,8 @@
             </td>
         </tr>
     </table>
+</div>
+
+<div id="image" style="width:450px;display: none;">
+    <?php include ("image.phtml"); ?>
 </div>
