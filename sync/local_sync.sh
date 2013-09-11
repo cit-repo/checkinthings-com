@@ -1,4 +1,7 @@
-/usr/bin/php /var/www/vhosts/admin/cit/sync/mysql-to-couchdb.php 0 1 0 2
+cd /var/www/vhosts/admin/cit/sync/
+
+/usr/bin/php /var/www/vhosts/admin/cit/sync/mysql-to-couchdb.php 0 1 0 2 >> mysql-to-couchdb.log
+/usr/bin/php /var/www/vhosts/admin/cit/sync/couchdb-to-mysql.php customer >> couchdb-to-mysql.log
 
 #curl -X DELETE 'http://127.0.0.1:9200/_river'
 
