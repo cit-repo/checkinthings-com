@@ -4,11 +4,15 @@
 
     require_once('header.phtml');
 
-    print_r($this->request);
-    print_r($this->login);
-    print_r($this->register);
 ?>
-
 <div class="container">
-
+    <div class="message">
+        <?php
+        if ($this->success) {
+            echo "<span class=\"success-message\">".$this->success."</span>";
+        } else if ($this->error) {
+            echo "<span class=\"error-message\">".$this->error."</span>";
+        }
+        ?>
+    </div>
 </div>
