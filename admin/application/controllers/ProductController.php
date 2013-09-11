@@ -36,6 +36,7 @@ class ProductController extends Zend_Controller_Action
                 $name = $form->getValue('name');
                 $description = $form->getValue('description');
                 $imageUrl = $form->getValue('image_url');
+
                 $product = new Application_Model_DbTable_Product();
                 $product->createProduct($feed, $channel, $mainCategory, $name, $description, $imageUrl);
                 $this->_helper->redirector('index');

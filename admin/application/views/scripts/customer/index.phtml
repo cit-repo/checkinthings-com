@@ -1,0 +1,56 @@
+<?php
+    $this->title = "Customer";
+    $this->headTitle($this->title);
+?>
+<table width="100%" align="center">
+    <tr><td height="10" colspan="2"></td></tr>
+    <tr>
+        <td width="50%" align="left" bgcolor="#ffffff"><a href="<?php echo $this->url(array('controller'=>'customer','action'=>'create'));?>">Create</a></td>
+        <td width="50%" align="center" bgcolor="#eeeeee"</td>
+    </tr>
+    <tr>
+        <td width="50%" align="left" bgcolor="#ffffff"></td>
+        <td width="50%" align="center" bgcolor="#eeeeee"></td>
+    </tr>
+    <tr>
+        <td width="50%" align="left" bgcolor="#ffffff"></td>
+        <td width="50%" align="center" bgcolor="#eeeeee"></td>
+    </tr>
+    <tr><td height="10" colspan="2"></td></tr>
+</table>
+
+<table>
+    <tr>
+        <th>CustomerId</th>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Email</th>
+        <th>Password</th>
+        <th>LastUpdated</th>
+        <th>&nbsp;</th>
+    </tr>
+    <?php
+        if ($this->customers)
+        foreach($this->customers as $customer) {
+
+            $file = $this->config['alfa']['host']."/img/customer/".$customer['customer_id'].".jpg";
+            $file_headers = @get_headers($file);
+
+            if (strstr($_SERVER['HTTP_HOST'], "localhost") && strstr($file_headers[0], "200")) {
+                $customer->image_url = $file;
+            }
+    ?>
+        <tr>
+            <td><?php echo $this->escape($customer->customer_id);?></td>
+            <td><?php echo $this->escape($customer->firstname);?></td>
+            <td><?php echo $this->escape($customer->lastname);?></td>
+            <td><?php echo $this->escape($customer->email);?></td>
+            <td><?php echo $this->escape($customer->password);?></td>
+            <td><?php echo $this->escape($customer->last_updated);?></td>
+            <td>
+                <a href="<?php echo $this->url(array('controller'=>'customer','action'=>'update', 'id'=>$customer->customer_id));?>">Edit</a>
+                <a href="<?php echo $this->url(array('controller'=>'customer','action'=>'delete', 'id'=>$customer->customer_id));?>">Delete</a>
+            </td>
+        </tr>
+    <?php } ?>
+</table>
