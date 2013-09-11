@@ -26,19 +26,13 @@
 
         $doc = json_decode($doc, true);
 
-        $sel = "SELECT * FROM admin_cit.".$mysql_options['table']." WHERE uuid = '".$doc['_id']."';";
+        $sel = "SELECT * FROM admin_cit.".$mysql_options['table']." WHERE email = '".$doc['email']."';";
         // echo $sel."\n";
 
         $res = mysqli_query($link, $sel);
 
         if (mysqli_num_rows($res) > 0) {
             $row = mysqli_fetch_assoc($res);
-
-            if ($doc['email'] != $row['email']) {
-                $upd = "UPDATE admin_cit.".$mysql_options['table']." SET email='".$doc['email']."' WHERE uuid = '".$doc['_id']."';";
-                echo date('Y-m-d H:i:s')." - ".$upd."\n";
-                $res = mysqli_query($link, $upd);
-            }
 
             if ($doc['_id'] != $row['uuid']) {
                 $upd = "UPDATE admin_cit.".$mysql_options['table']." SET uuid='".$doc['_id']."' WHERE email = '".$doc['email']."';";
