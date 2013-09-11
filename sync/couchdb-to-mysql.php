@@ -26,7 +26,7 @@
 
         $doc = json_decode($doc, true);
 
-        $sel = "SELECT * FROM admin_cit.".$mysql_options['table']." WHERE email = '".$doc['email']."';";
+        $sel = "SELECT * FROM admin_cit.".$mysql_options['table']." WHERE email = '".$doc['email']."' OR uuid = '".$doc['id']."';";
         // echo $sel."\n";
 
         $res = mysqli_query($link, $sel);
