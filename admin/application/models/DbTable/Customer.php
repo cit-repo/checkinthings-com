@@ -18,7 +18,7 @@ class Application_Model_DbTable_Customer extends Zend_Db_Table_Abstract
             'firstname' => $firstname,
             'lastname' => $lastname,
             'email' => $email,
-            'password' => $password,
+            'password' => md5($this->appIni['md5']['seed'].$password),
             'last_updated' => date('Y-m-d H:i:s'),
         );
         $this->insert($data);
