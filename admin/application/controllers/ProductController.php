@@ -12,6 +12,12 @@ class ProductController extends Zend_Controller_Action
 
     public function indexAction()
     {
+        $breadcrumb[] = array("Admin" => "/");
+
+        $this->view->breadcrumb = $breadcrumb;
+
+        $this->view->title = "Product";
+
         $this->view->config = $this->appIni;
 
         $product = new Application_Model_DbTable_Product();
@@ -44,11 +50,6 @@ class ProductController extends Zend_Controller_Action
                 $form->populate($formData);
             }
         }
-
-    }
-
-    public function readAction()
-    {
 
     }
 

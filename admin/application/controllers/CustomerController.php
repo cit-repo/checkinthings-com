@@ -12,6 +12,12 @@ class CustomerController extends Zend_Controller_Action
 
     public function indexAction()
     {
+        $breadcrumb[] = array("Admin" => "/");
+
+        $this->view->breadcrumb = $breadcrumb;
+
+        $this->view->title = "Customer";
+
         $this->view->config = $this->appIni;
 
         $customer = new Application_Model_DbTable_Customer();
