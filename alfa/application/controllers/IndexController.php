@@ -12,6 +12,11 @@ class IndexController extends Zend_Controller_Action
 
         $this->sess = new Zend_Session_Namespace('session');
         $this->view->sess = $this->sess;
+
+        require_once(APPLICATION_PATH.'/../library/Simple/Utils.php');
+
+        $this->view->utils = new Utils();
+        $this->view->appIni = $this->appIni;
     }
 
     public function indexAction()
@@ -50,7 +55,8 @@ class IndexController extends Zend_Controller_Action
 
         $product = json_decode($this->view->specialOfferProduct, true);
 
-        $this->view->specialOfferImage = $product['hits']['hits'][0]['_source']['image_url'];
+        $this->view->specialOfferLocalImage = $this->appIni['alfa']['host']."/img/product/".$this->view->specialOfferId.".jpg";
+        $this->view->specialOfferRemoteImage = $product['hits']['hits'][0]['_source']['image_url'];
 
         $this->searchForm();
 

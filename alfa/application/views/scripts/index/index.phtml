@@ -1,13 +1,16 @@
 <?php
-
     $response = json_decode($this->response, true);
 
     require_once('header.phtml');
 
-    $specialOfferImg = "/img/product/".$this->specialOfferId.".jpg";
+    $utils = new Utils();
 
-    if (!is_file($specialOfferImg)) {
-        $specialOfferSrc = $this->specialOfferImage;
+    if ($this->utils->url_exists($this->specialOfferLocalImage)) {
+        $specialOfferSrc = $this->specialOfferLocalImage;
+    } else if ($this->utils->url_exists($this->specialOfferRemoteImage)) {
+        $specialOfferSrc = $this->specialOfferRemoteImage;
+    } else {
+        $specialOfferSrc = "/img/foo.png";
     }
 ?>
 
@@ -39,6 +42,12 @@
 
                             if (isset($hit['_source']['product_id']) && !in_array($hit['_source']['product_id'], $arHits)) {
                                 $arHits[] = $hit['_source']['product_id'];
+
+                                $localImg = $this->appIni['alfa']['host']."/img/product/".$hit['_source']['product_id'].".jpg";
+
+                                if ($this->utils->url_exists($localImg)) {
+                                    $hit['_source']['image_url'] = $localImg;
+                                }
 
                                 ?>
                                 <li class="span3">
