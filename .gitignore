@@ -7,7 +7,7 @@
 .bashrc
 .gitconfig
 
-crawler/inc/db.inc.php
+crawl/inc/db.inc.php
 
 sync/inc/db.inc.php
 sync/mysql-to-couchdb.log
