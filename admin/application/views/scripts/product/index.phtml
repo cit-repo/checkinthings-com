@@ -1,6 +1,5 @@
 <?php
-    $this->title = "<a href=\"/\">Admin</a> - Product";
-    $this->headTitle($this->title);
+
 ?>
 <table width="100%" align="center">
     <tr><td height="10" colspan="2"></td></tr>
@@ -50,7 +49,7 @@
             <td><?php echo $this->escape(substr($product->description,0,100));?></td>
             <td><img width="100" height="75" src="<?php echo $this->escape($product->image_url);?>"></td>
             <td>
-                <a href="<?php echo $this->url(array('controller'=>'product','action'=>'update', 'id'=>$product->product_id));?>">Edit</a>
+                <a href="<?php echo $this->url(array('controller'=>'product','action'=>'update', 'id'=>$product->product_id));?>">Update</a>
                 <a href="<?php echo $this->url(array('controller'=>'product','action'=>'delete', 'id'=>$product->product_id));?>">Delete</a>
             </td>
         </tr>

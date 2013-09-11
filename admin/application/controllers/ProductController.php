@@ -13,10 +13,9 @@ class ProductController extends Zend_Controller_Action
     public function indexAction()
     {
         $breadcrumb[] = array("Admin" => "/");
-
         $this->view->breadcrumb = $breadcrumb;
-
         $this->view->title = "Product";
+        $this->view->headTitle($this->view->title);
 
         $this->view->config = $this->appIni;
 
@@ -27,6 +26,12 @@ class ProductController extends Zend_Controller_Action
 
     public function createAction()
     {
+        $breadcrumb[] = array("Admin" => "/");
+        $breadcrumb[] = array("Product" => "/product");
+        $this->view->breadcrumb = $breadcrumb;
+        $this->view->title = "Create";
+        $this->view->headTitle($this->view->title);
+
         $form = new Application_Form_Product();
 
         $form->submit->setLabel('Create');
@@ -55,6 +60,12 @@ class ProductController extends Zend_Controller_Action
 
     public function feedAction()
     {
+        $breadcrumb[] = array("Admin" => "/");
+        $breadcrumb[] = array("Product" => "/product");
+        $this->view->breadcrumb = $breadcrumb;
+        $this->view->title = "Feed";
+        $this->view->headTitle($this->view->title);
+
         $feed = $this->_getParam('code', 0);
 
         $this->view->title = $feed;
@@ -65,6 +76,12 @@ class ProductController extends Zend_Controller_Action
 
     public function updateAction()
     {
+        $breadcrumb[] = array("Admin" => "/");
+        $breadcrumb[] = array("Product" => "/product");
+        $this->view->breadcrumb = $breadcrumb;
+        $this->view->title = "Update";
+        $this->view->headTitle($this->view->title);
+
         $form = new Application_Form_Product();
         $form->submit->setLabel('Update');
         $this->view->form = $form;
@@ -101,6 +118,12 @@ class ProductController extends Zend_Controller_Action
 
     public function deleteAction()
     {
+        $breadcrumb[] = array("Admin" => "/");
+        $breadcrumb[] = array("Product" => "/product");
+        $this->view->breadcrumb = $breadcrumb;
+        $this->view->title = "Delete";
+        $this->view->headTitle($this->view->title);
+
         if ($this->getRequest()->isPost()) {
             $del = $this->getRequest()->getPost('del');
             if ($del == 'Yes') {

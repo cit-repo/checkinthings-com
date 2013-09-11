@@ -13,10 +13,9 @@ class CustomerController extends Zend_Controller_Action
     public function indexAction()
     {
         $breadcrumb[] = array("Admin" => "/");
-
         $this->view->breadcrumb = $breadcrumb;
-
         $this->view->title = "Customer";
+        $this->view->headTitle($this->view->title);
 
         $this->view->config = $this->appIni;
 
@@ -27,6 +26,12 @@ class CustomerController extends Zend_Controller_Action
 
     public function createAction()
     {
+        $breadcrumb[] = array("Admin" => "/");
+        $breadcrumb[] = array("Customer" => "/customer");
+        $this->view->breadcrumb = $breadcrumb;
+        $this->view->title = "Create";
+        $this->view->headTitle($this->view->title);
+
         $form = new Application_Form_Customer();
 
         $form->submit->setLabel('Create');
@@ -53,6 +58,12 @@ class CustomerController extends Zend_Controller_Action
 
     public function updateAction()
     {
+        $breadcrumb[] = array("Admin" => "/");
+        $breadcrumb[] = array("Customer" => "/customer");
+        $this->view->breadcrumb = $breadcrumb;
+        $this->view->title = "Update";
+        $this->view->headTitle($this->view->title);
+
         $form = new Application_Form_Customer();
         $form->submit->setLabel('Update');
         $this->view->form = $form;
@@ -88,6 +99,12 @@ class CustomerController extends Zend_Controller_Action
 
     public function deleteAction()
     {
+        $breadcrumb[] = array("Admin" => "/");
+        $breadcrumb[] = array("Customer" => "/customer");
+        $this->view->breadcrumb = $breadcrumb;
+        $this->view->title = "Delete";
+        $this->view->headTitle($this->view->title);
+
         if ($this->getRequest()->isPost()) {
             $del = $this->getRequest()->getPost('del');
             if ($del == 'Yes') {

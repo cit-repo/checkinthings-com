@@ -14,25 +14,24 @@
 <body>
 <div id="content">
     <h1><?php
+            if ($this->breadcrumb) {
 
-        if ($this->breadcrumb) {
-
-            foreach ($this->breadcrumb as $breadcrumb) {
-                foreach ($breadcrumb as $text => $link) {
-                    $arBreadCrumb[] = "<a href='$link'>$text</a>";
+                foreach ($this->breadcrumb as $breadcrumb) {
+                    foreach ($breadcrumb as $text => $link) {
+                        $arBreadCrumb[] = "<a href=\"".$link."\">$text</a>";
+                    }
                 }
+
+                $arBreadCrumb[] = $this->escape($this->title);
+
+                echo implode(" > ", $arBreadCrumb);
+
+            } else if ($this->title != 'Admin') {
+                echo "<a href='/'>Admin</a> > ".$this->escape($this->title);
+
+            } else {
+                echo $this->escape($this->title);
             }
-
-            $arBreadCrumb[] = $this->escape($this->title);
-
-            echo implode(" > ", $arBreadCrumb);
-        } else if ($this->title != 'Admin') {
-            echo "<a href='/'>Index</a> > ".$this->escape($this->title);
-        } else {
-            echo $this->escape($this->title);
-        }
-
-
         ?></h1>
     <?php echo $this->layout()->content; ?>
 </div>
