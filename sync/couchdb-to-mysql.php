@@ -36,37 +36,37 @@
 
             if ($doc['_id'] != $row['uuid']) {
                 $upd = "UPDATE admin_cit.".$mysql_options['table']." SET uuid='".$doc['_id']."' WHERE email = '".$doc['email']."';";
-                // echo $upd."\n";
+                echo $upd."\n";
                 $res = mysqli_query($link, $upd);
             }
 
             if ($doc['firstname'] != $row['firstname']) {
                 $upd = "UPDATE admin_cit.".$mysql_options['table']." SET firstname='".$doc['firstname']."' WHERE email = '".$doc['email']."';";
-                // echo $upd."\n";
+                echo $upd."\n";
                 $res = mysqli_query($link, $upd);
             }
 
             if ($doc['lastname'] != $row['lastname']) {
                 $upd = "UPDATE admin_cit.".$mysql_options['table']." SET lastname='".$doc['lastname']."' WHERE email = '".$doc['email']."';";
-                // echo $upd."\n";
+                echo $upd."\n";
                 $res = mysqli_query($link, $upd);
             }
 
             if ($doc['password'] != $row['password']) {
                 $upd = "UPDATE admin_cit.".$mysql_options['table']." SET password='".$doc['password']."' WHERE email = '".$doc['email']."';";
-                // echo $upd."\n";
+                echo $upd."\n";
                 $res = mysqli_query($link, $upd);
             }
 
             if ($doc['last_updated'] != $row['last_updated']) {
                 $upd = "UPDATE admin_cit.".$mysql_options['table']." SET last_updated='".$doc['last_updated']."' WHERE email = '".$doc['email']."';";
-                // echo $upd."\n";
+                echo $upd."\n";
                 $res = mysqli_query($link, $upd);
             }
 
         } else {
             $ins = "INSERT INTO admin_cit.".$mysql_options['table']." (firstname, lastname, email, password, uuid) VALUES ('".$doc['firstname']."','".$doc['lastname']."','".$doc['email']."','".$doc['password']."','".$doc['_id']."');";
-            // echo $ins."\n";
+            echo $ins."\n";
             $res = mysqli_query($link, $ins);
 
             $sel = "SELECT * FROM admin_cit.".$mysql_options['table']." WHERE email = '".$doc['email']."';";
