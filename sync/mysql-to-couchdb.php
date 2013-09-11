@@ -4,7 +4,7 @@
     require_once('class/couchdbSimple.class.php');
 
     $mysql_options['database'] = "admin_cit";
-    $mysql_options['table'] = "product";
+    $mysql_options['table'] = $argv[1];
 
     $mysql = new mysqlSimple($link, $mysql_options);
 
@@ -14,10 +14,10 @@
 
     $couchdb = new couchdbSimple($couchdb_options);
 
-    if (isset($argv[1]) && $argv[1] == 1) $insertAll = $argv[1];
-    if (isset($argv[2]) && $argv[2] == 1) $updateAll = $argv[2];
-    if (isset($argv[3]) && $argv[3] == 1) $clearAll = $argv[3];
-    if (isset($argv[4])) $minutes = $argv[4];
+    if (isset($argv[2]) && $argv[2] == 1) $insertAll = $argv[2];
+    if (isset($argv[3]) && $argv[3] == 1) $updateAll = $argv[3];
+    if (isset($argv[4]) && $argv[4] == 1) $clearAll = $argv[4];
+    if (isset($argv[5])) $minutes = $argv[5];
 
     if (isset($clearAll)) {
         $res = $couchdb->deleteDatabase();
@@ -83,15 +83,22 @@
         if (is_array($arRows))
         foreach ($arRows as $row) {
 
-            $arEav = $mysql->readEav($row['product_id']);
+            if ($mysql_options['table'] == "product") {
+                $arEav = $mysql->readEav($row[$mysql_options['table'].'_id']);
 
-            foreach ($arEav as $eav) {
-                foreach ($eav as $key => $value) {
+                if ($arEav)
+                    foreach ($arEav as $eav) {
+                        foreach ($eav as $key => $value) {
 
-                    if ($key == 'attribute') {
-                        $row[$value] = $eav['value'];
+                            if ($key == 'attribute') {
+                                $row[$value] = $eav['value'];
+                            }
+                        }
                     }
-                }
+            }
+
+            if (!$row['uuid']) {
+                $row['uuid'] = $couchdb->getUUID();
             }
 
             $ret = $couchdb->updateDocument($row['uuid'], $row);
