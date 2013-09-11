@@ -1,6 +1,12 @@
 checkinthings-com
 =================
 
+## 0.1.3
+*2013-09-11 | Pablo del Vecchio*
+
+- Added customer backend
+
+
 ## 0.1.2
 *2013-09-11 | Pablo del Vecchio*
 
