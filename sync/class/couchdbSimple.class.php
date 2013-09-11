@@ -110,7 +110,8 @@
          */
         public function readAllDocuments()
         {
-            return $this->send("GET", "/$this->database/_all_docs");
+            $url = "/".$this->database."/_all_docs";
+            return $this->send("GET", $url);
         }
 
         /**
@@ -122,11 +123,16 @@
             $document = $this->readDocument($uuid);
 
             // var_dump($document);
+            // var_dump($params_new);
 
             $params = json_decode($document, true);
 
             foreach ($params_new as $key => $value) {
-                if (isset($params[$key]) && $params[$key] != $params_new[$key]) {
+                if (isset($params[$key])) {
+                    if ($params[$key] != $params_new[$key]) {
+                        $params[$key] = $value;
+                    }
+                } else {
                     $params[$key] = $value;
                 }
             }
@@ -142,6 +148,8 @@
             unset($arParams['uuid']);
 
             $request = '{'.implode(", ", $arParams).'}';
+
+            // echo $request;
 
             return $this->send("PUT", "/$this->database/$uuid", $request);
         }

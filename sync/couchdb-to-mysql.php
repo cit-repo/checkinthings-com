@@ -5,7 +5,7 @@
     require_once('class/elasticsearchSimple.class.php');
 
     $mysql_options['database'] = "admin_cit";
-    $mysql_options['table'] = "product";
+    $mysql_options['table'] = $argv[1];
 
     $mysql = new mysqlSimple($link, $mysql_options);
 
@@ -15,51 +15,75 @@
 
     $couchdb = new couchdbSimple($couchdb_options);
 
-    $elasticsearch_options['host'] = "127.0.0.1";
-    $elasticsearch_options['port'] = "9200";
-    $elasticsearch_options['index'] = "es_".$mysql_options['database']."_".$mysql_options['table'];
+    $allDocs = $couchdb->readAllDocuments();
 
-    $elasticsearch = new elasticsearchSimple($elasticsearch_options);
+    $allDocs = json_decode($allDocs, true);
 
-    if (isset($argv[1]) && $argv[1] == 1) $insertAll = $argv[1];
-    if (isset($argv[2]) && $argv[2] == 1) $updateAll = $argv[2];
+    // print_r($allDocs['rows']);
 
-    if (isset($insertAll)) {
-        var_dump($couchdb->deleteDatabase());
-        var_dump($couchdb->createDatabase());
+    foreach ($allDocs['rows'] as $doc) {
+        $doc = $couchdb->readDocument($doc['id']);
 
-        // var_dump($mysql->readAllDatabases());
-        // var_dump($mysql->getLastInsertID());
+        $doc = json_decode($doc, true);
 
-        $arRows = $mysql->readAllRows();
+        $sel = "SELECT * FROM admin_cit.".$mysql_options['table']." WHERE email = '".$doc['email']."';";
+        // echo $sel."\n";
 
-        // $id = 1;
-        // $arRows = $mysql->readRow($id);
+        $res = mysqli_query($link, $sel);
 
-        // var_dump($arRows);
+        if (mysqli_num_rows($res) > 0) {
+            $row = mysqli_fetch_assoc($res);
 
-        foreach ($arRows as $row) {
-            $ret = $couchdb->createDocument($row);
-            echo $ret."\n";
+            if ($doc['_id'] != $row['uuid']) {
+                $upd = "UPDATE admin_cit.".$mysql_options['table']." SET uuid='".$doc['_id']."' WHERE email = '".$doc['email']."';";
+                // echo $upd."\n";
+                $res = mysqli_query($link, $upd);
+            }
 
-            $ar = json_decode($ret, true);
+            if ($doc['firstname'] != $row['firstname']) {
+                $upd = "UPDATE admin_cit.".$mysql_options['table']." SET firstname='".$doc['firstname']."' WHERE email = '".$doc['email']."';";
+                // echo $upd."\n";
+                $res = mysqli_query($link, $upd);
+            }
 
-            $uuid = $ar['id'];
+            if ($doc['lastname'] != $row['lastname']) {
+                $upd = "UPDATE admin_cit.".$mysql_options['table']." SET lastname='".$doc['lastname']."' WHERE email = '".$doc['email']."';";
+                // echo $upd."\n";
+                $res = mysqli_query($link, $upd);
+            }
 
-            $mysql->updateRow(array("id" => $row[$mysql_options['table'].'_id'], "uuid" => $uuid));
+            if ($doc['password'] != $row['password']) {
+                $upd = "UPDATE admin_cit.".$mysql_options['table']." SET password='".$doc['password']."' WHERE email = '".$doc['email']."';";
+                // echo $upd."\n";
+                $res = mysqli_query($link, $upd);
+            }
+
+            if ($doc['last_updated'] != $row['last_updated']) {
+                $upd = "UPDATE admin_cit.".$mysql_options['table']." SET last_updated='".$doc['last_updated']."' WHERE email = '".$doc['email']."';";
+                // echo $upd."\n";
+                $res = mysqli_query($link, $upd);
+            }
+
+        } else {
+            $ins = "INSERT INTO admin_cit.".$mysql_options['table']." (firstname, lastname, email, password, uuid) VALUES ('".$doc['firstname']."','".$doc['lastname']."','".$doc['email']."','".$doc['password']."','".$doc['_id']."');";
+            // echo $ins."\n";
+            $res = mysqli_query($link, $ins);
+
+            $sel = "SELECT * FROM admin_cit.".$mysql_options['table']." WHERE email = '".$doc['email']."';";
+            // echo $sel."\n";
+
+            $res = mysqli_query($link, $sel);
+            $row = mysqli_fetch_assoc($res);
+
+            $doc[$mysql_options['table'].'_id'] = mysqli_insert_id($link);
+            $doc['last_updated'] = $row['last_updated'];
+
+            $ret = $couchdb->updateDocument($doc['_id'], $doc);
+
+            // var_dump($ret);
         }
+
     }
 
-    if (isset($updateAll)) {
-        $arRows = $mysql->readUpdatedRows(5);
-
-        // var_dump($arRows);
-
-        if (is_array($arRows))
-        foreach ($arRows as $row) {
-            $ret = $couchdb->updateDocument($row['uuid'], $row)."\n";
-            echo $ret."\n";
-        }
-    }
 
 ?>
