@@ -1,6 +1,12 @@
 checkinthings-com
 =================
 
+## 0.1.4
+*2013-09-11 | Pablo del Vecchio*
+
+- Added local images
+
+
 ## 0.1.3
 *2013-09-11 | Pablo del Vecchio*
 
