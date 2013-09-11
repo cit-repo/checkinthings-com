@@ -20,13 +20,13 @@
 
 <table>
     <tr>
+        <th>&nbsp;</th>
         <th>CustomerId</th>
         <th>Firstname</th>
         <th>Lastname</th>
         <th>Email</th>
         <th>Password</th>
         <th>LastUpdated</th>
-        <th>&nbsp;</th>
     </tr>
     <?php
         if ($this->customers)
@@ -40,16 +40,16 @@
             }
     ?>
         <tr>
+            <td>
+                <a href="<?php echo $this->url(array('controller'=>'customer','action'=>'update', 'id'=>$customer->customer_id));?>">Update</a><br>
+                <a href="<?php echo $this->url(array('controller'=>'customer','action'=>'delete', 'id'=>$customer->customer_id));?>">Delete</a>
+            </td>
             <td><?php echo $this->escape($customer->customer_id);?></td>
             <td><?php echo $this->escape($customer->firstname);?></td>
             <td><?php echo $this->escape($customer->lastname);?></td>
             <td><?php echo $this->escape($customer->email);?></td>
             <td><?php echo $this->escape($customer->password);?></td>
             <td><?php echo $this->escape($customer->last_updated);?></td>
-            <td>
-                <a href="<?php echo $this->url(array('controller'=>'customer','action'=>'update', 'id'=>$customer->customer_id));?>">Update</a>
-                <a href="<?php echo $this->url(array('controller'=>'customer','action'=>'delete', 'id'=>$customer->customer_id));?>">Delete</a>
-            </td>
         </tr>
     <?php } ?>
 </table>
