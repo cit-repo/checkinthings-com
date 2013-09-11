@@ -56,7 +56,7 @@
             }
 
             $ret = $couchdb->createDocument($row);
-            echo $n++."\r";
+            echo date('Y-m-d H:i:s')." - createDocument:".$ret;
 
             $ar = json_decode($ret, true);
 
@@ -94,8 +94,8 @@
                 }
             }
 
-            $ret = $couchdb->updateDocument($row['uuid'], $row)."\n";
-            echo $ret."\n";
+            $ret = $couchdb->updateDocument($row['uuid'], $row);
+            echo date('Y-m-d H:i:s')." - updateDocument:".$ret;
         }
     }
 
