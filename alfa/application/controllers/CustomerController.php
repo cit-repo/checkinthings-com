@@ -82,9 +82,14 @@ class CustomerController extends Zend_Controller_Action
         } else {
             $this->view->register = $this->requestApi("customer", "register", $raw_data);
 
+            $res = json_decode($this->view->register, true);
+
             $this->view->success = "Welcome ".$raw_data['firstname'].", thanks for joining our world.";
 
-            $this->login($raw_data);
+            $this->sess->customer_uuid = $res['id'];
+            $this->sess->customer_firstname = $raw_data['firstname'];
+            $this->sess->customer_lastname = $raw_data['lastname'];
+            $this->sess->customer_email = $raw_data['email'];
         }
     }
 
