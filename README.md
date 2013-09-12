@@ -1,6 +1,12 @@
 checkinthings-com
 =================
 
+## 0.1.6
+*2013-09-12 | Pablo del Vecchio*
+
+- Added Google Analytics tracking code
+
+
 ## 0.1.5
 *2013-09-11 | Pablo del Vecchio*
 
