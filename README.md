@@ -1,6 +1,12 @@
 checkinthings-com
 =================
 
+## 0.1.7
+*2013-09-12 | Pablo del Vecchio*
+
+- Added Multistep registration
+
+
 ## 0.1.6
 *2013-09-12 | Pablo del Vecchio*
 

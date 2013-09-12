@@ -31,6 +31,9 @@ class CustomerController extends Zend_Controller_Action
 
         } else if (isset($_POST['event']) && $_POST['event'] == 'register') {
             $this->register($rawData);
+
+        } else if (isset($_POST['event']) && $_POST['event'] == 'multistep') {
+            $this->multistep($rawData);
         }
 
         $this->view->sess = $this->sess;
@@ -62,6 +65,38 @@ class CustomerController extends Zend_Controller_Action
     }
 
     public function register($raw_data)
+    {
+        $origin = $raw_data;
+
+        $origin['email'] = explode("@", $origin['email']);
+        $origin['email'] = $origin['email'][0];
+
+        unset($origin['firstname']);
+        unset($origin['lastname']);
+        unset($origin['password']);
+
+        $this->view->check = $this->requestApi("customer", "check", $origin);
+
+        $arCheck = json_decode($this->view->check, true);
+
+        if (isset($arCheck['hits']['hits'][0]['_id'])) {
+            $this->view->error = "Sorry, but this email is already registered.";
+
+        } else {
+            $this->view->register = $this->requestApi("customer", "register", $raw_data);
+
+            $res = json_decode($this->view->register, true);
+
+            $this->view->success = "Welcome ".$raw_data['firstname'].", thanks for joining our world.";
+
+            $this->sess->customer_uuid = $res['id'];
+            $this->sess->customer_firstname = $raw_data['firstname'];
+            $this->sess->customer_lastname = $raw_data['lastname'];
+            $this->sess->customer_email = $raw_data['email'];
+        }
+    }
+
+    public function multistep($raw_data)
     {
         $origin = $raw_data;
 
