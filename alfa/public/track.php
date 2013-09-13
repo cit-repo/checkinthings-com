@@ -1,5 +1,9 @@
 <?php
-    $url = "http://api.cit.localhost/v1/track";
+    if (strstr($_SERVER, "localhost")) {
+        $url = "http://api.cit.localhost/v1/track";
+    } else {
+        $url = "http://api.checkinthings.com/v1/track";
+    }
 
     $raw = file_get_contents("php://input");
 
@@ -17,7 +21,6 @@
     } else {
         $arData["cookie_id"] = $_COOKIE['cookie_id'];
     }
-
 
     $arData["last_updated"] = date('Y-m-d H:i-s');
 
