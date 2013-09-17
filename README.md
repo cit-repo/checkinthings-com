@@ -1,6 +1,12 @@
 checkinthings-com
 =================
 
+## 0.1.11
+*2013-09-17 | Pablo del Vecchio*
+
+- Added track for registration first step
+
+
 ## 0.1.10
 *2013-09-17 | Pablo del Vecchio*
 
