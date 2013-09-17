@@ -47,9 +47,11 @@ class TrackController extends Zend_Controller_Action
                 $event = $form->getValue('event');
                 $link = $form->getValue('link');
                 $httpReferer = $form->getValue('http_referer');
+                $userAgent = $form->getValue('user_agent');
+                $remoteAddr = $form->getValue('remote_addr');
 
                 $track = new Application_Model_DbTable_Track();
-                $track->createTrack($event, $link, $httpReferer);
+                $track->createTrack($event, $link, $httpReferer, $userAgent, $remoteAddr);
                 $this->_helper->redirector('index');
             } else {
                 $form->populate($formData);
@@ -78,9 +80,11 @@ class TrackController extends Zend_Controller_Action
                 $event = $form->getValue('event');
                 $link = $form->getValue('link');
                 $httpReferer = $form->getValue('http_referer');
+                $userAgent = $form->getValue('user_agent');
+                $remoteAddr = $form->getValue('remote_addr');
 
                 $track = new Application_Model_DbTable_Track();
-                $track->updateTrack($trackId, $event, $link, $httpReferer);
+                $track->updateTrack($trackId, $event, $link, $httpReferer, $userAgent, $remoteAddr);
 
                 $this->_helper->redirector('index');
             } else {

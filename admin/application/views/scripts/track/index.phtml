@@ -25,6 +25,8 @@
         <th>Event</th>
         <th>Link</th>
         <th>HttpReferer</th>
+        <th>UserAgent</th>
+        <th>RemoteAddr</th>
         <th>LastUpdated</th>
     </tr>
     <?php
@@ -40,6 +42,8 @@
             <td><?php echo $this->escape($track->event);?></td>
             <td><?php echo $this->escape($track->link);?></td>
             <td><?php echo $this->escape($track->http_referer);?></td>
+            <td><?php echo $this->escape($track->user_agent);?></td>
+            <td><?php echo $this->escape($track->remote_addr);?></td>
             <td><?php echo $this->escape($track->last_updated);?></td>
         </tr>
     <?php } ?>
