@@ -24,7 +24,7 @@ input[type="submit"]:focus, input[type="button"]:focus { outline : none; }
 #multistep .form { margin: 66px 72px 0 72px; }
 
 #multistep h1, #multistep h2 {
-    font-size: Cantarell, Verdana, sans-serif;
+    font-face: Cantarell, Verdana, sans-serif;
     text-align: center;
     font-size: 24px;
     text-shadow: 1px 1px 2px #222;
