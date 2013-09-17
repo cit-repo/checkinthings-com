@@ -103,9 +103,14 @@ class CustomerController extends Zend_Controller_Action
         $origin['email'] = explode("@", $origin['email']);
         $origin['email'] = $origin['email'][0];
 
+        unset($origin['username']);
         unset($origin['firstname']);
         unset($origin['lastname']);
         unset($origin['password']);
+        unset($origin['cpassword']);
+        unset($origin['age']);
+        unset($origin['gender']);
+        unset($origin['country']);
 
         $this->view->check = $this->requestApi("customer", "check", $origin);
 
