@@ -28,7 +28,7 @@ $(function(){
 
         //ckeck if inputs aren't empty
         var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-        var fields = $('#first_step input[type=text], #first_step input[type=password]');
+        var fields = $('#first_step input[type=text]');
         var error = 0;
         fields.each(function(){
             var value = $(this).val();
@@ -43,22 +43,15 @@ $(function(){
         });
 
         if(!error) {
-            if( $('#password').val() != $('#cpassword').val()) {
-                $('#first_step input[type=password]').each(function(){
-                    $(this).removeClass('valid').addClass('error');
-                    $(this).effect("shake", { times:3 }, 50);
-                });
+            formTrack('multistepForm', 'email', $('#email').val());
 
-                return false;
-            } else {
-                //update progress bar
-                $('#progress_text').html('33% Complete');
-                $('#progress').css('width','113px');
+            //update progress bar
+            $('#progress_text').html('33% Complete');
+            $('#progress').css('width','113px');
 
-                //slide steps
-                $('#first_step').slideUp();
-                $('#second_step').slideDown();
-            }
+            //slide steps
+            $('#first_step').slideUp();
+            $('#second_step').slideDown();
         } else return false;
     });
 
@@ -67,7 +60,7 @@ $(function(){
         //remove classes
         $('#second_step input').removeClass('error').removeClass('valid');
 
-        var fields = $('#second_step input[type=text]');
+        var fields = $('#second_step input[type=password], #second_step input[type=text]');
         var error = 0;
         fields.each(function(){
             var value = $(this).val();
@@ -82,13 +75,22 @@ $(function(){
         });
 
         if(!error) {
-            //update progress bar
-            $('#progress_text').html('66% Complete');
-            $('#progress').css('width','226px');
+            if( $('#password').val() != $('#cpassword').val()) {
+                $('#second_step input[type=password]').each(function(){
+                    $(this).removeClass('valid').addClass('error');
+                    $(this).effect("shake", { times:3 }, 50);
+                });
 
-            //slide steps
-            $('#second_step').slideUp();
-            $('#third_step').slideDown();
+                return false;
+            } else {
+                //update progress bar
+                $('#progress_text').html('66% Complete');
+                $('#progress').css('width','226px');
+
+                //slide steps
+                $('#second_step').slideUp();
+                $('#third_step').slideDown();
+            }
         } else return false;
 
     });

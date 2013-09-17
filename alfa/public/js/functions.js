@@ -39,3 +39,8 @@ function clickTrack(button)
 {
     ajaxRequest('/track.php', 'POST', '{"event":"click", "link":"'+button+'", "http_referer":"'+document.URL+'"}');
 }
+
+function formTrack(form, key, value)
+{
+    ajaxRequest('/track.php', 'POST', '{"event":"'+form+'", "link":"'+key+'|'+value+'", "http_referer":"'+document.URL+'"}');
+}
