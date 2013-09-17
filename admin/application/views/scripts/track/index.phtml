@@ -1,0 +1,46 @@
+<?php
+
+?>
+<table width="100%" align="center">
+    <tr><td height="10" colspan="2"></td></tr>
+    <tr>
+        <td width="50%" align="left" bgcolor="#ffffff">| <a href="<?php echo $this->url(array('controller'=>'track','action'=>'index'));?>">Refresh</a> | <a href="<?php echo $this->url(array('controller'=>'track','action'=>'create'));?>">Create</a> | </td>
+        <td width="50%" align="center" bgcolor="#ffffff"</td>
+    </tr>
+    <tr>
+        <td width="50%" align="left" bgcolor="#ffffff"></td>
+        <td width="50%" align="center" bgcolor="#ffffff"></td>
+    </tr>
+    <tr>
+        <td width="50%" align="left" bgcolor="#ffffff"></td>
+        <td width="50%" align="center" bgcolor="#ffffff"></td>
+    </tr>
+    <tr><td height="10" colspan="2"></td></tr>
+</table>
+
+<table>
+    <tr>
+        <th>Action</th>
+        <th>TrackId</th>
+        <th>Event</th>
+        <th>Link</th>
+        <th>HttpReferer</th>
+        <th>LastUpdated</th>
+    </tr>
+    <?php
+        if ($this->tracks)
+        foreach($this->tracks as $track) {
+    ?>
+        <tr>
+            <td>
+                <a href="<?php echo $this->url(array('controller'=>'track','action'=>'update', 'id'=>$track->track_id));?>">Update</a><br>
+                <a href="<?php echo $this->url(array('controller'=>'track','action'=>'delete', 'id'=>$track->track_id));?>">Delete</a>
+            </td>
+            <td><?php echo $this->escape($track->track_id);?></td>
+            <td><?php echo $this->escape($track->event);?></td>
+            <td><?php echo $this->escape($track->link);?></td>
+            <td><?php echo $this->escape($track->http_referer);?></td>
+            <td><?php echo $this->escape($track->last_updated);?></td>
+        </tr>
+    <?php } ?>
+</table>
