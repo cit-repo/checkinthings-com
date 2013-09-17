@@ -56,9 +56,9 @@
                                         <div class="caption">
                                             <h4><a href="/product/detail/id/<?php echo $hit['_source']['product_id']?>">(<?php echo $hit['_source']['product_id']?>)</a> <?php echo $hit['_source']['main_category']?></h4> <?php echo substr($hit['_source']['name'], 0, 64)?>
                                             <p><strike><?php echo $hit['_source']['currency']?> <?php echo $hit['_source']['price']*(1.2)?></strike>&nbsp;<?php echo $hit['_source']['currency']?> <?php echo $hit['_source']['price']?></p>
-                                            <a class="btn btn-want" href="#wantit">Want it</a>
-                                            <a class="btn btn-have" href="#haveit">Have it</a>
-                                            <a class="btn btn-buy" href="#buyit">Buy it</a>
+                                            <a class="btn btn-want" href="#wantit" onclick="clickTrack('wantit_<?=$hit['_source']['product_id']?>')">Want it</a>
+                                            <a class="btn btn-have" href="#haveit" onclick="clickTrack('haveit_<?=$hit['_source']['product_id']?>')">Have it</a>
+                                            <a class="btn btn-buy" href="#buyit" onclick="clickTrack('buyit_<?=$hit['_source']['product_id']?>')">Buy it</a>
                                         </div>
                                     </div>
                                 </li>
