@@ -1,6 +1,12 @@
 checkinthings-com
 =================
 
+## 0.1.10
+*2013-09-17 | Pablo del Vecchio*
+
+- Added basic click tracking
+
+
 ## 0.1.9
 *2013-09-17 | Pablo del Vecchio*
 
