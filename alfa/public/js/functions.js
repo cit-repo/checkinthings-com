@@ -1,6 +1,9 @@
-function foo()
+function foo(wait)
 {
-
+    var i = 0;
+    for (i = 0; i <= wait*1000000; i++) {
+        // do nothing
+    }
 }
 
 function ajaxRequest(url, type, data)
@@ -15,16 +18,24 @@ function ajaxRequest(url, type, data)
         data: data,
         cache: false,
         success: function(data) {
-            // alert('Success.');
+            // alert(data);
+            console.log('Response: '+data);
         },
         error: function(data) {
-            // alert('Error.');
+            // alert(data);
+            console.log('Response: '+data);
         }
     });
 
+
 }
 
-function visit()
+function visitTrack(url, type, data)
 {
-    ajaxRequest('/track.php', 'POST', '{"link":"'+document.URL+'", "http_referer":"'+document.referrer+'"}');
+    ajaxRequest('/track.php', 'POST', '{"event":"visit", "link":"'+document.URL+'", "http_referer":"'+document.referrer+'"}');
+}
+
+function clickTrack(button)
+{
+    ajaxRequest('/track.php', 'POST', '{"event":"click", "link":"'+button+'", "http_referer":"'+document.URL+'"}');
 }

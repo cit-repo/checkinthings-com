@@ -1,5 +1,5 @@
 <?php
-    if (strstr($_SERVER, "localhost")) {
+    if (strstr($_SERVER['HTTP_HOST'], "localhost")) {
         $url = "http://api.cit.localhost/v1/track";
     } else {
         $url = "http://api.checkinthings.com/v1/track";
@@ -14,15 +14,15 @@
 
     $arData["session_id"] = $_COOKIE['PHPSESSID'];
 
-    if (!isset($_COOKIE['cookie_id'])) {
-        $cookieId = md5(microtime());
-        setcookie("cookie_id", $cookieId);
+    if (!isset($_COOKIE['PHPCOOKID'])) {
+        $cookieId = substr(md5(microtime()),0,26);
+        setcookie("PHPCOOKID", $cookieId);
         $arData["cookie_id"] = $cookieId;
     } else {
-        $arData["cookie_id"] = $_COOKIE['cookie_id'];
+        $arData["cookie_id"] = $_COOKIE['PHPCOOKID'];
     }
 
-    $arData["last_updated"] = date('Y-m-d H:i-s');
+    $arData["last_updated"] = date('Y-m-d H:i:s');
 
     $data = json_encode($arData);
 
@@ -39,3 +39,5 @@
     $chleadapierr = curl_errno($chlead);
     $chleaderrmsg = curl_error($chlead);
     curl_close($chlead);
+
+    echo json_encode(array("error" => false));
