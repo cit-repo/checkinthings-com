@@ -20,7 +20,10 @@ class TrackController extends Zend_Controller_Action
         $this->view->config = $this->appIni;
 
         $track = new Application_Model_DbTable_Track();
-        $arTracks = $track->fetchAll();
+        $arTracks = $track->fetchAll('last_updated >= YEAR(NOW())',
+                                     'last_updated DESC',
+                                     100,
+                                     0);
         $this->view->tracks = $arTracks;
     }
 

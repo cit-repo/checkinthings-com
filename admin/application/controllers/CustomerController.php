@@ -20,7 +20,10 @@ class CustomerController extends Zend_Controller_Action
         $this->view->config = $this->appIni;
 
         $customer = new Application_Model_DbTable_Customer();
-        $arCustomers = $customer->fetchAll();
+        $arCustomers = $customer->fetchAll('last_updated >= YEAR(NOW())',
+                                           'last_updated DESC',
+                                           100,
+                                           0);
         $this->view->customers = $arCustomers;
     }
 

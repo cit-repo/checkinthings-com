@@ -20,7 +20,10 @@ class ProductController extends Zend_Controller_Action
         $this->view->config = $this->appIni;
 
         $product = new Application_Model_DbTable_Product();
-        $arProducts = $product->fetchAll();
+        $arProducts = $product->fetchAll('last_updated >= YEAR(NOW())',
+                                         'last_updated DESC',
+                                         100,
+                                         0);
         $this->view->products = $arProducts;
     }
 
