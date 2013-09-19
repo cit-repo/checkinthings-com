@@ -117,12 +117,16 @@
             FB.logout(function(response) {
                 // user is now logged out
             });
-            location.reload();
+            hideLogoutButton();
         }
     }
 
     function showLogoutButton() {
-        document.getElementById('fb_logout').innerHTML = '<a href="#logout" onclick="fbLogout();"><img border="0" src="/img/fb_logout.png"></a>';
+        // document.getElementById('fb_logout').innerHTML = '<a href="#logout" onclick="fbLogout();"><img border="0" src="/img/fb_logout.png"></a>';
+    }
+
+    function hideLogoutButton() {
+        document.getElementById('fb_logout').innerHTML = '';
     }
 
 </script>
