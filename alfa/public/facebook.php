@@ -61,6 +61,8 @@
     function testAPI() {
         console.log('Welcome!  Fetching your information.... ');
         FB.api('/me', function(response) {
+            console.log("apiMe: "+response);
+            document.getElementById('fb_data').innerHTML = JSON.stringify(response);
             console.log('Good to see you, ' + response.name + '.');
         });
 
@@ -109,7 +111,8 @@
                 uid = response.authResponse.userID;
                 accessToken = response.authResponse.accessToken;
 
-                console.log(response);
+                console.log("getLoginStatus: "+response);
+                document.getElementById('fb_data').innerHTML = JSON.stringify(response);
                 console.log('uid: '+uid);
                 console.log('accessToken: '+accessToken);
             } else if (response.status === 'not_authorized') {
@@ -156,6 +159,8 @@
 <div id="fb_login"><fb:login-button show-faces="true" width="200" max-rows="1"></fb:login-button></div>
 
 <div id="fb_logout"></div>
+
+<div id="fb_data"></div>
 
 <script src="/js/jquery-1.10.0.min.js"></script>
 
