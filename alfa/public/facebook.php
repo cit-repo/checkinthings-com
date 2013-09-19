@@ -61,7 +61,38 @@
         });
     }
 
+    function isset () {
+        // http://kevin.vanzonneveld.net
+        // +   original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+        // +   improved by: FremyCompany
+        // +   improved by: Onno Marsman
+        // +   improved by: Rafał Kukawski
+        // *     example 1: isset( undefined, true);
+        // *     returns 1: false
+        // *     example 2: isset( 'Kevin van Zonneveld' );
+        // *     returns 2: true
+        var a = arguments,
+            l = a.length,
+            i = 0,
+            undef;
+
+        if (l === 0) {
+            throw new Error('Empty isset');
+        }
+
+        while (i !== l) {
+            if (a[i] === undef || a[i] === null) {
+                return false;
+            }
+            i++;
+        }
+        return true;
+    }
+
     function logout() {
+        var uid;
+        var accessToken;
+
         FB.getLoginStatus(function(response) {
             if (response.status === 'connected') {
                 // the user is logged in and has authenticated your
@@ -69,8 +100,8 @@
                 // the user's ID, a valid access token, a signed
                 // request, and the time the access token
                 // and signed request each expire
-                var uid = response.authResponse.userID;
-                var accessToken = response.authResponse.accessToken;
+                uid = response.authResponse.userID;
+                accessToken = response.authResponse.accessToken;
 
                 console.log('uid: '+uid);
                 console.log('accessToken: '+accessToken);
@@ -82,9 +113,11 @@
             }
         });
 
-        // FB.logout(function(response) {
-            // user is now logged out
-        // });
+        if (isset(uid)) {
+            FB.logout(function(response) {
+                // user is now logged out
+            });
+        }
     }
 </script>
 
