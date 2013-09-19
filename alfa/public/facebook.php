@@ -118,7 +118,7 @@
                 // user is now logged out
             });
 
-            window.reload();
+            location.reload();
         }
     }
 </script>
