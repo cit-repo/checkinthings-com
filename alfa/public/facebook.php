@@ -77,6 +77,6 @@
   /docs/reference/plugins/login/ -->
 
 <fb:login-button show-faces="true" width="200" max-rows="1"></fb:login-button>
-<input type="button" value="Logout" onclick="logout();">
+<fb:logout-button show-faces="true" width="200" max-rows="1"></fb:logout-button>
 </body>
 </html>
