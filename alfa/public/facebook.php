@@ -1,5 +1,9 @@
 <html>
-<head></head>
+<head>
+    <link type="text/css" rel="stylesheet" href="https://fbstatic-a.akamaihd.net/rsrc.php/v2/yU/r/IBb8dQrlYJ3.css" />
+    <link type="text/css" rel="stylesheet" href="https://fbstatic-a.akamaihd.net/rsrc.php/v2/yK/r/bqfcuHT6v0u.css" />
+    <link type="text/css" rel="stylesheet" href="https://fbstatic-a.akamaihd.net/rsrc.php/v2/yJ/r/k4jblsFJzCO.css" />
+</head>
 <body>
 <div id="fb-root"></div>
 <script>
