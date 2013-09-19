@@ -59,6 +59,7 @@
         FB.api('/me', function(response) {
             console.log('Good to see you, ' + response.name + '.');
         });
+        document.getElementById('fb_logout').innerHTML = '<a href="fbLogout();"><img border="0" src="/img/fb_logout.png"></a>';
     }
 
     function isset () {
@@ -89,7 +90,7 @@
         return true;
     }
 
-    function logout() {
+    function fbLogout() {
         var uid;
         var accessToken;
 
@@ -121,6 +122,7 @@
             location.reload();
         }
     }
+
 </script>
 
 <!--
@@ -132,7 +134,8 @@
 
 <fb:login-button show-faces="true" width="200" max-rows="1"></fb:login-button><br>
 
-<button onclick="logout()">LogOut</button>
+<div id="fb_logout"></div>
 
+<script src="/js/jquery-1.10.0.min.js"></script>
 </body>
 </html>
