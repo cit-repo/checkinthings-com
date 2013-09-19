@@ -120,6 +120,8 @@
                 // user is now logged out
             });
             hideLogoutButton();
+            funcx();
+            location.reload();
         }
     }
 
@@ -129,6 +131,13 @@
 
     function hideLogoutButton() {
         document.getElementById('fb_logout').innerHTML = '';
+    }
+
+    function funcx()
+    {
+        // your code here
+        // break out here if needed
+        setTimeout(funcx, 1000);
     }
 
 </script>
