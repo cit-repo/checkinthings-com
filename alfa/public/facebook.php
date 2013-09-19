@@ -121,7 +121,6 @@
             });
             hideLogoutButton();
             funcx();
-            location.reload();
         }
     }
 
@@ -131,6 +130,7 @@
 
     function hideLogoutButton() {
         document.getElementById('fb_logout').innerHTML = '';
+        document.getElementById('fb_login').innerHTML = 'You have successfully logged out from FB.';
     }
 
     function funcx()
