@@ -61,12 +61,11 @@
         });
     }
 
-    function logout() {
+    function logout(){
         FB.logout(function(response) {
             // user is now logged out
         });
     }
-
 </script>
 
 <!--
@@ -76,7 +75,9 @@
   Learn more about options for the login button plugin:
   /docs/reference/plugins/login/ -->
 
-<fb:login-button show-faces="true" width="200" max-rows="1"></fb:login-button>
-<fb:logout-button show-faces="true" width="200" max-rows="1"></fb:logout-button>
+<fb:login-button show-faces="true" width="200" max-rows="1"></fb:login-button><br>
+
+<button onclick="logout()">LogOut</button>
+
 </body>
 </html>
