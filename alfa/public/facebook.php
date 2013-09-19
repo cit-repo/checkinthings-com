@@ -119,9 +119,9 @@
         if (isset(uid)) {
             FB.logout(function(response) {
                 // user is now logged out
-                document.getElementById('fb_logout').innerHTML = '';
             });
 
+            document.getElementById('fb_logout').innerHTML = '';
             location.reload();
         }
     }
