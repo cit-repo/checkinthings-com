@@ -124,13 +124,11 @@
     }
 
     function showLogoutButton() {
-        document.getElementById('fb_login').innerHTML = '';
         document.getElementById('fb_logout').innerHTML = '<a href="#logout" onclick="fbLogout();"><img border="0" src="/img/fb_logout.png"></a>';
     }
 
     function hideLogoutButton() {
         document.getElementById('fb_logout').innerHTML = '';
-        document.getElementById('fb_login').innerHTML = '<fb:login-button show-faces="true" width="200" max-rows="1"></fb:login-button>';
     }
 
 </script>
@@ -141,7 +139,7 @@
 
   Learn more about options for the login button plugin:
   /docs/reference/plugins/login/ -->
-<div id="fb_login"></div>
+<div id="fb_login"><fb:login-button show-faces="true" width="200" max-rows="1"></fb:login-button></div>
 
 <div id="fb_logout"></div>
 
