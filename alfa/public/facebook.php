@@ -60,6 +60,13 @@
             console.log('Good to see you, ' + response.name + '.');
         });
     }
+
+    function logout() {
+        FB.logout(function(response) {
+            // user is now logged out
+        });
+    }
+
 </script>
 
 <!--
@@ -70,5 +77,6 @@
   /docs/reference/plugins/login/ -->
 
 <fb:login-button show-faces="true" width="200" max-rows="1"></fb:login-button>
+<input type="button" onclick="logout();">
 </body>
 </html>
