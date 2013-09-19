@@ -109,6 +109,7 @@
                 uid = response.authResponse.userID;
                 accessToken = response.authResponse.accessToken;
 
+                console.log(response);
                 console.log('uid: '+uid);
                 console.log('accessToken: '+accessToken);
             } else if (response.status === 'not_authorized') {
