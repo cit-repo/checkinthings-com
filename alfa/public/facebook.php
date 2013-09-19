@@ -137,7 +137,9 @@
 
 <fb:login-button show-faces="true" width="200" max-rows="1"></fb:login-button><br>
 
-<div id="fb_logout"></div>
+<div id="fb_logout">Please login</div><br>
+
+<input type="button" value="Logout" onclick="fbLogout();">
 
 <script src="/js/jquery-1.10.0.min.js"></script>
 </body>
