@@ -62,7 +62,7 @@
         console.log('Welcome!  Fetching your information.... ');
         FB.api('/me', function(response) {
             console.log("apiMe: "+response);
-            document.getElementById('fb_data').innerHTML = JSON.stringify(response);
+            document.getElementById('fb_data').innerHTML = '<br>response: '+JSON.stringify(response);
             console.log('Good to see you, ' + response.name + '.');
         });
 
@@ -112,7 +112,7 @@
                 accessToken = response.authResponse.accessToken;
 
                 console.log("getLoginStatus: "+response);
-                document.getElementById('fb_data').innerHTML = JSON.stringify(response);
+                document.getElementById('fb_data').innerHTML = '<br>response: '+JSON.stringify(response);
                 console.log('uid: '+uid);
                 console.log('accessToken: '+accessToken);
             } else if (response.status === 'not_authorized') {
@@ -157,11 +157,11 @@
   Learn more about options for the login button plugin:
   /docs/reference/plugins/login/ -->
 <div id="fb_login"><fb:login-button show-faces="true" width="200" max-rows="1"></fb:login-button></div>
-
+<br>
 <div id="fb_logout"></div>
-
+<br>
 <div id="fb_data"></div>
-
+<br>
 <script src="/js/jquery-1.10.0.min.js"></script>
 
 </body>
