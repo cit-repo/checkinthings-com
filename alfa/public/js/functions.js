@@ -25,12 +25,9 @@ function ajaxRequest(url, type, data) {
         }
     });
 
-    var ret = request.done(function(msg) {
+    request.done(function(msg) {
         console.log( msg );
-        return msg;
     });
-
-    return ret;
 
     request.fail(function(jqXHR, textStatus) {
         console.log( "Request failed: " + textStatus );
@@ -48,9 +45,7 @@ function clickTrack(button) {
 function formTrack(form, attribute, value) {
     var ret = ajaxRequest('/check.php', 'POST', '{"event":"search_first", "entity":"customer", "attribute":"'+attribute+'", "value":"'+value+'"}');
 
-    alert(ret);
-
-    if (ret == 1) {
+    if (ret) {
         return true;
     } else {
         ajaxRequest('/track.php', 'POST', '{"event":"'+form+'", "link":"'+attribute+'|'+value+'", "http_referer":"'+document.URL+'"}');
