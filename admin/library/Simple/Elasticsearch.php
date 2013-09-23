@@ -96,6 +96,35 @@
 
         }
 
+        public function searchFirst($entity, $attribute=false, $value=false)
+        {
+            $request = '{"query":{"bool":{"must":[{"match_all":{}}],"must_not":[],"should":[]}},"from":0,"size":50,"sort":[],"facets":{}}';
+
+            $index = "es_admin_cit_".$entity;
+
+            $url = "/".$index."/_search";
+
+            $res = $this->send("GET", $url, $request);
+
+            $arRes = json_decode($res, true);
+
+            $found = false;
+
+            foreach ($arRes['hits']['hits'] as $hit) {
+                foreach ($hit["_source"] as $k => $v) {
+                    // echo $k." ".$v."\n";
+                    if ($k == $attribute && $v == $value) {
+                        $found = $hit;
+                    }
+                }
+            }
+
+            unset($arRes['hits']['hits']);
+            $arRes['hits']['hits'][] = $found;
+
+            return json_encode($arRes);
+        }
+
         /**
          * SEND
          *

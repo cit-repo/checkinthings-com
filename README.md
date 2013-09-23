@@ -1,6 +1,30 @@
 checkinthings-com
 =================
 
+## 0.2.0
+*2013-09-23 | Pablo del Vecchio*
+
+- Added email control on registration, new api methods
+
+
+## 0.1.14
+*2013-09-23 | Pablo del Vecchio*
+
+- Added buttons on detail page
+
+
+## 0.1.13
+*2013-09-23 | Pablo del Vecchio*
+
+- Added email check on registration
+
+
+## 0.1.12
+*2013-09-23 | Pablo del Vecchio*
+
+- Added facebook initial approach
+
+
 ## 0.1.11
 *2013-09-17 | Pablo del Vecchio*
 

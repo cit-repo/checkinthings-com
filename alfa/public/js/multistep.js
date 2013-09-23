@@ -43,7 +43,11 @@ $(function(){
         });
 
         if(!error) {
-            formTrack('multistepForm', 'email', $('#email').val());
+            if (formTrack('multistepForm', 'email', $('#email').val())) {
+                console.log('Sorry, '+$('#email').val()+' is already in use.');
+                alert('Sorry, '+$('#email').val()+' is already in use.');
+                return false;
+            }
 
             //update progress bar
             $('#progress_text').html('33% Complete');

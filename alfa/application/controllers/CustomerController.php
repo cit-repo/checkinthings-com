@@ -100,8 +100,8 @@ class CustomerController extends Zend_Controller_Action
     {
         $origin = $raw_data;
 
-        $origin['email'] = explode("@", $origin['email']);
-        $origin['email'] = $origin['email'][0];
+        // $origin['email'] = explode("@", $origin['email']);
+        // $origin['email'] = $origin['email'][0];
 
         unset($origin['username']);
         unset($origin['firstname']);
@@ -112,7 +112,10 @@ class CustomerController extends Zend_Controller_Action
         unset($origin['gender']);
         unset($origin['country']);
 
-        $this->view->check = $this->requestApi("customer", "check", $origin);
+        $origin['attribute'] = "email";
+        $origin['value'] = $origin['email'];
+
+        $this->view->check = $this->customerOnApi($origin, "search_first");
 
         $arCheck = json_decode($this->view->check, true);
 
@@ -172,6 +175,29 @@ class CustomerController extends Zend_Controller_Action
         }
 
         return $arData;
+    }
+
+    public function customerOnApi($ar_data, $event=false)
+    {
+        // action body
+        require_once(APPLICATION_PATH.'/../library/Simple/Pest.php');
+
+        $url = "/v1/customer";
+
+        if ($event == "search_first") {
+            $url = $url."/".$ar_data['attribute']."/".$ar_data['value'];
+            // echo $url;
+            $pest = new Pest($this->appIni['api']['host']);
+            $pest->get($url);
+        } else {
+            $pest = new Pest($this->appIni['api']['host']);
+            $pest->post($url, json_encode($ar_data));
+        }
+
+        $pest->log_request($this->appIni['includePaths']['logs']."/api.log", date('Y-m-d H:i:s')." - ".$url.": REQUEST - ".json_encode($pest->last_request));
+        $pest->log_request($this->appIni['includePaths']['logs']."/api.log", date('Y-m-d H:i:s')." - ".$url.": RESPONSE - ".json_encode($pest->lastBody()));
+
+        return $pest->lastBody();
     }
 
     public function requestApi($controller, $event, $ar_data)

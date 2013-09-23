@@ -49,10 +49,11 @@ class ProductController extends Zend_Controller_Action
                 $mainCategory = $form->getValue('main_category');
                 $name = $form->getValue('name');
                 $description = $form->getValue('description');
+                $productUrl = $form->getValue('product_url');
                 $imageUrl = $form->getValue('image_url');
 
                 $product = new Application_Model_DbTable_Product();
-                $product->createProduct($feed, $channel, $mainCategory, $name, $description, $imageUrl);
+                $product->createProduct($feed, $channel, $mainCategory, $name, $description, $productUrl, $imageUrl);
                 $this->_helper->redirector('index');
             } else {
                 $form->populate($formData);
@@ -99,9 +100,19 @@ class ProductController extends Zend_Controller_Action
                 $mainCategory = $form->getValue('main_category');
                 $name = $form->getValue('name');
                 $description = $form->getValue('description');
+                $productUrl = $form->getValue('product_url');
                 $imageUrl = $form->getValue('image_url');
+
                 $product = new Application_Model_DbTable_Product();
-                $product->updateProduct($productId, $feed, $channel, $mainCategory, $name, $description, $imageUrl);
+
+                $arEav = $product->readProductEav($productId);
+
+                foreach ($arEav as $key => $value) {
+                    $newKey = "eav_".$key;
+                    $arKeyValueEav[] = array($newKey => $value);
+                }
+
+                $product->updateProduct($productId, $feed, $channel, $mainCategory, $name, $description, $productUrl, $imageUrl);
 
                 $this->_helper->redirector('index');
             } else {

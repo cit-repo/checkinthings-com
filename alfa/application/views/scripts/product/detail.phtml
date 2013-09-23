@@ -25,6 +25,9 @@
     $response = json_decode($this->response, true);
 
     require_once('header.phtml');
+
+    $utils = new Utils();
+
 ?>
 
 <div id="product_detail">
@@ -70,9 +73,25 @@
 
                             foreach ($hit['_source'] as $key => $value) {
                                 if ($key == 'image_url'){
-                                    echo "<tr valign='top'>";
-                                    echo "<td colspan='2' align='right' height='150'>"."<a class=\"fancybox\" href=\"#image\"><img width='150' height='150' border='0' src=\"".$hit['_source']['image_url']."\"></a>"."</td>";
-                                    echo "</tr>";
+
+                                    if ($this->utils->url_exists($this->localImage)) {
+                                        $imageSrc = $this->localImage;
+                                    } else if ($this->utils->url_exists($this->remoteImage)) {
+                                        $imageSrc = $this->remoteImage;
+                                    } else {
+                                        $imageSrc = "/img/foo.png";
+                                    }
+                                ?>
+                                    <tr valign="top">
+                                    <td colspan="2" align="center" height="150">
+                                        <a class="fancybox" href="#image"><img width='150' height='150' border='0' src="<?=$imageSrc?>"></a><br><br>
+                                        <a class="btn btn-want" href="#wantit" onclick="clickTrack('wantit_<?=$hit['_source']['product_id']?>')">Want it</a>&nbsp;
+                                        <a class="btn btn-have" href="#haveit" onclick="clickTrack('haveit_<?=$hit['_source']['product_id']?>')">Have it</a>&nbsp;
+                                        <a class="btn btn-buy" href="#buyit" onclick="clickTrack('buyit_<?=$hit['_source']['product_id']?>')">Buy it</a>
+                                    </td>
+                                    <tr>
+                                <?php
+
                                 }
                             }
                         }

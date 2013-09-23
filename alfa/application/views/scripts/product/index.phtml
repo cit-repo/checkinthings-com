@@ -42,15 +42,26 @@
                             if (isset($hit['_source']['product_id']) && !in_array($hit['_source']['product_id'], $arHits)) {
                                 $arHits[] = $hit['_source']['product_id'];
 
+                                $localImage = $this->appIni['alfa']['host']."/img/product/".$hit['_source']['product_id'].".jpg";
+                                $remoteImage = $hit['_source']['image_url'];
+
+                                if ($this->utils->url_exists($localImage)) {
+                                    $imageSrc = $localImage;
+                                } else if ($this->utils->url_exists($remoteImage)) {
+                                    $imageSrc = $remoteImage;
+                                } else {
+                                    $imageSrc = "/img/foo.png";
+                                }
+
                                 ?>
                                 <li class="span3">
                                     <div class="thumbnail">
-                                        <a href="/product/detail/id/<?php echo $hit['_source']['product_id']?>"><img border="0" width="300" height="200" src="<?php echo $hit['_source']['image_url']?>"></a>
+                                        <a href="/product/detail/id/<?php echo $hit['_source']['product_id']?>"><img border="0" width="300" height="200" src="<?php echo $imageSrc?>"></a>
                                         <div class="caption">
                                             <h4><a href="/product/detail/id/<?php echo $hit['_source']['product_id']?>">(<?php echo $hit['_source']['product_id']?>)</a> <?php echo $hit['_source']['main_category']?></h4> <?php echo substr($hit['_source']['name'], 0, 64)?>
                                             <p><strike><?php echo $hit['_source']['currency']?> <?php echo $hit['_source']['price']*(1.2)?></strike>&nbsp;<?php echo $hit['_source']['currency']?> <?php echo $hit['_source']['price']?></p>
-                                            <a class="btn btn-want" href="#wantit" onclick="clickTrack('wantit_<?=$hit['_source']['product_id']?>')">Want it</a>
-                                            <a class="btn btn-have" href="#haveit" onclick="clickTrack('haveit_<?=$hit['_source']['product_id']?>')">Have it</a>
+                                            <a class="btn btn-want" href="#wantit" onclick="clickTrack('wantit_<?=$hit['_source']['product_id']?>')">Want it</a>&nbsp;
+                                            <a class="btn btn-have" href="#haveit" onclick="clickTrack('haveit_<?=$hit['_source']['product_id']?>')">Have it</a>&nbsp;
                                             <a class="btn btn-buy" href="#buyit" onclick="clickTrack('buyit_<?=$hit['_source']['product_id']?>')">Buy it</a>
                                         </div>
                                     </div>

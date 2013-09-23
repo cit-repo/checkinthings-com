@@ -12,6 +12,11 @@ class ProductController extends Zend_Controller_Action
 
         $this->sess = new Zend_Session_Namespace('session');
         $this->view->sess = $this->sess;
+
+        require_once(APPLICATION_PATH.'/../library/Simple/Utils.php');
+
+        $this->view->utils = new Utils();
+        $this->view->appIni = $this->appIni;
     }
 
     public function indexAction()
@@ -92,6 +97,11 @@ class ProductController extends Zend_Controller_Action
         $arData = array( 'must' => array ( 'product_id' => $productId) );
 
         $response = $this->productOnApi($arData);
+
+        $product = json_decode($response, true);
+
+        $this->view->localImage = $this->appIni['alfa']['host']."/img/product/".$productId.".jpg";
+        $this->view->remoteImage = $product['hits']['hits'][0]['_source']['image_url'];
 
         $this->view->content = $_SERVER['HTTP_HOST'];
         $this->view->request = json_encode($arData);

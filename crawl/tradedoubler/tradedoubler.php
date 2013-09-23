@@ -101,7 +101,6 @@
                 case "manufacturer":
                 case "price":
                 case "currency":
-                case "product_url":
                 case "sku":
                 case "warranty":
                 case "availability":
@@ -125,6 +124,10 @@
                 default:
                     if (isset($value) && $value != '') {
                         if (camelCaseToUnderscores($key) == 'image_url') {
+                            $upd = "UPDATE product SET `".camelCaseToUnderscores($key)."` = '".$value."' WHERE product_id = $id;";
+                            $res = mysqli_query($link, $upd);
+                            // echo $upd."\n";
+                        } else if (camelCaseToUnderscores($key) == 'product_url') {
                             $upd = "UPDATE product SET `".camelCaseToUnderscores($key)."` = '".$value."' WHERE product_id = $id;";
                             $res = mysqli_query($link, $upd);
                             // echo $upd."\n";

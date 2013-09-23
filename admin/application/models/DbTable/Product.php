@@ -12,7 +12,7 @@ class Application_Model_DbTable_Product extends Zend_Db_Table_Abstract
         $this->appIni = $obControl->getParam("bootstrap")->getOptions();
     }
 
-    public function createProduct($feed, $channel, $main_category, $name, $description, $image_url)
+    public function createProduct($feed, $channel, $main_category, $name, $description, $product_url, $image_url)
     {
         $data = array(
             'feed' => $feed,
@@ -20,6 +20,7 @@ class Application_Model_DbTable_Product extends Zend_Db_Table_Abstract
             'main_category' => $main_category,
             'name' => $name,
             'description' => $description,
+            'product_url' => $product_url,
             'image_url' => $image_url,
         );
         $this->insert($data);
@@ -34,7 +35,18 @@ class Application_Model_DbTable_Product extends Zend_Db_Table_Abstract
         return $row->toArray();
     }
 
-    public function updateProduct($product_id, $feed, $channel, $main_category, $name, $description, $image_url)
+    public function readProductEav($product_id)
+    {
+        require_once(APPLICATION_PATH.'/../library/Simple/Mysql.php');
+
+        $mysql = new SimpleMysql(false, $this->appIni['resources']['db']['params']);
+
+        $arEav = $mysql->readEav('product', $product_id);
+
+        return $arEav;
+    }
+
+    public function updateProduct($product_id, $feed, $channel, $main_category, $name, $description, $product_url, $image_url)
     {
         $data = array(
             'feed' => $feed,
@@ -42,6 +54,7 @@ class Application_Model_DbTable_Product extends Zend_Db_Table_Abstract
             'main_category' => $main_category,
             'name' => $name,
             'description' => $description,
+            'product_url' => $product_url,
             'image_url' => $image_url,
         );
         $this->update($data, 'product_id = '. (int)$product_id);

@@ -49,6 +49,7 @@ class CustomerController extends Zend_Rest_Controller
         $from = 0;
         $size = 100;
         $sort = true;
+        $email = "";
 
         if (isset($arPost['must'])) {
             $arMust = $arPost['must'];
@@ -74,6 +75,10 @@ class CustomerController extends Zend_Rest_Controller
             $sort = $arPost['sort'];
         }
 
+        if (isset($arPost['email'])) {
+            $email = $arPost['email'];
+        }
+
         $res = $elasticsearch->search($arMust, $arMustNot, $arShould, $from, $size, $sort, $this->appIni['elasticsearch']['index']);
 
         $this->getResponse()->setBody($res);
@@ -86,6 +91,7 @@ class CustomerController extends Zend_Rest_Controller
         require_once(APPLICATION_PATH.'/../library/Simple/Couchdb.php');
 
         $id = $this->_getParam('id');
+        $email = $this->_getParam('email');
 
         $entity = "customer";
 
@@ -93,7 +99,13 @@ class CustomerController extends Zend_Rest_Controller
 
         $couchdb = new SimpleCouchdb($this->appIni['couchdb']);
 
-        $res = $couchdb->readDocument($id);
+        if (isset($id)) {
+            $res = $couchdb->readDocument($id);
+        }
+
+        if (isset($email)) {
+            $res = $this->searchFirst("email", $email);
+        }
 
         header('Content-type: application/json; charset=utf-8');
 
@@ -134,4 +146,14 @@ class CustomerController extends Zend_Rest_Controller
         $this->getResponse()->setHttpResponseCode(200);
     }
 
+    private function searchFirst($attribute, $value)
+    {
+        require_once(APPLICATION_PATH.'/../library/Simple/Elasticsearch.php');
+
+        $entity = "customer";
+
+        $elasticsearch = new SimpleElasticsearch($this->appIni['elasticsearch']);
+
+        return $elasticsearch->searchFirst($entity, $attribute, $value);
+    }
 }

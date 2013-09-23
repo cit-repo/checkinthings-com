@@ -13,7 +13,7 @@ class Application_Form_Product extends Zend_Form
 
         $feed = new Zend_Form_Element_Text('feed');
         $feed->setLabel('Feed')
-             ->setAttrib('size', '58')
+             ->setAttrib('size', '64')
              ->setRequired(true)
              ->addFilter('StripTags')
              ->addFilter('StringTrim')
@@ -21,7 +21,7 @@ class Application_Form_Product extends Zend_Form
 
         $channel = new Zend_Form_Element_Text('channel');
         $channel->setLabel('Channel')
-            ->setAttrib('size', '58')
+            ->setAttrib('size', '64')
             ->setRequired(true)
             ->addFilter('StripTags')
             ->addFilter('StringTrim')
@@ -29,7 +29,7 @@ class Application_Form_Product extends Zend_Form
 
         $mainCategory = new Zend_Form_Element_Text('main_category');
         $mainCategory->setLabel('MainCategory')
-            ->setAttrib('size', '58')
+            ->setAttrib('size', '64')
             ->setRequired(true)
             ->addFilter('StripTags')
             ->addFilter('StringTrim')
@@ -37,7 +37,7 @@ class Application_Form_Product extends Zend_Form
 
         $name = new Zend_Form_Element_Text('name');
         $name->setLabel('Name')
-             ->setAttrib('size', '58')
+             ->setAttrib('size', '64')
              ->setRequired(true)
              ->addFilter('StripTags')
              ->addFilter('StringTrim')
@@ -50,9 +50,17 @@ class Application_Form_Product extends Zend_Form
                     ->addFilter('StringTrim')
                     ->addValidator('NotEmpty');
 
+        $productUrl = new Zend_Form_Element_Text('product_url');
+        $productUrl->setLabel('ProductUrl')
+                   ->setAttrib('size', '64')
+                   ->setRequired(false)
+                   ->addFilter('StripTags')
+                   ->addFilter('StringTrim')
+                   ->addValidator('NotEmpty');
+
         $imageUrl = new Zend_Form_Element_Text('image_url');
         $imageUrl->setLabel('ImageUrl')
-                 ->setAttrib('size', '58')
+                 ->setAttrib('size', '64')
                  ->setRequired(false)
                  ->addFilter('StripTags')
                  ->addFilter('StringTrim')
@@ -61,7 +69,7 @@ class Application_Form_Product extends Zend_Form
         $submit = new Zend_Form_Element_Submit('submit');
         $submit->setAttrib('id', 'submitbutton');
 
-        $this->addElements(array($productId, $feed, $name, $channel, $mainCategory, $description, $imageUrl, $submit));
+        $this->addElements(array($productId, $feed, $channel, $mainCategory, $name, $description, $productUrl, $imageUrl, $submit));
     }
 }
 

@@ -166,7 +166,7 @@
             $decode = json_decode($json);
             $uuid = $decode->uuids[0];
 
-            $ins = "INSERT INTO product (`product_id`, `feed`, `name`, `image_url`, `uuid`) VALUES (NULL, '$feed', '".addslashes($product['page_title'])."', '".addslashes($product['image'])."', '$uuid');";
+            $ins = "INSERT INTO product (`product_id`, `feed`, `name`, `product_url`, `image_url`, `uuid`) VALUES (NULL, '$feed', '".addslashes($product['page_title'])."', '".addslashes($product['page_url'])."', '".addslashes($product['image'])."', '$uuid');";
             // echo $ins."\n";
 
             $res = mysqli_query($link, $ins);
@@ -176,6 +176,7 @@
                 if (!is_array($value)) {
                     switch ($key) {
                         case "page_title":
+                        case "page_url":
                         case "image":
                             break;
                         case "gender":

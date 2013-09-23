@@ -40,4 +40,4 @@
     $chleaderrmsg = curl_error($chlead);
     curl_close($chlead);
 
-    echo json_encode(array("error" => false));
+    echo 0;
