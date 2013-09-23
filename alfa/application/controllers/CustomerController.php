@@ -41,14 +41,16 @@ class CustomerController extends Zend_Controller_Action
 
     public function login($raw_data)
     {
-        $raw_data['email'] = explode("@", $raw_data['email']);
-        $raw_data['email'] = $raw_data['email'][0];
+        // $raw_data['email'] = explode("@", $raw_data['email']);
+        // $raw_data['email'] = $raw_data['email'][0];
 
-        $this->view->login = $this->requestApi("customer", "login", $raw_data);
+        $this->view->login = $this->customerOnApi(array("attribute" => "email", "value" => $raw_data['email']), "search_first");
 
         $arLogin = json_decode($this->view->login, true);
 
-        if (isset($arLogin['hits']['hits'][0]['_id'])) {
+        $password = md5($this->appIni['md5']['seed'].$raw_data['password']);
+
+        if (isset($arLogin['hits']['hits'][0]['_id']) && $arLogin['hits']['hits'][0]['_source']['password'] == $raw_data['password']) {
             $this->sess->customer_uuid = $arLogin['hits']['hits'][0]['_id'];
             $this->sess->customer_firstname = $arLogin['hits']['hits'][0]['_source']['firstname'];
             $this->sess->customer_lastname = $arLogin['hits']['hits'][0]['_source']['lastname'];
@@ -74,6 +76,7 @@ class CustomerController extends Zend_Controller_Action
         unset($origin['firstname']);
         unset($origin['lastname']);
         unset($origin['password']);
+        unset($origin['cpassword']);
 
         $this->view->check = $this->requestApi("customer", "check", $origin);
 
@@ -123,6 +126,8 @@ class CustomerController extends Zend_Controller_Action
             $this->view->error = "Sorry, but this email is already registered.";
 
         } else {
+            unset($raw_data['cpassword']);
+
             $this->view->register = $this->requestApi("customer", "register", $raw_data);
 
             $res = json_decode($this->view->register, true);
