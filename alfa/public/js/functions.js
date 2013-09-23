@@ -26,11 +26,11 @@ function ajaxRequest(url, type, data) {
     });
 
     request.done(function(msg) {
-        console.log( msg );
+        // console.log( msg );
     });
 
     request.fail(function(jqXHR, textStatus) {
-        console.log( "Request failed: " + textStatus );
+        // console.log( "Request failed: " + textStatus );
     });
 }
 
