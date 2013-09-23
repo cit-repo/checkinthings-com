@@ -86,11 +86,7 @@
 
             foreach ($params as $key => $value) {
                 if (isset($value) && $value != '') {
-                    if ($key != "last_updated") {
-                        $arParams[] = '"'.(rtrim($key)).'"'.':"'.(rtrim($value)).'"';
-                    } else {
-                        $arParams[] = '"'.(rtrim($key)).'"'.':"'.(rtrim(date('Y-m-d H:i:s'))).'"';
-                    }
+                    $arParams[] = '"'.(rtrim($key)).'"'.':"'.(rtrim($value)).'"';
                 }
             }
 

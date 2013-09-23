@@ -132,6 +132,8 @@ class CustomerController extends Zend_Rest_Controller
 
         $arPost = json_decode($rawBody, true);
 
+        $arPost['last_updated'] = date('Y-m-d H:i:s');
+
         $res = $couchdb->createDocument($arPost, "customer");
 
         $this->getResponse()->setBody($res);
