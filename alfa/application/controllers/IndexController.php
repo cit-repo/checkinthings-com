@@ -56,7 +56,9 @@ class IndexController extends Zend_Controller_Action
         $product = json_decode($this->view->specialOfferProduct, true);
 
         $this->view->specialOfferLocalImage = $this->appIni['alfa']['host']."/img/product/".$this->view->specialOfferId.".jpg";
-        $this->view->specialOfferRemoteImage = $product['hits']['hits'][0]['_source']['image_url'];
+        if ($product['hits']['hits'][0]) {
+            $this->view->specialOfferRemoteImage = $product['hits']['hits'][0]['_source']['image_url'];
+        }
 
         $this->searchForm();
 
