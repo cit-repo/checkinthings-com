@@ -90,6 +90,8 @@
                 }
             }
 
+            $arParams['last_updated'] = date('Y-m-d H:i:s');
+
             $request = '{'.implode(", ", $arParams).'}';
 
             $url = "/".$this->database.$entity."/$uuid";
