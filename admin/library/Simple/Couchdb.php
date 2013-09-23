@@ -86,11 +86,13 @@
 
             foreach ($params as $key => $value) {
                 if (isset($value) && $value != '') {
-                    $arParams[] = '"'.(rtrim($key)).'"'.':"'.(rtrim($value)).'"';
+                    if ($key != "last_updated") {
+                        $arParams[] = '"'.(rtrim($key)).'"'.':"'.(rtrim($value)).'"';
+                    } else {
+                        $arParams[] = '"'.(rtrim($key)).'"'.':"'.(rtrim(date('Y-m-d H:i:s'))).'"';
+                    }
                 }
             }
-
-            $arParams['last_updated'] = date('Y-m-d H:i:s');
 
             $request = '{'.implode(", ", $arParams).'}';
 
