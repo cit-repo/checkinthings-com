@@ -68,7 +68,7 @@
                     }
 
                 } else {
-                    $ins = "INSERT INTO admin_cit.".$mysql_options['table']." (firstname, lastname, email, password, uuid, last_updated) VALUES ('".$doc['firstname']."','".$doc['lastname']."','".$doc['email']."','".$doc['password']."','".$doc['_id']."','".$doc['last_updated']."');";
+                    $ins = "INSERT INTO admin_cit.".$mysql_options['table']." (firstname, lastname, email, password, session_id, cookie_id, uuid, last_updated) VALUES ('".$doc['firstname']."','".$doc['lastname']."','".$doc['email']."','".$doc['password']."','".$doc['session_id']."','".$doc['cookie_id']."','".$doc['_id']."','".$doc['last_updated']."');";
                     echo date('Y-m-d H:i:s')." - ".$ins."\n";
                     $res = mysqli_query($link, $ins);
 

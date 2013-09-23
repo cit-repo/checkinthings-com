@@ -128,6 +128,9 @@ class CustomerController extends Zend_Controller_Action
         } else {
             unset($raw_data['cpassword']);
 
+            $raw_data["session_id"] = $_COOKIE['PHPSESSID'];
+            $raw_data["cookie_id"] = $_COOKIE['PHPCOOKID'];
+
             $this->view->register = $this->requestApi("customer", "register", $raw_data);
 
             $res = json_decode($this->view->register, true);
