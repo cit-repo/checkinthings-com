@@ -1,6 +1,12 @@
 checkinthings-com
 =================
 
+## 0.2.1
+*2013-09-23 | Pablo del Vecchio*
+
+- Buy buttom tracks click and opens new browser with product_url link
+
+
 ## 0.2.0
 *2013-09-23 | Pablo del Vecchio*
 

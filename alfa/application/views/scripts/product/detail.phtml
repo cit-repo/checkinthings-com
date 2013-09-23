@@ -87,7 +87,7 @@
                                         <a class="fancybox" href="#image"><img width='150' height='150' border='0' src="<?=$imageSrc?>"></a><br><br>
                                         <a class="btn btn-want" href="#wantit" onclick="clickTrack('wantit_<?=$hit['_source']['product_id']?>')">Want it</a>&nbsp;
                                         <a class="btn btn-have" href="#haveit" onclick="clickTrack('haveit_<?=$hit['_source']['product_id']?>')">Have it</a>&nbsp;
-                                        <a class="btn btn-buy" href="#buyit" onclick="clickTrack('buyit_<?=$hit['_source']['product_id']?>')">Buy it</a>
+                                        <a class="btn btn-buy" target="_blank" href="<?=$hit['_source']['product_url']?>" onclick="clickTrack('buyit_<?=$hit['_source']['product_id']?>')">Buy it</a>
                                     </td>
                                     <tr>
                                 <?php
