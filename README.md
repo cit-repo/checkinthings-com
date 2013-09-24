@@ -1,6 +1,12 @@
 checkinthings-com
 =================
 
+## 0.2.3
+*2013-09-24 | Pablo del Vecchio*
+
+- Fixed existing email recognition on registration
+
+
 ## 0.2.2
 *2013-09-23 | Pablo del Vecchio*
 

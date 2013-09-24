@@ -9,7 +9,7 @@
 
     $arData = json_decode($raw, true);
 
-    $url = $baseUrl."/".$arData['entity']."/".$arData['attribute']."/".$arData['value'];
+    $url = $baseUrl."/customer/email/".$_GET['email'];
 
     $chlead = curl_init();
     curl_setopt($chlead, CURLOPT_URL, $url);
@@ -25,8 +25,8 @@
     $chleaderrmsg = curl_error($chlead);
     curl_close($chlead);
 
-    if (strstr($chleadresult, $arData['value'])) {
-        echo 1;
+    if (strstr($chleadresult, $_GET['email'])) {
+        echo '{"check":"true"}';
     } else {
-        echo 0;
+        echo '{"check":"false"}';
     }

@@ -40,4 +40,4 @@
     $chleaderrmsg = curl_error($chlead);
     curl_close($chlead);
 
-    echo 0;
+    echo '{"error":"false"}';
