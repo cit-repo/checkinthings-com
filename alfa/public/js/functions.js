@@ -44,31 +44,31 @@ function sendRequest(url) {
 }
 
 function visitTrack(url, type, data) {
-    ajaxRequest('/track.php', 'POST', '{"event":"visit", "link":"'+document.URL+'", "http_referer":"'+document.referrer+'"}');
+    ajaxRequest('/track/', 'POST', '{"event":"visit", "link":"'+document.URL+'", "http_referer":"'+document.referrer+'"}');
 }
 
 function clickTrack(button) {
-    ajaxRequest('/track.php', 'POST', '{"event":"click", "link":"'+button+'", "http_referer":"'+document.URL+'"}');
+    ajaxRequest('/track/', 'POST', '{"event":"click", "link":"'+button+'", "http_referer":"'+document.URL+'"}');
 }
 
-function loadRequest(url, attribute, value) {
+function loadRequest(url, entity, attribute, value) {
     $.ajaxSetup({
         async:false,
         dataType:"jsonp"
     });
 
-    $('#json_response').load(url+'?'+attribute+'='+value);
+    $('#json_response').load(url+'?entity='+entity+'&attribute='+attribute+'&value='+value);
 
     return jQuery.parseJSON($('#json_response').html());
 }
 
 function formTrack(form, attribute, value) {
-    var ret = loadRequest('/check.php', 'email', value);
+    var ret = loadRequest('/check/', 'customer', attribute, value);
 
     if (strstr(ret.check, 'true')) {
         return true;
     } else {
-        ajaxRequest('/track.php', 'POST', '{"event":"'+form+'", "link":"'+attribute+'|'+value+'", "http_referer":"'+document.URL+'"}');
+        ajaxRequest('/track/', 'POST', '{"event":"'+form+'", "link":"'+attribute+'|'+value+'", "http_referer":"'+document.URL+'"}');
     }
 }
 

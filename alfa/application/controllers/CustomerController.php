@@ -16,6 +16,12 @@ class CustomerController extends Zend_Controller_Action
 
     public function indexAction()
     {
+        if ($this->sess->customer_uuid) {
+            $arSearchFirst['attribute'] = "id";
+            $arSearchFirst['value'] = $this->sess->customer_uuid;
+            $this->view->customer = $this->customerOnApi($arSearchFirst, "search_first");
+        }
+
         $breadcrumb[] = array("Home" => "/");
 
         $this->view->breadcrumb = $breadcrumb;
@@ -64,10 +70,22 @@ class CustomerController extends Zend_Controller_Action
 
         }
 
+        if ($this->sess->customer_uuid) {
+            $arSearchFirst['attribute'] = "id";
+            $arSearchFirst['value'] = $this->sess->customer_uuid;
+            $this->view->customer = $this->customerOnApi($arSearchFirst, "search_first");
+        }
+
     }
 
     public function register($raw_data)
     {
+        if ($this->sess->customer_uuid) {
+            $arSearchFirst['attribute'] = "id";
+            $arSearchFirst['value'] = $this->sess->customer_uuid;
+            $this->view->customer = $this->customerOnApi($arSearchFirst, "search_first");
+        }
+
         $origin = $raw_data;
 
         $origin['email'] = explode("@", $origin['email']);
@@ -101,6 +119,12 @@ class CustomerController extends Zend_Controller_Action
 
     public function multistep($raw_data)
     {
+        if ($this->sess->customer_uuid) {
+            $arSearchFirst['attribute'] = "id";
+            $arSearchFirst['value'] = $this->sess->customer_uuid;
+            $this->view->customer = $this->customerOnApi($arSearchFirst, "search_first");
+        }
+
         $origin = $raw_data;
 
         // $origin['email'] = explode("@", $origin['email']);
@@ -119,6 +143,8 @@ class CustomerController extends Zend_Controller_Action
         $origin['value'] = $origin['email'];
 
         $this->view->check = $this->customerOnApi($origin, "search_first");
+
+        // print_r($this->view->check);
 
         $arCheck = json_decode($this->view->check, true);
 

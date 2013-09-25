@@ -1,6 +1,12 @@
 checkinthings-com
 =================
 
+## 0.2.4
+*2013-09-25 | Pablo del Vecchio*
+
+- Added wants, haves and buys on customer account
+
+
 ## 0.2.3
 *2013-09-24 | Pablo del Vecchio*
 

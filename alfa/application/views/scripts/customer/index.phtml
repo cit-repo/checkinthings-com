@@ -4,6 +4,11 @@
 
     require_once('header.phtml');
 
+    $this->customer = json_decode($this->customer, true);
+
+    $wants = explode(",", $this->customer['engine_wants']);
+    $haves = explode(",", $this->customer['engine_haves']);
+    $buys = explode(",", $this->customer['engine_buys']);
 ?>
 
 <div class="container">
@@ -37,7 +42,14 @@
         <hr>
         <table>
             <tr>
-                <td>Wants</td>
+                <td colspan="10">Wants</td>
+            </tr>
+            <tr>
+                <?php
+                    foreach ($wants as $productId) {
+                        echo "<td><a href=\"/product/detail/id/".$productId."\"><img border=\"0\" src=\"image.php?product_id=".$productId."\"></a></td>";
+                    }
+                ?>
             </tr>
         </table>
         <hr>
@@ -45,11 +57,25 @@
             <tr>
                 <td>Haves</td>
             </tr>
+            <tr>
+                <?php
+                foreach ($haves as $productId) {
+                    echo "<td><a href=\"/product/detail/id/".$productId."\"><img border=\"0\" src=\"image.php?product_id=".$productId."\"></a></td>";
+                }
+                ?>
+            </tr>
         </table>
         <hr>
         <table>
             <tr>
                 <td>Buys</td>
+            </tr>
+            <tr>
+                <?php
+                foreach ($buys as $productId) {
+                    echo "<td><a href=\"/product/detail/id/".$productId."\"><img border=\"0\" src=\"image.php?product_id=".$productId."\"></a></td>";
+                }
+                ?>
             </tr>
         </table>
     <?php
