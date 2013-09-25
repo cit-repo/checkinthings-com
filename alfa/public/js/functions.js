@@ -51,17 +51,19 @@ function clickTrack(button) {
     ajaxRequest('/track.php', 'POST', '{"event":"click", "link":"'+button+'", "http_referer":"'+document.URL+'"}');
 }
 
-function loadRequest(email) {
-    $.ajaxSetup({async:false, dataType:"jsonp"});
+function loadRequest(url, attribute, value) {
+    $.ajaxSetup({
+        async:false,
+        dataType:"jsonp"
+    });
 
-    // $('#json_response').load('http://127.0.0.1/api/json.php');
-    $('#json_response').load('check.php?email='+email);
-    // console.log($('#json_response').html());
+    $('#json_response').load(url+'?'+attribute+'='+value);
+
     return jQuery.parseJSON($('#json_response').html());
 }
 
 function formTrack(form, attribute, value) {
-    var ret = loadRequest(value);
+    var ret = loadRequest('/check.php', 'email', value);
 
     if (strstr(ret.check, 'true')) {
         return true;

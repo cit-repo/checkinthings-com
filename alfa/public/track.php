@@ -40,4 +40,8 @@
     $chleaderrmsg = curl_error($chlead);
     curl_close($chlead);
 
-    echo '{"error":"false"}';
+    if (!$chleadapierr) {
+        echo '{"track":"true"}';
+    } else {
+        echo '{"track":"false"}';
+    }

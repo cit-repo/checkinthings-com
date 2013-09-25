@@ -44,7 +44,7 @@ $(function(){
 
         if(!error) {
             if (formTrack('multistepForm', 'email', $('#email').val())) {
-                console.log('Sorry, '+$('#email').val()+' is already in use.');
+                // console.log('Sorry, '+$('#email').val()+' is already in use.');
                 alert('Sorry, '+$('#email').val()+' is already in use.');
                 return false;
             }
