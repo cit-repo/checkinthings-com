@@ -4,7 +4,7 @@
 <table width="100%" align="center">
     <tr><td height="10" colspan="2"></td></tr>
     <tr>
-        <td width="50%" align="left" bgcolor="#ffffff">| <a href="<?php echo $this->url(array('controller'=>'customer','action'=>'index'));?>">Refresh</a> | <a href="<?php echo $this->url(array('controller'=>'customer','action'=>'create'));?>">Create</a> | </td>
+        <td width="50%" align="left" bgcolor="#ffffff">|&nbsp;&nbsp;<a href="<?php echo $this->url(array('controller'=>'customer','action'=>'index'));?>">Refresh</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="<?php echo $this->url(array('controller'=>'customer','action'=>'create'));?>">Create</a>&nbsp;&nbsp;|</td>
         <td width="50%" align="center" bgcolor="#ffffff"</td>
     </tr>
     <tr>
@@ -20,14 +20,14 @@
 
 <table>
     <tr>
-        <th>Action</th>
-        <th>CustomerId</th>
-        <th>Firstname</th>
-        <th>Lastname</th>
-        <th>Email</th>
-        <th>Password</th>
-        <th>Active</th>
-        <th>LastUpdated</th>
+        <th class="crud_title">Action</th>
+        <th class="crud_title">CustomerId</th>
+        <th class="crud_title">Firstname</th>
+        <th class="crud_title">Lastname</th>
+        <th class="crud_title">Email</th>
+        <th class="crud_title">Password</th>
+        <th class="crud_title">Active</th>
+        <th class="crud_title">LastUpdated</th>
     </tr>
     <?php
         if ($this->customers)
@@ -41,16 +41,16 @@
             }
     ?>
         <tr>
-            <td>
-                <a href="<?php echo $this->url(array('controller'=>'customer','action'=>'update', 'id'=>$customer->customer_id));?>">Update</a><br>
-                <a href="<?php echo $this->url(array('controller'=>'customer','action'=>'delete', 'id'=>$customer->customer_id));?>">Delete</a>
+            <td align="center">
+                <a href="<?php echo $this->url(array('controller'=>'customer','action'=>'update', 'id'=>$customer->customer_id));?>"><img title="Update" border="0" width="18" height="18" src="/img/icon_update.png"></a>
+                <a href="<?php echo $this->url(array('controller'=>'customer','action'=>'delete', 'id'=>$customer->customer_id));?>"><img title="Delete" border="0" width="18" height="18" src="/img/icon_delete.png"></a>
             </td>
-            <td><?php echo $this->escape($customer->customer_id);?></td>
+            <td align="center"><?php echo $this->escape($customer->customer_id);?></td>
             <td><?php echo $this->escape($customer->firstname);?></td>
             <td><?php echo $this->escape($customer->lastname);?></td>
             <td><?php echo $this->escape($customer->email);?></td>
             <td><?php echo $this->escape($customer->password);?></td>
-            <td><?php echo $this->escape($customer->active);?></td>
+            <td align="center"><?php echo $this->escape($customer->active);?></td>
             <td><?php echo $this->escape($customer->last_updated);?></td>
         </tr>
     <?php } ?>

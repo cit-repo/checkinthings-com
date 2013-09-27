@@ -31,3 +31,9 @@ form dd {
 form #submitbutton {
     margin-left: 100px;
 }
+
+.crud_title {
+    background: #111144;
+    font-size: 1.2em;
+    color: #eeeeee;
+}

@@ -4,7 +4,7 @@
 <table width="100%" align="center">
     <tr><td height="10" colspan="2"></td></tr>
     <tr>
-        <td width="50%" align="left" bgcolor="#ffffff">| <a href="<?php echo $this->url(array('controller'=>'category','action'=>'index'));?>">Refresh</a> | <a href="<?php echo $this->url(array('controller'=>'category','action'=>'create'));?>">Create</a> | </td>
+        <td width="50%" align="left" bgcolor="#ffffff">|&nbsp;&nbsp;<a href="<?php echo $this->url(array('controller'=>'category','action'=>'index'));?>">Refresh</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="<?php echo $this->url(array('controller'=>'category','action'=>'create'));?>">Create</a>&nbsp;&nbsp;|</td>
         <td width="50%" align="center" bgcolor="#ffffff"</td>
     </tr>
     <tr>
@@ -20,14 +20,14 @@
 
 <table>
     <tr>
-        <th>Action</th>
-        <th>CategoryId</th>
-        <th>Name</th>
-        <th>Url</th>
-        <th>Description</th>
-        <th>Parent</th>
-        <th>Active</th>
-        <th>LastUpdated</th>
+        <th class="crud_title">Action</th>
+        <th class="crud_title">CategoryId</th>
+        <th class="crud_title">Name</th>
+        <th class="crud_title">Url</th>
+        <th class="crud_title">Description</th>
+        <th class="crud_title">Parent</th>
+        <th class="crud_title">Active</th>
+        <th class="crud_title">LastUpdated</th>
     </tr>
     <?php
         if ($this->categorys)
@@ -41,16 +41,16 @@
             }
     ?>
         <tr>
-            <td>
-                <a href="<?php echo $this->url(array('controller'=>'category','action'=>'update', 'id'=>$category->category_id));?>">Update</a><br>
-                <a href="<?php echo $this->url(array('controller'=>'category','action'=>'delete', 'id'=>$category->category_id));?>">Delete</a>
+            <td align="center">
+                <a href="<?php echo $this->url(array('controller'=>'category','action'=>'update', 'id'=>$category->category_id));?>"><img title="Update" border="0" width="18" height="18" src="/img/icon_update.png"></a>
+                <a href="<?php echo $this->url(array('controller'=>'category','action'=>'delete', 'id'=>$category->category_id));?>"><img title="Delete" border="0" width="18" height="18" src="/img/icon_delete.png"></a>
             </td>
-            <td><?php echo $this->escape($category->category_id);?></td>
+            <td align="center"><?php echo $this->escape($category->category_id);?></td>
             <td><?php echo $this->escape($category->name);?></td>
             <td><?php echo $this->escape($category->url);?></td>
             <td><?php echo $this->escape($category->description);?></td>
-            <td><?php echo $this->escape($category->parent);?></td>
-            <td><?php echo $this->escape($category->active);?></td>
+            <td align="center"><?php echo $this->escape($category->parent);?></td>
+            <td align="center"><?php echo $this->escape($category->active);?></td>
             <td><?php echo $this->escape($category->last_updated);?></td>
         </tr>
     <?php } ?>
