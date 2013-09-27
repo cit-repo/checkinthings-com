@@ -12,7 +12,7 @@ class Application_Model_DbTable_Product extends Zend_Db_Table_Abstract
         $this->appIni = $obControl->getParam("bootstrap")->getOptions();
     }
 
-    public function createProduct($feed, $channel, $main_category, $name, $description, $product_url, $image_url)
+    public function createProduct($feed, $channel, $main_category, $name, $description, $product_url, $image_url, $active)
     {
         $data = array(
             'feed' => $feed,
@@ -22,6 +22,8 @@ class Application_Model_DbTable_Product extends Zend_Db_Table_Abstract
             'description' => $description,
             'product_url' => $product_url,
             'image_url' => $image_url,
+            'active' => $active,
+            'last_updated' => date('Y-m-d H:i:s'),
         );
         $this->insert($data);
     }
@@ -46,7 +48,7 @@ class Application_Model_DbTable_Product extends Zend_Db_Table_Abstract
         return $arEav;
     }
 
-    public function updateProduct($product_id, $feed, $channel, $main_category, $name, $description, $product_url, $image_url)
+    public function updateProduct($product_id, $feed, $channel, $main_category, $name, $description, $product_url, $image_url, $active)
     {
         $data = array(
             'feed' => $feed,
@@ -56,6 +58,8 @@ class Application_Model_DbTable_Product extends Zend_Db_Table_Abstract
             'description' => $description,
             'product_url' => $product_url,
             'image_url' => $image_url,
+            'active' => $active,
+            'last_updated' => date('Y-m-d H:i:s'),
         );
         $this->update($data, 'product_id = '. (int)$product_id);
     }

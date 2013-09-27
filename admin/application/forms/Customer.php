@@ -43,6 +43,14 @@ class Application_Form_Customer extends Zend_Form
                  ->addFilter('StringTrim')
                  ->addValidator('NotEmpty');
 
+        $active = new Zend_Form_Element_Radio('active');
+        $active->setLabel('Active')
+            ->setRequired(false)
+            ->addFilter('StripTags')
+            ->addFilter('StringTrim')
+            ->setMultiOptions( array('Y' => 'Yes', 'N' => 'No') )
+            ->addValidator('NotEmpty');
+
         $lastUpdated = new Zend_Form_Element_Text('last_updated');
         $lastUpdated->setLabel('LastUpdated')
                     ->setAttrib('size', '58')
@@ -54,7 +62,7 @@ class Application_Form_Customer extends Zend_Form
         $submit = new Zend_Form_Element_Submit('submit');
         $submit->setAttrib('id', 'submitbutton');
 
-        $this->addElements(array($customerId, $firstname, $lastname, $email, $password, $lastUpdated, $submit));
+        $this->addElements(array($customerId, $firstname, $lastname, $email, $password, $active, $lastUpdated, $submit));
     }
 }
 

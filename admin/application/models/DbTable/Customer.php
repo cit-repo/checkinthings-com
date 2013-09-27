@@ -12,13 +12,14 @@ class Application_Model_DbTable_Customer extends Zend_Db_Table_Abstract
         $this->appIni = $obControl->getParam("bootstrap")->getOptions();
     }
 
-    public function createCustomer($firstname, $lastname, $email, $password)
+    public function createCustomer($firstname, $lastname, $email, $password, $active)
     {
         $data = array(
             'firstname' => $firstname,
             'lastname' => $lastname,
             'email' => $email,
             'password' => md5($this->appIni['md5']['seed'].$password),
+            'active' => $active,
             'last_updated' => date('Y-m-d H:i:s'),
         );
         $this->insert($data);
@@ -33,12 +34,13 @@ class Application_Model_DbTable_Customer extends Zend_Db_Table_Abstract
         return $row->toArray();
     }
 
-    public function updateCustomer($customer_id, $firstname, $lastname, $email, $password)
+    public function updateCustomer($customer_id, $firstname, $lastname, $email, $password, $active)
     {
         $data = array(
             'firstname' => $firstname,
             'lastname' => $lastname,
             'email' => $email,
+            'active' => $active,
             'last_updated' => date('Y-m-d H:i:s'),
         );
 

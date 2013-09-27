@@ -51,10 +51,18 @@ class Application_Form_Track extends Zend_Form
                     ->addFilter('StringTrim')
                     ->addValidator('NotEmpty');
 
+        $lastUpdated = new Zend_Form_Element_Text('last_updated');
+        $lastUpdated->setLabel('LastUpdated')
+            ->setAttrib('size', '58')
+            ->setRequired(false)
+            ->addFilter('StripTags')
+            ->addFilter('StringTrim')
+            ->addValidator('NotEmpty');
+
         $submit = new Zend_Form_Element_Submit('submit');
         $submit->setAttrib('id', 'submitbutton');
 
-        $this->addElements(array($trackId, $event, $link, $httpReferer, $userAgent, $remoteAddr, $submit));
+        $this->addElements(array($trackId, $event, $link, $httpReferer, $userAgent, $remoteAddr, $lastUpdated, $submit));
     }
 }
 

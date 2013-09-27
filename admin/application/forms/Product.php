@@ -45,7 +45,7 @@ class Application_Form_Product extends Zend_Form
 
         $description = new Zend_Form_Element_Textarea('description');
         $description->setLabel('Description')
-                    ->setRequired(true)
+                    ->setRequired(false)
                     ->addFilter('StripTags')
                     ->addFilter('StringTrim')
                     ->addValidator('NotEmpty');
@@ -66,10 +66,26 @@ class Application_Form_Product extends Zend_Form
                  ->addFilter('StringTrim')
                  ->addValidator('NotEmpty');
 
+        $active = new Zend_Form_Element_Radio('active');
+        $active->setLabel('Active')
+            ->setRequired(false)
+            ->addFilter('StripTags')
+            ->addFilter('StringTrim')
+            ->setMultiOptions( array('Y' => 'Yes', 'N' => 'No') )
+            ->addValidator('NotEmpty');
+
+        $lastUpdated = new Zend_Form_Element_Text('last_updated');
+        $lastUpdated->setLabel('LastUpdated')
+            ->setAttrib('size', '58')
+            ->setRequired(false)
+            ->addFilter('StripTags')
+            ->addFilter('StringTrim')
+            ->addValidator('NotEmpty');
+
         $submit = new Zend_Form_Element_Submit('submit');
         $submit->setAttrib('id', 'submitbutton');
 
-        $this->addElements(array($productId, $feed, $channel, $mainCategory, $name, $description, $productUrl, $imageUrl, $submit));
+        $this->addElements(array($productId, $feed, $channel, $mainCategory, $name, $description, $productUrl, $imageUrl, $active, $lastUpdated, $submit));
     }
 }
 

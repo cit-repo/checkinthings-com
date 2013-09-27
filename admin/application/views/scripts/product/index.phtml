@@ -27,6 +27,8 @@
         <th>MainCategory</th>
         <th>Name</th>
         <th>ImageUrl</th>
+        <th>Active</th>
+        <th>LastUpdated</th>
     </tr>
     <?php
         if ($this->products)
@@ -50,6 +52,8 @@
             <td><?php echo $this->escape($product->main_category);?></td>
             <td><?php echo $this->escape($product->name);?></td>
             <td><img width="100" height="75" src="<?php echo $this->escape($product->image_url);?>"></td>
+            <td><?php echo $this->escape($product->active);?></td>
+            <td><?php echo $this->escape($product->last_updated);?></td>
         </tr>
     <?php } ?>
 </table>

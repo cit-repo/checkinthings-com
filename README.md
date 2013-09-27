@@ -1,6 +1,12 @@
 checkinthings-com
 =================
 
+## 0.2.5
+*2013-09-27 | Pablo del Vecchio*
+
+- Added category CRUD on backend
+
+
 ## 0.2.4
 *2013-09-25 | Pablo del Vecchio*
 

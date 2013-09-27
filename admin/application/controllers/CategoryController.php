@@ -1,6 +1,6 @@
 <?php
 
-class CustomerController extends Zend_Controller_Action
+class CategoryController extends Zend_Controller_Action
 {
 
     public function init()
@@ -14,28 +14,25 @@ class CustomerController extends Zend_Controller_Action
     {
         $breadcrumb[] = array("Admin" => "/");
         $this->view->breadcrumb = $breadcrumb;
-        $this->view->title = "Customer";
+        $this->view->title = "Category";
         $this->view->headTitle($this->view->title);
 
         $this->view->config = $this->appIni;
 
-        $customer = new Application_Model_DbTable_Customer();
-        $arCustomers = $customer->fetchAll('last_updated >= YEAR(NOW())',
-                                           'last_updated DESC',
-                                           100,
-                                           0);
-        $this->view->customers = $arCustomers;
+        $category = new Application_Model_DbTable_Category();
+        $arCategories = $category->fetchAll('last_updated >= YEAR(NOW())', 'last_updated DESC', 100, 0);
+        $this->view->categorys = $arCategories;
     }
 
     public function createAction()
     {
         $breadcrumb[] = array("Admin" => "/");
-        $breadcrumb[] = array("Customer" => "/customer");
+        $breadcrumb[] = array("Category" => "/category");
         $this->view->breadcrumb = $breadcrumb;
         $this->view->title = "Create";
         $this->view->headTitle($this->view->title);
 
-        $form = new Application_Form_Customer();
+        $form = new Application_Form_Category();
 
         $form->submit->setLabel('Create');
         $this->view->form = $form;
@@ -44,14 +41,15 @@ class CustomerController extends Zend_Controller_Action
             $formData = $this->getRequest()->getPost();
 
             if ($form->isValid($formData)) {
-                $firstname = $form->getValue('firstname');
-                $lastname = $form->getValue('lastname');
-                $email = $form->getValue('email');
-                $password = $form->getValue('password');
+                $name = $form->getValue('name');
+                $url = $form->getValue('url');
+                $description = $form->getValue('description');
+                $parent = $form->getValue('parent');
+                $uuid = $form->getValue('uuid');
                 $active = $form->getValue('active');
 
-                $customer = new Application_Model_DbTable_Customer();
-                $customer->createCustomer($firstname, $lastname, $email, $password, $active);
+                $category = new Application_Model_DbTable_Category();
+                $category->createCategory($name, $url, $description, $parent, $uuid, $active);
                 $this->_helper->redirector('index');
             } else {
                 $form->populate($formData);
@@ -63,12 +61,12 @@ class CustomerController extends Zend_Controller_Action
     public function updateAction()
     {
         $breadcrumb[] = array("Admin" => "/");
-        $breadcrumb[] = array("Customer" => "/customer");
+        $breadcrumb[] = array("Category" => "/category");
         $this->view->breadcrumb = $breadcrumb;
         $this->view->title = "Update";
         $this->view->headTitle($this->view->title);
 
-        $form = new Application_Form_Customer();
+        $form = new Application_Form_Category();
         $form->submit->setLabel('Update');
         $this->view->form = $form;
 
@@ -76,15 +74,16 @@ class CustomerController extends Zend_Controller_Action
             $formData = $this->getRequest()->getPost();
 
             if ($form->isValid($formData)) {
-                $customerId = (int)$form->getValue('customer_id');
-                $firstname = $form->getValue('firstname');
-                $lastname = $form->getValue('lastname');
-                $email = $form->getValue('email');
-                $password = $form->getValue('password');
+                $categoryId = (int)$form->getValue('category_id');
+                $name = $form->getValue('name');
+                $url = $form->getValue('url');
+                $description = $form->getValue('description');
+                $parent = $form->getValue('parent');
+                $uuid = $form->getValue('uuid');
                 $active = $form->getValue('active');
 
-                $customer = new Application_Model_DbTable_Customer();
-                $customer->updateCustomer($customerId, $firstname, $lastname, $email, $password, $active);
+                $category = new Application_Model_DbTable_Category();
+                $category->updateCategory($categoryId, $name, $url, $description, $parent, $uuid, $active);
 
                 $this->_helper->redirector('index');
             } else {
@@ -94,10 +93,10 @@ class CustomerController extends Zend_Controller_Action
             $this->_helper->redirector('index');
 
         } else {
-            $customerId = $this->_getParam('id', 0);
-            if ($customerId > 0) {
-                $customer = new Application_Model_DbTable_Customer();
-                $form->populate($customer->readCustomer(($customerId)));
+            $categoryId = $this->_getParam('id', 0);
+            if ($categoryId > 0) {
+                $category = new Application_Model_DbTable_Category();
+                $form->populate($category->readCategory(($categoryId)));
             }
         }
     }
@@ -105,7 +104,7 @@ class CustomerController extends Zend_Controller_Action
     public function deleteAction()
     {
         $breadcrumb[] = array("Admin" => "/");
-        $breadcrumb[] = array("Customer" => "/customer");
+        $breadcrumb[] = array("Category" => "/category");
         $this->view->breadcrumb = $breadcrumb;
         $this->view->title = "Delete";
         $this->view->headTitle($this->view->title);
@@ -113,15 +112,15 @@ class CustomerController extends Zend_Controller_Action
         if ($this->getRequest()->isPost()) {
             $del = $this->getRequest()->getPost('del');
             if ($del == 'Yes') {
-                $customerId = $this->getRequest()->getPost('customer_id');
-                $customer = new Application_Model_DbTable_Customer();
-                $customer->deleteCustomer($customerId);
+                $categoryId = $this->getRequest()->getPost('category_id');
+                $category = new Application_Model_DbTable_Category();
+                $category->deleteCategory($categoryId);
             }
             $this->_helper->redirector('index');
         } else {
             $id = $this->_getParam('id', 0);
-            $customer = new Application_Model_DbTable_Customer();
-            $this->view->customer = $customer->readCustomer($id);
+            $category = new Application_Model_DbTable_Category();
+            $this->view->category = $category->readCategory($id);
         }
     }
 }

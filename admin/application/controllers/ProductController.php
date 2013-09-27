@@ -44,6 +44,7 @@ class ProductController extends Zend_Controller_Action
             $formData = $this->getRequest()->getPost();
 
             if ($form->isValid($formData)) {
+
                 $feed = $form->getValue('feed');
                 $channel = $form->getValue('channel');
                 $mainCategory = $form->getValue('main_category');
@@ -51,9 +52,10 @@ class ProductController extends Zend_Controller_Action
                 $description = $form->getValue('description');
                 $productUrl = $form->getValue('product_url');
                 $imageUrl = $form->getValue('image_url');
+                $active = $form->getValue('active');
 
                 $product = new Application_Model_DbTable_Product();
-                $product->createProduct($feed, $channel, $mainCategory, $name, $description, $productUrl, $imageUrl);
+                $product->createProduct($feed, $channel, $mainCategory, $name, $description, $productUrl, $imageUrl, $active);
                 $this->_helper->redirector('index');
             } else {
                 $form->populate($formData);
@@ -93,7 +95,10 @@ class ProductController extends Zend_Controller_Action
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
 
-            if ($form->isValid($formData)) {
+            $isValid = $form->isValid($formData);
+
+            if ($isValid) {
+
                 $productId = (int)$form->getValue('product_id');
                 $feed = $form->getValue('feed');
                 $channel = $form->getValue('channel');
@@ -102,6 +107,7 @@ class ProductController extends Zend_Controller_Action
                 $description = $form->getValue('description');
                 $productUrl = $form->getValue('product_url');
                 $imageUrl = $form->getValue('image_url');
+                $active = $form->getValue('active');
 
                 $product = new Application_Model_DbTable_Product();
 
@@ -112,7 +118,7 @@ class ProductController extends Zend_Controller_Action
                     $arKeyValueEav[] = array($newKey => $value);
                 }
 
-                $product->updateProduct($productId, $feed, $channel, $mainCategory, $name, $description, $productUrl, $imageUrl);
+                $product->updateProduct($productId, $feed, $channel, $mainCategory, $name, $description, $productUrl, $imageUrl, $active);
 
                 $this->_helper->redirector('index');
             } else {
