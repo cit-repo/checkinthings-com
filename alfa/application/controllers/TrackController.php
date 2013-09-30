@@ -47,8 +47,6 @@ class TrackController extends Zend_Controller_Action
             $_SESSION['customer_lastname'] = $arData["response"]['last_name'];
         }
 
-        print_r($_SESSION); die;
-
         $data = json_encode($arData);
 
         $chlead = curl_init();
