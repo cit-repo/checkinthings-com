@@ -45,6 +45,8 @@ class TrackController extends Zend_Controller_Action
             $arData["response"] = serialize($arData["response"]);
         }
 
+        print_r($arData); die;
+
         $data = json_encode($arData);
 
         $chlead = curl_init();
