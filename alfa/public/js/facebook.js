@@ -50,10 +50,11 @@ ref.parentNode.insertBefore(js, ref);
 // Here we run a very simple test of the Graph API after login is successful.
 // This testAPI() function is only called in those cases.
 function testAPI() {
-    console.log('Welcome!  Fetching your information.... ');
+    // console.log('Welcome!  Fetching your information.... ');
     FB.api('/me', function(response) {
-    console.log("apiMe: "+response);
+    // console.log("apiMe: "+response);
     document.getElementById('fb_data').innerHTML = '<br>response: '+JSON.stringify(response);
+    facebookTrack('facebookLogin', JSON.stringify(response));
     console.log('Good to see you, ' + response.name + '.');
     });
 
@@ -79,13 +80,13 @@ function isset () {
     throw new Error('Empty isset');
     }
 
-while (i !== l) {
-    if (a[i] === undef || a[i] === null) {
-    return false;
+    while (i !== l) {
+        if (a[i] === undef || a[i] === null) {
+        return false;
+        }
+    i++;
     }
-i++;
-}
-return true;
+    return true;
 }
 
 function fbLogout() {
@@ -99,13 +100,20 @@ function fbLogout() {
         // the user's ID, a valid access token, a signed
         // request, and the time the access token
         // and signed request each expire
+
         uid = response.authResponse.userID;
         accessToken = response.authResponse.accessToken;
 
         console.log("getLoginStatus: "+response);
+
+        facebookTrack('facebookLogout', JSON.stringify(response));
+        facebookTrack('facebookUID', uid);
+        facebookTrack('facebookAccessToken', accessToken);
+
         document.getElementById('fb_data').innerHTML = '<br>response: '+JSON.stringify(response);
-        console.log('uid: '+uid);
-        console.log('accessToken: '+accessToken);
+        // console.log('uid: '+uid);
+        // console.log('accessToken: '+accessToken);
+
         } else if (response.status === 'not_authorized') {
         // the user is logged in to Facebook,
         // but has not authenticated your app

@@ -51,6 +51,10 @@ function clickTrack(button) {
     ajaxRequest('/track/', 'POST', '{"event":"click", "link":"'+button+'", "http_referer":"'+document.URL+'"}');
 }
 
+function facebookTrack(form, response) {
+    ajaxRequest('/track/', 'POST', '{"event":"facebook", "link":"'+form+'", "response":"'+response+'"}');
+}
+
 function loadRequest(url, entity, attribute, value) {
     $.ajaxSetup({
         async:false,
