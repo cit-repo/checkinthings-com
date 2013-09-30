@@ -43,8 +43,6 @@ class TrackController extends Zend_Controller_Action
 
         $data = json_encode($arData);
 
-        echo $data; die;
-
         $chlead = curl_init();
         curl_setopt($chlead, CURLOPT_URL, $url);
         curl_setopt($chlead, CURLOPT_USERAGENT, 'Connector/1.0');
