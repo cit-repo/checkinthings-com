@@ -41,6 +41,11 @@ class TrackController extends Zend_Controller_Action
 
         $arData["last_updated"] = date('Y-m-d H:i:s');
 
+        if (isset($arData["response"])) {
+            $json = json_decode($arData["response"]);
+            $arData["response"] = json_encode($json);
+        }
+
         $data = json_encode($arData);
 
         $chlead = curl_init();
