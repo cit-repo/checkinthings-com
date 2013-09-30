@@ -53,7 +53,7 @@ function testAPI() {
     // console.log('Welcome!  Fetching your information.... ');
     FB.api('/me', function(response) {
     // console.log("apiMe: "+response);
-    document.getElementById('fb_data').innerHTML = '<br>response: '+JSON.stringify(response);
+    // document.getElementById('fb_data').innerHTML = '<br>response: '+JSON.stringify(response);
     facebookTrack('facebookLogin', JSON.stringify(response));
     // console.log('Good to see you, ' + response.name + '.');
     });
@@ -110,7 +110,7 @@ function fbLogout() {
         facebookTrack('facebookUID', uid);
         facebookTrack('facebookAccessToken', accessToken);
 
-        document.getElementById('fb_data').innerHTML = '<br>response: '+JSON.stringify(response);
+        // document.getElementById('fb_data').innerHTML = '<br>response: '+JSON.stringify(response);
         // console.log('uid: '+uid);
         // console.log('accessToken: '+accessToken);
 

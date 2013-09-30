@@ -51,6 +51,10 @@ class TrackController extends Zend_Rest_Controller
 
         $arPost['last_updated'] = date('Y-m-d H:i:s');
 
+        if (isset($arPost['response'])) {
+            $arPost['response'] = addslashes(json_encode($arPost['response']));
+        }
+
         $res = $couchdb->createDocument($arPost, "track");
 
         $this->getResponse()->setBody($res);

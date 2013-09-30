@@ -82,10 +82,6 @@
         {
             $uuid = $this->getUUID();
 
-            if (isset($params['response'])) {
-                $params['response'] = json_encode($params['response']);
-            }
-
             $arParams = array();
 
             foreach ($params as $key => $value) {
