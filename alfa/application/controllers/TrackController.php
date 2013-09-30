@@ -42,7 +42,7 @@ class TrackController extends Zend_Controller_Action
         $arData["last_updated"] = date('Y-m-d H:i:s');
 
         if (isset($arData["response"])) {
-            $arData["response"] = json_encode($arData["response"]);
+            $arData["response"] = serialize($arData["response"]);
         }
 
         $data = json_encode($arData);
