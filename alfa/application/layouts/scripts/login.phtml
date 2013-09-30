@@ -1,7 +1,3 @@
-<script>
-    $("input[name='email']").watermark("email address");
-    $("input[name='password']").watermark("password");
-</script>
 <div id="login_form">
     <form name="loginForm" method="post" action="/customer">
     <input type="hidden" name="event" value="login">
@@ -12,10 +8,10 @@
                 </td>
             </tr>
             <tr>
-                <td><input type="text" name="email"></td><td colspan="2">Your email address.</td>
+                <td><input type="text" id="login_email" name="email"></td><td colspan="2">Your email address.</td>
             </tr>
             <tr>
-                <td><input type="password" name="password"></td><td>Your password.</td>
+                <td><input type="password" id="login_password" name="password"></td><td>Your password.</td>
             </tr>
         </table>
 </form>

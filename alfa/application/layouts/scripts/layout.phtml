@@ -101,8 +101,19 @@
 <script src="/js/holder.js"></script>
 <script src="/js/background.js"></script>
 <script type="text/javascript" src="/js/jquery.inputfocus-0.9.min.js"></script>
+<script src="/js/watermark/jquery.watermark.js"></script>
 <script src="/js/multistep.js"></script>
 <script src="/js/functions.js"></script>
+
+
+<script type="text/javascript">
+    function watermarks() {
+        $('#login_email').watermark('email address');
+        $('#login_password').watermark('password');
+    }
+
+    watermarks();
+</script>
 
 <!--
 <?php include ("googleanalytics.phtml"); ?>
