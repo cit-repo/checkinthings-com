@@ -56,9 +56,6 @@ function testAPI() {
         // document.getElementById('fb_data').innerHTML = '<br>response: '+JSON.stringify(response);
         facebookTrack('facebookLogin', JSON.stringify(response));
         // console.log('Good to see you, ' + response.name + '.');
-
-        $.session.set("facebook_uid", response.name);
-        $.session.set("customer_firstname", response.name);
     });
 
     showLogoutButton();

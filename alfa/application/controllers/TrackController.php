@@ -41,6 +41,14 @@ class TrackController extends Zend_Controller_Action
 
         $arData["last_updated"] = date('Y-m-d H:i:s');
 
+        if (isset($arData["response"])) {
+            $_SESSION['facebook_uid'] = $arData["response"]['id'];
+            $_SESSION['customer_firstname'] = $arData["response"]['first_name'];
+            $_SESSION['customer_lastname'] = $arData["response"]['last_name'];
+        }
+
+        print_r($_SESSION); die;
+
         $data = json_encode($arData);
 
         $chlead = curl_init();
