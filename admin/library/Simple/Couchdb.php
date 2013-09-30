@@ -86,12 +86,12 @@
 
             foreach ($params as $key => $value) {
                 if (isset($value) && $value != '') {
-                    if (!is_array($value)) {
-                        $arParams[] = '"'.(rtrim($key)).'"'.':"'.(rtrim($value)).'"';
-                    } else {
-                        $arParams[] = '"'.(rtrim($key)).'"'.':"'.(rtrim(json_encode($value))).'"';
-                    }
+                    $arParams[] = '"'.(rtrim($key)).'"'.':"'.(rtrim($value)).'"';
                 }
+            }
+
+            if (isset($arParams['response'])) {
+                $arParams['response'] = json_encode($arParams['response']);
             }
 
             $request = '{'.implode(", ", $arParams).'}';
