@@ -50,11 +50,15 @@ class CustomerController extends Zend_Controller_Action
         // $raw_data['email'] = explode("@", $raw_data['email']);
         // $raw_data['email'] = $raw_data['email'][0];
 
-        $this->view->login = $this->customerOnApi(array("attribute" => "email", "value" => $raw_data['email']), "search_first");
+        $password = "";
 
-        $arLogin = json_decode($this->view->login, true);
+        if (isset($raw_data['email']) && isset($raw_data['password'])) {
+            $this->view->login = $this->customerOnApi(array("attribute" => "email", "value" => $raw_data['email']), "search_first");
 
-        $password = md5($this->appIni['md5']['seed'].$raw_data['password']);
+            $arLogin = json_decode($this->view->login, true);
+
+            $password = md5($this->appIni['md5']['seed'].$raw_data['password']);
+        }
 
         if (isset($arLogin['hits']['hits'][0]['_id']) && $arLogin['hits']['hits'][0]['_source']['password'] == $raw_data['password']) {
             $this->sess->customer_uuid = $arLogin['hits']['hits'][0]['_id'];

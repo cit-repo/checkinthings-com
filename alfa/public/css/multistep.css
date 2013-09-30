@@ -137,3 +137,10 @@ input[type="submit"]:focus, input[type="button"]:focus { outline : none; }
     text-align: right;
     margin-left: 650px;
 }
+
+.one_step {
+    width: 250px;
+    height: 24px;
+    text-align: right;
+    margin-left: 650px;
+}

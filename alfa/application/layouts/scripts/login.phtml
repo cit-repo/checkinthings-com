@@ -1,13 +1,22 @@
-<b>Login</b><br>
-<br>
-<form name="loginForm" method="post" action="/customer">
+<script>
+    $("input[name='email']").watermark("email address");
+    $("input[name='password']").watermark("password");
+</script>
+<div id="login_form">
+    <form name="loginForm" method="post" action="/customer">
     <input type="hidden" name="event" value="login">
-    <table>
-        <tr>
-            <td>email: </td><td colspan="2"><input type="text" name="email"></td>
-        </tr>
-        <tr>
-            <td>password: </td><td><input type="password" name="password"></td><td><input type="submit" value="Send"></td>
-        </tr>
-    </table>
+        <table width="450">
+            <tr>
+                <td colspan="2" align="right">
+                    <img border="0" src="/img/send.png" onclick="document.loginForm.submit();">
+                </td>
+            </tr>
+            <tr>
+                <td><input type="text" name="email"></td><td colspan="2">Your email address.</td>
+            </tr>
+            <tr>
+                <td><input type="password" name="password"></td><td>Your password.</td>
+            </tr>
+        </table>
 </form>
+</div>
