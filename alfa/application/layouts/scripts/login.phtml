@@ -13,6 +13,24 @@
             <tr>
                 <td><input type="password" id="login_password" name="password"></td><td>Your password.</td>
             </tr>
+            <tr>
+                <td height="50"></td>
+            </tr>
+            <tr>
+                <td>
+                    Or login using Facebook<br>
+                    <!--
+                      Below we include the Login Button social plugin. This button uses the JavaScript SDK to
+                      present a graphical Login button that triggers the FB.login() function when clicked.
+
+                      Learn more about options for the login button plugin:
+                      /docs/reference/plugins/login/
+                    -->
+                    <div id="fb-root"></div>
+                    <div id="fb_login"><fb:login-button show-faces="true" width="200" max-rows="1"></fb:login-button></div>
+                </td>
+            </tr>
         </table>
 </form>
 </div>
+
