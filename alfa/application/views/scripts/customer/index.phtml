@@ -6,9 +6,9 @@
 
     $this->customer = json_decode($this->customer, true);
 
-    $wants = explode(",", $this->customer['engine_wants']);
-    $haves = explode(",", $this->customer['engine_haves']);
-    $buys = explode(",", $this->customer['engine_buys']);
+    if (isset($this->customer['engine_wants'])) $wants = explode(",", $this->customer['engine_wants']);
+    if (isset($this->customer['engine_haves'])) $haves = explode(",", $this->customer['engine_haves']);
+    if (isset($this->customer['engine_buys'])) $buys = explode(",", $this->customer['engine_buys']);
 ?>
 
 <div class="container">
@@ -46,6 +46,7 @@
             </tr>
             <tr>
                 <?php
+                    if (isset($wants))
                     foreach ($wants as $productId) {
                         echo "<td><a href=\"/product/detail/id/".$productId."\"><img border=\"0\" src=\"image.php?product_id=".$productId."\"></a></td>";
                     }
@@ -59,6 +60,7 @@
             </tr>
             <tr>
                 <?php
+                if (isset($haves))
                 foreach ($haves as $productId) {
                     echo "<td><a href=\"/product/detail/id/".$productId."\"><img border=\"0\" src=\"image.php?product_id=".$productId."\"></a></td>";
                 }
@@ -72,6 +74,7 @@
             </tr>
             <tr>
                 <?php
+                if (isset($buys))
                 foreach ($buys as $productId) {
                     echo "<td><a href=\"/product/detail/id/".$productId."\"><img border=\"0\" src=\"image.php?product_id=".$productId."\"></a></td>";
                 }

@@ -21,7 +21,6 @@ input[type="submit"]:focus, input[type="button"]:focus { outline : none; }
 #multistep #first_step, #second_step, #third_step, #fourth_step { display: none; }
 #multistep #first_step { display: block; }
 
-
 #multistep .form { margin: 15px 72px 0 72px; }
 
 #multistep h1, #multistep h2 {
@@ -60,8 +59,8 @@ input[type="submit"]:focus, input[type="button"]:focus { outline : none; }
     font-size: 14px;
     width: 300px;
     height: 30px;
-    padding: 0 5px;
-    margin: 5px 0;
+    padding: 0 25px;
+    margin: 20px 0;
     float: left;
 
     border-radius: 6px;
@@ -74,8 +73,10 @@ input[type="submit"]:focus, input[type="button"]:focus { outline : none; }
     cursor: pointer;
     width: 85px;
     height: 38px;
+    position: relative;
+    bottom: 2px;
+    left: 655px;
 }
-
 #multistep input.submit:focus { border: none; }
 
 #multistep input.send{ background: url('../img/send.png') no-repeat; }
@@ -129,11 +130,4 @@ input[type="submit"]:focus, input[type="button"]:focus { outline : none; }
     height: 24px;
     top: -23px;
     left: 0;
-}
-
-.next_step {
-    width: 675px;
-    height: 24px;
-    text-align: right;
-    margin-left: 650px;
 }
