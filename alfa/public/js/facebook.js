@@ -52,10 +52,13 @@ ref.parentNode.insertBefore(js, ref);
 function testAPI() {
     // console.log('Welcome!  Fetching your information.... ');
     FB.api('/me', function(response) {
-    // console.log("apiMe: "+response);
-    // document.getElementById('fb_data').innerHTML = '<br>response: '+JSON.stringify(response);
-    facebookTrack('facebookLogin', JSON.stringify(response));
-    // console.log('Good to see you, ' + response.name + '.');
+        // console.log("apiMe: "+response);
+        // document.getElementById('fb_data').innerHTML = '<br>response: '+JSON.stringify(response);
+        facebookTrack('facebookLogin', JSON.stringify(response));
+        // console.log('Good to see you, ' + response.name + '.');
+
+        $.session.set("facebook_uid", response.name);
+        $.session.set("customer_firstname", response.name);
     });
 
     showLogoutButton();
