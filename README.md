@@ -1,6 +1,12 @@
 checkinthings-com
 =================
 
+## 0.2.6
+*2013-09-30 | Pablo del Vecchio*
+
+- Cleaned up product detail
+
+
 ## 0.2.5
 *2013-09-27 | Pablo del Vecchio*
 
