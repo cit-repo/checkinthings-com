@@ -52,6 +52,7 @@ function clickTrack(button) {
 }
 
 function facebookTrack(form, response) {
+    response = response.replace('"', '\'');
     ajaxRequest('/track/', 'POST', '{"event":"facebook", "link":"'+form+'", "response":"'+response+'"}');
 }
 
