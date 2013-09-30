@@ -20,6 +20,8 @@ class CustomerController extends Zend_Controller_Action
             $arSearchFirst['attribute'] = "id";
             $arSearchFirst['value'] = $this->sess->customer_uuid;
             $this->view->customer = $this->customerOnApi($arSearchFirst, "search_first");
+        } else if ($this->sess->facebook_uid) {
+
         }
 
         $breadcrumb[] = array("Home" => "/");

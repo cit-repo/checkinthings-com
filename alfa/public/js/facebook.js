@@ -59,6 +59,8 @@ function testAPI() {
     });
 
     showLogoutButton();
+
+    window.location.href='/customer';
 }
 
 function isset () {
