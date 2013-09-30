@@ -35,9 +35,15 @@
             <tr>
                 <td>Lastname:</td><td><?=$this->sess->customer_lastname?></td>
             </tr>
-            <tr>
-                <td>Email:</td><td><?=$this->sess->customer_email?></td>
-            </tr>
+            <?php if ($this->sess->customer_email) { ?>
+                <tr>
+                    <td>Email:</td><td><?=$this->sess->customer_email?></td>
+                </tr>
+            <?php } else if ($this->sess->facebook_uid) { ?>
+                <tr>
+                    <td>Facebook:</td><td><?=$this->sess->facebook_uid?></td>
+                </tr>
+            <?php } ?>
         </table>
         <hr>
         <table>
