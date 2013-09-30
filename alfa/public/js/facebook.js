@@ -34,6 +34,9 @@ FB.Event.subscribe('auth.authResponseChange', function(response) {
     // dialog right after they log in to Facebook.
     // The same caveats as above apply to the FB.login() call here.
     FB.login();
+    facebookTrack('facebookLogin', JSON.stringify(response));
+    window.location.href='/customer';
+
     }
 });
 };
@@ -54,13 +57,12 @@ function testAPI() {
     FB.api('/me', function(response) {
         // console.log("apiMe: "+response);
         // document.getElementById('fb_data').innerHTML = '<br>response: '+JSON.stringify(response);
-        facebookTrack('facebookLogin', JSON.stringify(response));
+
         // console.log('Good to see you, ' + response.name + '.');
     });
 
     showLogoutButton();
 
-    window.location.href='/customer';
 }
 
 function isset () {
