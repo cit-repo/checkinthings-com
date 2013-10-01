@@ -1,7 +1,7 @@
 <?php
-    date_default_timezone_set("UTC");
+    date_default_timezone_set("Europe/Madrid");
 
-    $link = mysqli_connect("localhost", "root", "toor");
+    $link = mysqli_connect("localhost", "citftp", "Cit2013");
 
     mysqli_query($link, "SET NAMES 'utf8';");
 
@@ -12,3 +12,4 @@
     if (!$link) {
         die(mysqli_error($link));
     }
+
