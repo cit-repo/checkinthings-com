@@ -1,0 +1,25 @@
+<div id="logout_form">
+    <form name="logoutForm" method="post" action="/customer/logout">
+    <input type="hidden" name="event" value="logout">
+        <table width="450">
+            <tr>
+                <td colspan="2">
+                    <!--
+                      Below we include the Login Button social plugin. This button uses the JavaScript SDK to
+                      present a graphical Login button that triggers the FB.login() function when clicked.
+
+                      Learn more about options for the login button plugin:
+                      /docs/reference/plugins/login/
+                    -->
+                    <div id="fb-root"></div>
+                    <div id="fb_login"><fb:login-button show-faces="true" width="200" max-rows="1"></fb:login-button></div>
+                    <br>
+                    <div id="fb_logout"></div>
+                    <br>
+                    <div id="fb_data"></div>
+                    <br>
+                </td>
+            </tr>
+        </table>
+</form>
+</div>
