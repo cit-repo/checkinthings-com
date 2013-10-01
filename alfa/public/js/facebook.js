@@ -111,9 +111,9 @@ function fbLogout() {
 
         console.log("getLoginStatus: "+response);
 
-        facebookTrack('facebookLogout', JSON.stringify(response));
-        facebookTrack('facebookUID', uid);
-        facebookTrack('facebookAccessToken', accessToken);
+        facebookSession('facebookLogout', JSON.stringify(response));
+        facebookSession('facebookUID', uid);
+        facebookSession('facebookAccessToken', accessToken);
 
         // document.getElementById('fb_data').innerHTML = '<br>response: '+JSON.stringify(response);
         // console.log('uid: '+uid);
@@ -122,6 +122,7 @@ function fbLogout() {
         } else if (response.status === 'not_authorized') {
         // the user is logged in to Facebook,
         // but has not authenticated your app
+
         } else {
         // the user isn't logged in to Facebook.
         }
@@ -130,6 +131,7 @@ function fbLogout() {
     if (isset(uid)) {
         FB.logout(function(response) {
             // user is now logged out
+            window.location = "/";
         });
     hideLogoutButton();
     funcx();
