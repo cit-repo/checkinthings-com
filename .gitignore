@@ -9,6 +9,8 @@
 
 crawl/inc/db.inc.php
 
+engine/inc/db.inc.php
+
 sync/inc/db.inc.php
 sync/mysql-to-couchdb.log
 sync/couchdb-to-mysql.log
