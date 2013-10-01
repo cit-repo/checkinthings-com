@@ -36,6 +36,8 @@ FB.Event.subscribe('auth.authResponseChange', function(response) {
         // dialog right after they log in to Facebook.
         // The same caveats as above apply to the FB.login() call here.
         FB.login();
+
+        window.location = '/customer';
     }
 });
 };
