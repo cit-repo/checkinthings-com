@@ -141,7 +141,7 @@ function fbLogout() {
     if (isset(uid)) {
         FB.logout(function(response) {
             // user is now logged out
-            window.location = "/customer/logout";
+            window.location = "#login";
         });
     hideLogoutButton();
     funcx();
