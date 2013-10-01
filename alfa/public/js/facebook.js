@@ -111,10 +111,6 @@ function fbLogout() {
 
         console.log("getLoginStatus: "+response);
 
-        facebookSession('facebookLogout', JSON.stringify(response));
-        facebookSession('facebookUID', uid);
-        facebookSession('facebookAccessToken', accessToken);
-
         // document.getElementById('fb_data').innerHTML = '<br>response: '+JSON.stringify(response);
         // console.log('uid: '+uid);
         // console.log('accessToken: '+accessToken);
@@ -126,6 +122,11 @@ function fbLogout() {
         } else {
         // the user isn't logged in to Facebook.
         }
+
+        if (isset(JSON.stringify(response))) facebookSession('facebookLogout', JSON.stringify(response));
+        if (isset(uid)) facebookSession('facebookUID', uid);
+        if (isset(accessToken)) facebookSession('facebookAccessToken', accessToken);
+
     });
 
     if (isset(uid)) {
