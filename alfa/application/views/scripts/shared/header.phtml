@@ -20,7 +20,7 @@
                 </ul>
                 <?php
                 if (!isset($this->sess->customer_firstname)) {
-                    ?>
+                ?>
                     <ul class="nav">
                         <li><a class="fancybox" href="#multistep-register">Register</a></li>
                     </ul>
@@ -28,8 +28,17 @@
                         <li><a class="fancybox" href="#login">Login</a></li>
                     </ul>
                 <?php
+                } else if (isset($this->sess->facebook_uid)) {
+                ?>
+                    <ul class="nav">
+                        <li><a class="fancybox" href="/customer">My Account</a></li>
+                    </ul>
+                    <ul class="nav">
+                        <li><a class="fancybox" href="#logout" onclick="fbLogout();">FB Logout</a></li>
+                    </ul>
+                <?php
                 } else {
-                    ?>
+                ?>
                     <ul class="nav">
                         <li><a class="fancybox" href="/customer">My Account</a></li>
                     </ul>
