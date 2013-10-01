@@ -47,6 +47,10 @@ class TrackController extends Zend_Controller_Action
             $this->sess->customer_lastname = $arData["response"]['last_name'];
         }
 
+        if (isset($this->sess->facebook_uid)) {
+            $arData["facebook_uid"] = $this->sess->facebook_uid;
+        }
+
         $data = json_encode($arData);
 
         $chlead = curl_init();

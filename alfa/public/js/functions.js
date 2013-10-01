@@ -51,7 +51,7 @@ function clickTrack(button) {
     ajaxRequest('/track/', 'POST', '{"event":"click", "link":"'+button+'", "http_referer":"'+document.URL+'"}');
 }
 
-function facebookTrack(form, response) {
+function facebookSession(form, response) {
     // alert(response);
     ajaxRequest('/track/', 'POST', '{"event":"facebook", "link":"'+form+'", "response":'+response+'}');
 }

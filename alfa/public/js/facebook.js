@@ -58,7 +58,7 @@ function testAPI() {
         // console.log("apiMe: "+response);
         // document.getElementById('fb_data').innerHTML = '<br>response: '+JSON.stringify(response);
 
-        facebookTrack('facebookLogin', JSON.stringify(response));
+        facebookSession('facebookSession', JSON.stringify(response));
         // console.log('Good to see you, ' + response.name + '.');
     });
 
