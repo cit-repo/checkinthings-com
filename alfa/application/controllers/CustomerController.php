@@ -188,8 +188,6 @@ class CustomerController extends Zend_Controller_Action
         $this->view->success = "Goodbye ".$this->sess->customer_firstname.", we hope to see you soon again.";
 
         $this->sess->unsetAll();
-
-        echo "<script type=\"text/javascript\">fbLogout();</script>";
     }
 
     private function getRawDataFromRawBody($ar_request)
