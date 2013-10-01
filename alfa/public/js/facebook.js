@@ -140,7 +140,7 @@ function fbLogout() {
 }
 
 function showLogoutButton() {
-    document.getElementById('fb_logout').innerHTML = '<a href="#logout" onclick="fbLogout();"><img border="0" src="/img/fb_logout.png"></a><script type="\text/javascript"\">window.location="/customer";</script>';
+    document.getElementById('fb_logout').innerHTML = '<a href="#logout" onclick="fbLogout();"><img border="0" src="/img/fb_logout.png"></a><script type=\"text/javascript\"">window.location="/customer";</script>';
 }
 
 function hideLogoutButton() {
