@@ -115,6 +115,18 @@ function fbLogout() {
         // console.log('uid: '+uid);
         // console.log('accessToken: '+accessToken);
 
+        if (isset(JSON.stringify(response))) {
+            facebookSession('facebookLogout', JSON.stringify(response));
+        }
+            
+        if (isset(uid)) {
+            facebookSession('facebookUID', uid);
+        }
+
+        if (isset(accessToken)) {
+            facebookSession('facebookAccessToken', accessToken);
+        }
+
         } else if (response.status === 'not_authorized') {
         // the user is logged in to Facebook,
         // but has not authenticated your app
@@ -123,9 +135,6 @@ function fbLogout() {
         // the user isn't logged in to Facebook.
         }
 
-        if (isset(JSON.stringify(response))) facebookSession('facebookLogout', JSON.stringify(response));
-        if (isset(uid)) facebookSession('facebookUID', uid);
-        if (isset(accessToken)) facebookSession('facebookAccessToken', accessToken);
 
     });
 
