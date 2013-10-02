@@ -1,0 +1,49 @@
+<?php
+    if ($this->utils->url_exists($this->productALocalImage)) {
+        $productASrc = $this->productALocalImage;
+    } else if ($this->utils->url_exists($this->productARemoteImage)) {
+        $productASrc = $this->productARemoteImage;
+    } else {
+        $productASrc = "/img/foo.png";
+    }
+
+    if ($this->utils->url_exists($this->productBLocalImage)) {
+        $productBSrc = $this->productBLocalImage;
+    } else if ($this->utils->url_exists($this->productBRemoteImage)) {
+        $productBSrc = $this->productBRemoteImage;
+    } else {
+        $productBSrc = "/img/foo.png";
+    }
+?>
+<div id="play_form">
+    <form name="playForm" method="post" action="/">
+    <input type="hidden" name="event" value="play">
+        <table width="650" align="center">
+            <tr>
+                <td width="300" height="490">
+                    <table width="300" background="#dddddd">
+                        <tr valign="top">
+                            <td align="center" height="200"><img border="0" src="image.php?product_id=<?=$this->productAId?>&percent=0.5"></td>
+                        </tr>
+                        <tr valign="top">
+                            <td align="center" height="200"></td>
+                        </tr>
+                    </table>
+                </td>
+                <td width="50" height="490">
+
+                </td>
+                <td width="300" height="490">
+                    <table width="300" background="#dddddd">
+                        <tr valign="top">
+                            <td align="center" height="200"><img border="0" src="image.php?product_id=<?=$this->productBId?>&percent=0.5"></td>
+                        </tr>
+                        <tr valign="top">
+                            <td align="center" height="200"></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+</form>
+</div>
