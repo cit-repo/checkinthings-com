@@ -1,6 +1,12 @@
 checkinthings-com
 =================
 
+## 0.2.7
+*2013-10-02 | Pablo del Vecchio*
+
+- Added first transactional email on register
+
+
 ## 0.2.6
 *2013-09-30 | Pablo del Vecchio*
 
