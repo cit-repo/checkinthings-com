@@ -1,6 +1,12 @@
 checkinthings-com
 =================
 
+## 0.2.8
+*2013-10-02 | Pablo del Vecchio*
+
+- Added first game
+
+
 ## 0.2.7
 *2013-10-02 | Pablo del Vecchio*
 

@@ -8,7 +8,8 @@
 
     // File and new size
     $productId = $_GET['product_id'];
-    $percent = 0.2;
+    if ($_GET['percent']) $percent = $_GET['percent'];
+    else $percent = 0.2;
 
     $filename = $location.$productId.".jpg";
 

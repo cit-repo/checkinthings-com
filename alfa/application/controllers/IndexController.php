@@ -49,6 +49,17 @@ class IndexController extends Zend_Controller_Action
         $this->view->request = json_encode($arData);
         $this->view->response = $response;
 
+        $this->getSpecialOffer();
+        $this->getPlayProducts();
+
+        $this->searchForm();
+
+        // action body
+        // $this->view->content = $_SERVER['HTTP_HOST'];
+    }
+
+    private function getSpecialOffer()
+    {
         $this->view->specialOfferId = rand(1,1323);
 
         $this->view->specialOfferProduct = $this->productOnApi(array("must" => array("product_id" => $this->view->specialOfferId)));
@@ -60,10 +71,30 @@ class IndexController extends Zend_Controller_Action
             $this->view->specialOfferRemoteImage = $product['hits']['hits'][0]['_source']['image_url'];
         }
 
-        $this->searchForm();
+    }
 
-        // action body
-        // $this->view->content = $_SERVER['HTTP_HOST'];
+    private function getPlayProducts()
+    {
+        $this->view->productAId = rand(1,1323);
+        $this->view->productBId = rand(1,1323);
+
+        $this->view->productA = $this->productOnApi(array("must" => array("product_id" => $this->view->productAId)));
+        $this->view->productB = $this->productOnApi(array("must" => array("product_id" => $this->view->productBId)));
+
+        $productA = json_decode($this->view->productA, true);
+        $productB = json_decode($this->view->productB, true);
+
+        $this->view->productALocalImage = $this->appIni['alfa']['host']."/img/product/".$this->view->productAId.".jpg";
+        $this->view->productBLocalImage = $this->appIni['alfa']['host']."/img/product/".$this->view->productBId.".jpg";
+
+        if ($productA['hits']['hits'][0]) {
+            $this->view->productARemoteImage = $productA['hits']['hits'][0]['_source']['image_url'];
+        }
+
+        if ($productB['hits']['hits'][0]) {
+            $this->view->productBRemoteImage = $productB['hits']['hits'][0]['_source']['image_url'];
+        }
+
     }
 
     public function searchForm()
