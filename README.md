@@ -1,6 +1,12 @@
 checkinthings-com
 =================
 
+## 0.2.9
+*2013-10-04 | Pablo del Vecchio*
+
+- Added lazy loading for images on catalog and search
+
+
 ## 0.2.8
 *2013-10-02 | Pablo del Vecchio*
 

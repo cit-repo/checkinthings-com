@@ -45,7 +45,7 @@
                                 ?>
                                 <li class="span3">
                                     <div class="thumbnail">
-                                        <a href="/product/detail/id/<?php echo $hit['_source']['product_id']?>"><img border="0" width="300" height="200" src="<?php echo $hit['_source']['image_url']?>"></a>
+                                        <a href="/product/detail/id/<?php echo $hit['_source']['product_id']?>"><img class="lazy" border="0" width="300" height="200" src="img/foo.png" data-original="<?php echo $hit['_source']['image_url']?>"></a>
                                         <div class="caption">
                                             <h4><a href="/product/detail/id/<?php echo $hit['_source']['product_id']?>">(<?php echo $hit['_source']['product_id']?>)</a> <?php echo $hit['_source']['main_category']?></h4> <?php echo substr($hit['_source']['name'], 0, 64)?>
                                             <p><strike><?php echo $hit['_source']['currency']?> <?php echo $hit['_source']['price']*(1.2)?></strike>&nbsp;<?php echo $hit['_source']['currency']?> <?php echo $hit['_source']['price']?></p>
@@ -62,6 +62,7 @@
                 ?>
             </ul>
 
+            <!--
             <div class="pagination">
                 <ul>
                     <li class="disabled"><span>Prev</span></li>
@@ -73,6 +74,7 @@
                     <li><a href="#">Next</a></li>
                 </ul>
             </div>
+            -->
 
         </div>
     </div>
