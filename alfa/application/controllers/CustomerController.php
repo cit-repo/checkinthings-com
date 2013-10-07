@@ -12,6 +12,11 @@ class CustomerController extends Zend_Controller_Action
 
         $this->sess = new Zend_Session_Namespace('session');
 
+        require_once(APPLICATION_PATH.'/../library/Simple/Utils.php');
+
+        $this->view->utils = new Utils();
+        $this->view->appIni = $this->appIni;
+
         $this->getPlayProducts();
     }
 
