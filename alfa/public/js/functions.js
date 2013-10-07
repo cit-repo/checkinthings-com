@@ -51,6 +51,16 @@ function clickTrack(button) {
     ajaxRequest('/track/', 'POST', '{"event":"click", "link":"'+button+'", "http_referer":"'+document.URL+'"}');
 }
 
+function playTrack(button, option) {
+    $.ajaxSetup({
+        async:false,
+        dataType:"jsonp"
+    });
+
+    $('#product_'+option).load('/play.php?option='+option);
+    ajaxRequest('/track/', 'POST', '{"event":"click", "link":"'+button+'", "http_referer":"'+document.URL+'"}');
+}
+
 function facebookSession(form, response) {
     // alert(response);
     ajaxRequest('/track/', 'POST', '{"event":"facebook", "link":"'+form+'", "response":'+response+'}');

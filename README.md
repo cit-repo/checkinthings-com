@@ -1,6 +1,12 @@
 checkinthings-com
 =================
 
+## 0.3.0
+*2013-10-07 | Pablo del Vecchio*
+
+- Added sexy it game
+
+
 ## 0.2.9
 *2013-10-04 | Pablo del Vecchio*
 
