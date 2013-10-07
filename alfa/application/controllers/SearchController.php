@@ -10,6 +10,8 @@ class SearchController extends Zend_Controller_Action
         $this->appIni = $obControl->getParam("bootstrap")->getOptions();
         // $this->_helper->viewRenderer->setNoRender(true);
 
+        $this->sess = new Zend_Session_Namespace('session');
+
         require_once(APPLICATION_PATH.'/../library/Simple/Utils.php');
 
         $this->view->utils = new Utils();
