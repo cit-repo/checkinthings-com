@@ -334,5 +334,6 @@ class CustomerController extends Zend_Controller_Action
 
         return $pest->lastBody();
     }
+
     
 }
