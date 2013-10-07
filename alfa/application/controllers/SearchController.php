@@ -53,6 +53,7 @@ class SearchController extends Zend_Controller_Action
             $this->view->response = $response;
         }
 
+        $this->view->sess = $this->sess;
     }
 
 
