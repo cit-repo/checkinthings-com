@@ -318,4 +318,21 @@ class CustomerController extends Zend_Controller_Action
         return $pest->lastBody();
     }
 
+
+    public function productOnApi($ar_data, $event=false)
+    {
+        // action body
+        require_once(APPLICATION_PATH.'/../library/Simple/Pest.php');
+
+        $url = "/v1/product";
+
+        $pest = new Pest($this->appIni['api']['host']);
+        $pest->post($url, json_encode($ar_data));
+
+        $pest->log_request($this->appIni['includePaths']['logs']."/api.log", date('Y-m-d H:i:s')." - ".$url.": REQUEST - ".json_encode($pest->last_request));
+        $pest->log_request($this->appIni['includePaths']['logs']."/api.log", date('Y-m-d H:i:s')." - ".$url.": RESPONSE - ".json_encode($pest->lastBody()));
+
+        return $pest->lastBody();
+    }
+    
 }
