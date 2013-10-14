@@ -6,10 +6,13 @@
         $location = "/var/www/vhosts/checkinthings.com/httpdocs/alfa/public/img/product/";
     }
 
+    $percent = 0.2;
+
     // File and new size
     $productId = $_GET['product_id'];
-    if ($_GET['percent']) $percent = $_GET['percent'];
-    else $percent = 0.2;
+    if (isset($_GET['percent'])) {
+        $percent = $_GET['percent'];
+    }
 
     $filename = $location.$productId.".jpg";
 

@@ -26,3 +26,4 @@ curl -X PUT 'http://127.0.0.1:9200/_river/es_admin_cit_customer/_meta' -d '{ "ty
 #sudo /etc/init.d/elasticsearch status
 #ElasticSearch Server is running with pid 17826
 
+php truncate.php admin_cit.customer

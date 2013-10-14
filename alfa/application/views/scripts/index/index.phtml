@@ -16,15 +16,17 @@
     <div class="row">
         <div class="span9">
             <div class="hero-unit">
-                <table>
+                <table width="600" border="0">
                     <tr>
-                        <td>
-                            <h1 class="">Special<br>Offer</h1>
+                        <td width="300" valign="top">
+                            <h2 class="">Special<br>Offer</h2>
                             <p class="">Here is the best offer of the month!<br>Do not loose it!</p>
                             <p><a href="/product/detail/id/<?php echo $this->specialOfferId?>" class="btn btn-primary btn-large">Learn more »</a></p>
                         </td>
-                        <td>
-                            <p><a href="/product/detail/id/<?php echo $this->specialOfferId?>"><img border="0" width="300" height="200" src="<?=$specialOfferSrc?>"></a></p>
+                        <td width="300" align="center">
+                            <div class="thumbnail">
+                            <p><a href="/product/detail/id/<?php echo $this->specialOfferId?>"><img border="0" src="/image.php?product_id=<?=$this->specialOfferId?>&percent=0.75"></a></p>
+                            </div>
                         </td>
                     </tr>
                 </table>
@@ -52,7 +54,8 @@
                                     <div class="thumbnail">
                                         <a href="/product/detail/id/<?php echo $hit['_source']['product_id']?>"><img border="0" width="300" height="200" src="<?php echo $hit['_source']['image_url']?>"></a>
                                         <div class="caption">
-                                            <h4><a href="/product/detail/id/<?php echo $hit['_source']['product_id']?>">(<?php echo $hit['_source']['product_id']?>)</a> <?php echo $hit['_source']['main_category']?></h4> <?php echo substr($hit['_source']['name'], 0, 64)?>
+                                            <!--<h4><a href="/product/detail/id/<?php echo $hit['_source']['product_id']?>">(<?php echo $hit['_source']['product_id']?>)</a> <?php echo $hit['_source']['main_category']?></h4> <?php echo substr($hit['_source']['name'], 0, 64)?>-->
+                                            <h4><a href="/product/detail/id/<?php echo $hit['_source']['product_id']?>"><?php echo wordwrap($hit['_source']['name'], 64)?></a> (<?php echo $hit['_source']['main_category']?>)</h4>
                                             <p><strike><?php echo $hit['_source']['currency']?> <?php echo $hit['_source']['price']*(1.2)?></strike>&nbsp;<?php echo $hit['_source']['currency']?> <?php echo $hit['_source']['price']?></p>
                                             <a class="btn btn-want" href="#wantit" onclick="clickTrack('wantit_<?=$hit['_source']['product_id']?>')">Want it</a>&nbsp;
                                             <a class="btn btn-have" href="#haveit" onclick="clickTrack('haveit_<?=$hit['_source']['product_id']?>')">Have it</a>&nbsp;

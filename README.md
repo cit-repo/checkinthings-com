@@ -1,6 +1,12 @@
 checkinthings-com
 =================
 
+## 0.3.1
+*2013-10-14 | Pablo del Vecchio*
+
+- Cleaned up frontend
+
+
 ## 0.3.0
 *2013-10-07 | Pablo del Vecchio*
 

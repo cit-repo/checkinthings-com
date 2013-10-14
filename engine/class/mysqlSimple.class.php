@@ -144,6 +144,16 @@
         }
 
         /**
+         * TRUNCATE
+         *
+         */
+        public function truncate($table)
+        {
+            $sql = "TRUNCATE TABLE ".$table;
+            $this->query($sql);
+        }
+
+        /**
          * QUERY
          *
          */

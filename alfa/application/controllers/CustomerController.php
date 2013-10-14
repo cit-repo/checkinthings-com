@@ -231,7 +231,9 @@ class CustomerController extends Zend_Controller_Action
         $pest->log_request($this->appIni['includePaths']['logs']."/api.log", date('Y-m-d H:i:s')." - ".$url.": REQUEST - ".json_encode($pest->last_request));
         $pest->log_request($this->appIni['includePaths']['logs']."/api.log", date('Y-m-d H:i:s')." - ".$url.": RESPONSE - ".json_encode($pest->lastBody()));
 
-        return $pest->lastBody();
+        if ($this->appIni['email']['active']) {
+            return $pest->lastBody();
+        }
     }
 
     public function logoutAction()

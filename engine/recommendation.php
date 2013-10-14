@@ -16,6 +16,7 @@
     $arWants = array();
     $arHaves = array();
     $arBuys = array();
+    $arSexys = array();
 
     $arCookies = array();
 
@@ -31,17 +32,41 @@
 
             if (strstr($arData['event'], "click")) {
 
+                if (!isset($arCookies[$arData['customer_uuid']])) {
+                    $arCookies[$arData['customer_uuid']] = array();
+                }
+
                 if (strstr($arData['link'], "wantit")) {
+                    if (!isset($arCookies[$arData['customer_uuid']]['wants'])) {
+                        $arCookies[$arData['customer_uuid']]['wants'] = array();
+                    }
+
                     if (!in_array($arData['link'], $arCookies[$arData['customer_uuid']]['wants'])) {
                         $arCookies[$arData['customer_uuid']]['wants'][] = $arData['link'];
                     }
                 } else if (strstr($arData['link'], "haveit")) {
+                    if (!isset($arCookies[$arData['customer_uuid']]['haves'])) {
+                        $arCookies[$arData['customer_uuid']]['haves'] = array();
+                    }
+
                     if (!in_array($arData['link'], $arCookies[$arData['customer_uuid']]['haves'])) {
                         $arCookies[$arData['customer_uuid']]['haves'][] = $arData['link'];
                     }
                 } else if (strstr($arData['link'], "buyit")) {
+                    if (!isset($arCookies[$arData['customer_uuid']]['buys'])) {
+                        $arCookies[$arData['customer_uuid']]['buys'] = array();
+                    }
+
                     if (!in_array($arData['link'], $arCookies[$arData['customer_uuid']]['buys'])) {
                         $arCookies[$arData['customer_uuid']]['buys'][] = $arData['link'];
+                    }
+                } else if (strstr($arData['link'], "sexyit")) {
+                    if (!isset($arCookies[$arData['customer_uuid']]['sexys'])) {
+                        $arCookies[$arData['customer_uuid']]['sexys'] = array();
+                    }
+
+                    if (!in_array($arData['link'], $arCookies[$arData['customer_uuid']]['sexys'])) {
+                        $arCookies[$arData['customer_uuid']]['sexys'][] = $arData['link'];
                     }
                 }
 
@@ -51,7 +76,7 @@
 
     }
 
-    echo $n++."\n";
+    echo $n." tracks processed\n";
 
     $couchdb_options['host'] = "127.0.0.1";
     $couchdb_options['port'] = "5984";
@@ -64,6 +89,8 @@
     $allCustomers = $couchdb->readAllDocuments();
     $allCustomers = json_decode($allCustomers, true);
 
+    $m = 0;
+
     foreach ($allCustomers['rows'] as $customer) {
 
         if (isset($customer['id'])) {
@@ -75,9 +102,16 @@
                     $arDataC['engine_wants'] = str_replace("wantit_", "", implode(",", $value['wants']));
                     $arDataC['engine_haves'] = str_replace("haveit_", "", implode(",", $value['haves']));
                     $arDataC['engine_buys'] = str_replace("buyit_", "", implode(",", $value['buys']));
+                    $arDataC['engine_sexys'] = str_replace("sexyit_", "", implode(",", $value['sexys']));
                 }
             }
 
-            echo $couchdb->updateDocument($customer['id'], $arDataC);
+            $res = $couchdb->updateDocument($customer['id'], $arDataC);
+
+            if (isset($res)) {
+                $m++;
+            }
         }
     }
+
+    echo $m." customers updated\n";

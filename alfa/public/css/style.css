@@ -3,6 +3,7 @@ body {
     padding-top: 0px;
 }
 h1 {
+    margin-left: 130px;
     font-size: 1.4em;
     color: #022b3f;
 }
@@ -23,7 +24,7 @@ td, th {
 
 /* style content*/
 #main_content {
-    width: 800px;
+    /* width: 850px; */
     margin:0 auto;
     text-align: left;
     margin-top: 80px;
@@ -54,6 +55,7 @@ form #submitbutton {
 
 #product_detail {
     margin-top: 10px;
+    margin-left: 130px;
 }
 
 .btn-want {
@@ -179,4 +181,8 @@ form #submitbutton {
 
 .error-message {
     color: #e00808;
+}
+
+#image_lightbox {
+    text-align: center  ;
 }
