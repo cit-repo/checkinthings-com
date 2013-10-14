@@ -1,6 +1,12 @@
 checkinthings-com
 =================
 
+## 0.3.2
+*2013-10-14 | Pablo del Vecchio*
+
+- Propagated engine data to backend
+
+
 ## 0.3.1
 *2013-10-14 | Pablo del Vecchio*
 

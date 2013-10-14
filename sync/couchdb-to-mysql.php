@@ -61,6 +61,30 @@
                         $res = mysqli_query($link, $upd);
                     }
 
+                    if ($doc['engine_wants'] != $row['engine_wants']) {
+                        $upd = "UPDATE admin_cit.".$mysql_options['table']." SET engine_wants='".$doc['engine_wants']."' WHERE email = '".$doc['email']."';";
+                        echo date('Y-m-d H:i:s')." - ".$upd."\n";
+                        $res = mysqli_query($link, $upd);
+                    }
+
+                    if ($doc['engine_haves'] != $row['engine_haves']) {
+                        $upd = "UPDATE admin_cit.".$mysql_options['table']." SET engine_haves='".$doc['engine_haves']."' WHERE email = '".$doc['email']."';";
+                        echo date('Y-m-d H:i:s')." - ".$upd."\n";
+                        $res = mysqli_query($link, $upd);
+                    }
+
+                    if ($doc['engine_buys'] != $row['engine_buys']) {
+                        $upd = "UPDATE admin_cit.".$mysql_options['table']." SET engine_buys='".$doc['engine_buys']."' WHERE email = '".$doc['email']."';";
+                        echo date('Y-m-d H:i:s')." - ".$upd."\n";
+                        $res = mysqli_query($link, $upd);
+                    }
+
+                    if ($doc['engine_sexys'] != $row['engine_sexys']) {
+                        $upd = "UPDATE admin_cit.".$mysql_options['table']." SET engine_sexys='".$doc['engine_sexys']."' WHERE email = '".$doc['email']."';";
+                        echo date('Y-m-d H:i:s')." - ".$upd."\n";
+                        $res = mysqli_query($link, $upd);
+                    }
+
                     if ($doc['last_updated'] != $row['last_updated']) {
                         $upd = "UPDATE admin_cit.".$mysql_options['table']." SET last_updated='".$doc['last_updated']."' WHERE email = '".$doc['email']."';";
                         echo date('Y-m-d H:i:s')." - ".$upd."\n";

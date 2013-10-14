@@ -13,6 +13,7 @@ class TrackController extends Zend_Controller_Action
 
         $this->sess = new Zend_Session_Namespace('session');
 
+
     }
 
     public function indexAction()
@@ -26,6 +27,7 @@ class TrackController extends Zend_Controller_Action
         $arData["user_agent"] = $_SERVER['HTTP_USER_AGENT'];
 
         $arData["session_id"] = $_COOKIE['PHPSESSID'];
+        $this->sess->session_id = $_COOKIE['PHPSESSID'];
 
         if (isset($this->sess->customer_uuid)) {
             $arData["customer_uuid"] = $this->sess->customer_uuid;
@@ -38,6 +40,8 @@ class TrackController extends Zend_Controller_Action
         } else {
             $arData["cookie_id"] = $_COOKIE['PHPCOOKID'];
         }
+
+        $this->sess->cookie_id = $arData["cookie_id"];
 
         $arData["last_updated"] = date('Y-m-d H:i:s');
 

@@ -46,25 +46,17 @@
                     }
                 } else if (strstr($arData['link'], "haveit")) {
                     if (!isset($arCookies[$arData['customer_uuid']]['haves'])) {
-                        $arCookies[$arData['customer_uuid']]['haves'] = array();
+                        $arCookies[$arData['customer_uuid']]['wants'] = array();
                     }
 
                     if (!in_array($arData['link'], $arCookies[$arData['customer_uuid']]['haves'])) {
                         $arCookies[$arData['customer_uuid']]['haves'][] = $arData['link'];
                     }
                 } else if (strstr($arData['link'], "buyit")) {
-                    if (!isset($arCookies[$arData['customer_uuid']]['buys'])) {
-                        $arCookies[$arData['customer_uuid']]['buys'] = array();
-                    }
-
                     if (!in_array($arData['link'], $arCookies[$arData['customer_uuid']]['buys'])) {
                         $arCookies[$arData['customer_uuid']]['buys'][] = $arData['link'];
                     }
                 } else if (strstr($arData['link'], "sexyit")) {
-                    if (!isset($arCookies[$arData['customer_uuid']]['sexys'])) {
-                        $arCookies[$arData['customer_uuid']]['sexys'] = array();
-                    }
-
                     if (!in_array($arData['link'], $arCookies[$arData['customer_uuid']]['sexys'])) {
                         $arCookies[$arData['customer_uuid']]['sexys'][] = $arData['link'];
                     }
@@ -76,7 +68,7 @@
 
     }
 
-    echo $n." tracks processed\n";
+    echo $n++."\n";
 
     $couchdb_options['host'] = "127.0.0.1";
     $couchdb_options['port'] = "5984";
@@ -88,8 +80,6 @@
 
     $allCustomers = $couchdb->readAllDocuments();
     $allCustomers = json_decode($allCustomers, true);
-
-    $m = 0;
 
     foreach ($allCustomers['rows'] as $customer) {
 
@@ -106,12 +96,6 @@
                 }
             }
 
-            $res = $couchdb->updateDocument($customer['id'], $arDataC);
-
-            if (isset($res)) {
-                $m++;
-            }
+            echo $couchdb->updateDocument($customer['id'], $arDataC);
         }
     }
-
-    echo $m." customers updated\n";

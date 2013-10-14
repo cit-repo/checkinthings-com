@@ -192,7 +192,10 @@ class CustomerController extends Zend_Controller_Action
             unset($raw_data['cpassword']);
 
             if (isset($_COOKIE['PHPSESSID'])) $raw_data["session_id"] = $_COOKIE['PHPSESSID'];
+            $this->sess->session_id = $_COOKIE['PHPSESSID'];
+
             if (isset($_COOKIE['PHPCOOKID'])) $raw_data["cookie_id"] = $_COOKIE['PHPCOOKID'];
+            if ($this->sess->cookie_id) $raw_data["cookie_id"] = $this->sess->cookie_id;
 
             $this->view->register = $this->requestApi("customer", "register", $raw_data);
 
@@ -205,25 +208,28 @@ class CustomerController extends Zend_Controller_Action
             $this->sess->customer_lastname = $raw_data['lastname'];
             $this->sess->customer_email = $raw_data['email'];
 
-            $account = urlencode(trim("checkinthings"));
-            $fromName = urlencode(trim("Check In Things"));
-
-            $toName = urlencode(trim($raw_data['firstname']));
-            $toAddr = urlencode(trim($raw_data['email']));
-
-            $subject = urlencode(trim("Welcome to Check In Things, ".$toName));
-            $body = urlencode(trim("Welcome to Check In Things, ".$toName.". We registered successfully your account with email ".$toAddr.". <br><br><br><b>Thanks for joining our world !!!</b>"));
-
-            $url = "/rest/?account=$account&from_name=$fromName&to_name=$toName&to_addr=$toAddr&subject=$subject&body=$body";
-
-            $this->sendEmail($url);
+            if ($this->appIni['email']['active'] && !strstr($_SERVER['HTTP_HOST'], "localhost")) {
+                $this->sendEmail($raw_data);
+            }
         }
     }
 
-    public function sendEmail($url)
+    public function sendEmail($raw_data)
     {
         // action body
         require_once(APPLICATION_PATH.'/../library/Simple/Pest.php');
+
+
+        $account = urlencode(trim("checkinthings"));
+        $fromName = urlencode(trim("Check In Things"));
+
+        $toName = urlencode(trim($raw_data['firstname']));
+        $toAddr = urlencode(trim($raw_data['email']));
+
+        $subject = urlencode(trim("Welcome to Check In Things, ".$toName));
+        $body = urlencode(trim("Welcome to Check In Things, ".$toName.". We registered successfully your account with email ".$toAddr.". <br><br><br><b>Thanks for joining our world !!!</b>"));
+
+        $url = "/rest/?account=$account&from_name=$fromName&to_name=$toName&to_addr=$toAddr&subject=$subject&body=$body";
 
         $pest = new Pest("http://bidimail.com");
         $pest->get($url);
@@ -231,9 +237,7 @@ class CustomerController extends Zend_Controller_Action
         $pest->log_request($this->appIni['includePaths']['logs']."/api.log", date('Y-m-d H:i:s')." - ".$url.": REQUEST - ".json_encode($pest->last_request));
         $pest->log_request($this->appIni['includePaths']['logs']."/api.log", date('Y-m-d H:i:s')." - ".$url.": RESPONSE - ".json_encode($pest->lastBody()));
 
-        if ($this->appIni['email']['active']) {
-            return $pest->lastBody();
-        }
+        return $pest->lastBody();
     }
 
     public function logoutAction()
