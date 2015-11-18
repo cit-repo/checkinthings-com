@@ -3,8 +3,8 @@
     require_once("../inc/functions.inc.php");
     require_once('amazon/lib/AmazonECS.class.php');
 
-    define('AWS_API_KEY', 'AKIAJ5BQFD5IU6V5KTZA');
-    define('AWS_API_SECRET_KEY', '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');
+    define('AWS_API_KEY', 'KEY');
+    define('AWS_API_SECRET_KEY', 'SECRET');
     define('AWS_ASSOCIATE_TAG', substr(md5(microtime()),0,8));
 
     $amazonEcs = new AmazonECS(AWS_API_KEY, AWS_API_SECRET_KEY, 'com', AWS_ASSOCIATE_TAG);
